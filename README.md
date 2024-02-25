@@ -14,6 +14,8 @@
 
 </div>
 
+[main]: https://github.com/PlazmaMC/Thunderbolt
+
 > [!WARNING]
 Thunderbolt는 Plazma에 추가하기에 매우 불안정하고 게임 플레이에 크게 영향을 미치는 패치가 포함된 프로젝트입니다! 기존 월드가 손상되거나, 일부 플러그인이 작동하지 않을 수 있으며, 매 업데이트마다 서버의 안정 상태가 크게 달라질 수 있습니다! Thunberbolt는 공개 서버에서 사용하기 매우 부적합하고, Plazma에 패치를 추가하기 전 실험용으로 사용되는 프로젝트입니다! 사용에 주의해주세요!<br>
 Thunderbolt is a project that includes patches that are very unstable to add to Plazma and greatly affect gameplay! Existing worlds may be damaged, some plugins may not work, and the server's stable status can vary greatly with each update! Thunderbolt is very unfit for public servers, and it is an experimental project before adding patches to Plazma! Please be careful!
