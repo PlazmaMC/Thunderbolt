@@ -1,0 +1,59 @@
+name: Release Volt
+
+on:
+  push:
+    branches: [ "ver/*", "dev/*", "feat/**/*" ]
+    paths:
+      - "**.patch"
+  workflow_dispatch:
+
+env:
+  ORG_NAME: PlazmaMC
+  MC_VERSION: 1.20.4
+
+jobs:
+  release:
+    name: Release Volt
+    strategy:
+      matrix:
+        base_jdk: [17]
+        os: [ubuntu-22.04]
+
+    if: "!startsWith(github.event.commits[0].message, '[CI-Skip]')"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up GraalVM ${{ matrix.base_jdk }}
+        uses: graalvm/setup-graalvm@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          java-version: ${{ matrix.base_jdk }}
+          version: latest
+          cache: 'gradle'
+
+      - name: Configure Git
+        run: git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com" && git config --global user.name "github-actions[bot]"
+
+      - name: Apply Patches
+        run: ./gradlew applyPatches --stacktrace
+
+      - name: Create Reobf Jar
+        run: ./gradlew createReobfPaperclipJar --stacktrace
+
+      - name: Create Mojmap Jar
+        run: ./gradlew createMojmapPaperclipJar --stacktrace
+
+      - name: Release Artifacts (Latest)
+        uses: softprops/action-gh-release@v0.1.15
+        with:
+          name: "If you see this release, the developer must have trolled it. Please report it immediately. :trollface:"
+          tag_name: ${{ github.ref_name }}
+          target_commitish: ${{ github.ref_name }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: build/libs/*.jar
