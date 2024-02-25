@@ -18,11 +18,22 @@
 Thunderbolt는 Plazma에 추가하기에 매우 불안정하고 게임 플레이에 크게 영향을 미치는 패치가 포함된 프로젝트입니다! 기존 월드가 손상되거나, 일부 플러그인이 작동하지 않을 수 있으며, 매 업데이트마다 서버의 안정 상태가 크게 달라질 수 있습니다! Thunberbolt는 공개 서버에서 사용하기 매우 부적합하고, Plazma에 패치를 추가하기 전 실험용으로 사용되는 프로젝트입니다! 사용에 주의해주세요!<br>
 Thunderbolt is a project that includes patches that are very unstable to add to Plazma and greatly affect gameplay! Existing worlds may be damaged, some plugins may not work, and the server's stable status can vary greatly with each update! Thunderbolt is very unfit for public servers, and it is an experimental project before adding patches to Plazma! Please be careful!
 
-## ⚖️ License
-- This project and all patches are licensed under the [MIT license](LICENSE.md) unless otherwise noted in the patch headers.
-- 이 프로젝트와 모든 패치는 패치 헤더에서 다르게 명시되지 않는 한 [MIT 라이선스](LICENSE.md)를 따릅니다.
+> [!IMPORTANT]
+This is the Thunderbolt 1.20.4 development branch, and it doesn't include any features. If you want to use Thunderbolt, please check the **[main branch][main]**.<br>
+이곳은 Thunderbolt 1.20.4 개발용 분기이며, 아무런 기능도 포함되어 있지 않습니다. Thunderbolt를 사용하고 싶다면 **[main 분기][main]** 를 확인해 주세요.
 
-## 🌀 Sponsorship - Minecraft Development Dictionary (KOREAN)
-[![Minecraft Development Dictionary](https://img.shields.io/discord/911980670123905054?color=%239c91fd&label=MDD&logo=discord&style=for-the-badge&logoColor=ffffff)](https://discord.gg/AZwXTA9Pgx)
-- 한글로 번역&정리된 Minecraft와 서드파티 버킷들의 소식들을 빠르게 만나볼 수 있습니다.
-- Skript와 Plugin등 서버 개발과 관련된 질문에 대한 답변을 받으실 수 있습니다.
+<!---
+## ⬇️ Downloads
+> [!NOTE]
+If you don't know about Mojmap or Bundler, download **Reobf Paperclip**<br>
+Mojmap 또는 Bundler에 대해 잘 알지 못한다면, **Reobf Paperclip**을 사용하세요
+
+[paperReobf]: https://github.com/PlazmaMC/Thunderbolt/releases/download/{BRANCH_NAME_HERE}/thunderbolt-paperclip-1.20.4-R0.1-SNAPSHOT-reobf.jar
+[paperMojmap]: https://github.com/PlazmaMC/Thunderbolt/releases/download/{BRANCH_NAME_HERE}/thunderbolt-paperclip-1.20.4-R0.1-SNAPSHOT-mojmap.jar
+[bundlerReobf]: https://github.com/PlazmaMC/Thunderbolt/releases/download/{BRANCH_NAME_HERE}/thunderbolt-bundler-1.20.4-R0.1-SNAPSHOT-reobf.jar
+[bundlerMojmap]: https://github.com/PlazmaMC/Thunderbolt/releases/download/{BRANCH_NAME_HERE}/thunderbolt-bundler-1.20.4-R0.1-SNAPSHOT-mojmap.jar
+
+| **Reobf Paperclip (Default)** |    Mojmap Paperclip     |      Reobf Bundler       |      Mojmap Bundler       |
+|:-----------------------------:|:-----------------------:|:------------------------:|:-------------------------:|
+|    [Download][paperReobf]     | [Download][paperMojmap] | [Download][bundlerReobf] | [Download][bundlerMojmap] |
+--->
