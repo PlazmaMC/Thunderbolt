@@ -11,23 +11,21 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.4.0"
 }
 
-// Volt start - Remove this
 if (!file(".git").exists()) {
     val errorText = """
         
         =====================[ ERROR ]=====================
-         The Volt project directory is not a properly cloned Git repository.
+         The Thunderbolt project directory is not a properly cloned Git repository.
          
-         In order to build Volt from source you must clone
+         In order to build Thunderbolt from source you must clone
          the repository using Git, not download a code zip from GitHub.
          
          See https://github.com/PaperMC/Paper/blob/master/CONTRIBUTING.md
-         for further information on building and modifying Volt.
+         for further information on building and modifying Thunderbolt.
         ===================================================
     """.trimIndent()
     error(errorText)
 }
-// Volt end - Remove this
 
 if (file("libs").exists()) {
     dependencyResolutionManagement {
@@ -45,8 +43,8 @@ if (file("libs").exists()) {
     }
 }
 
-rootProject.name = "volt" // Volt - Change this
-for (name in listOf("Volt-API", "Volt-Server", "paper-api-generator")) { // Volt - Change this
+rootProject.name = "thunderbolt"
+for (name in listOf("Thunderbolt-API", "Thunderbolt-Server", "paper-api-generator")) {
     val projName = name.lowercase(Locale.ENGLISH)
     include(projName)
     findProject(":$projName")!!.projectDir = file(name)

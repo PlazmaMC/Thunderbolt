@@ -5,7 +5,7 @@ Subject: [PATCH] Rebrand
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 47eea572566d7ec26459403cd02aa4442ae969d7..4530df6060639bc427b1c215726903e0bebc8594 100644
+index 47eea572566d7ec26459403cd02aa4442ae969d7..b6fe3888ad34ef0f647619a67d8f484a753fce2f 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -14,7 +14,7 @@ val alsoShade: Configuration by configurations.creating
@@ -13,7 +13,7 @@ index 47eea572566d7ec26459403cd02aa4442ae969d7..4530df6060639bc427b1c215726903e0
  dependencies {
      // Purpur start
 -    implementation(project(":plazma-api")) // Plazma - Setup Gradle Project
-+    implementation(project(":volt-api")) // Plazma - Setup Gradle Project // Volt - Setup Gradle Project
++    implementation(project(":thunderbolt-api")) // Plazma - Setup Gradle Project // Thunderbolt - Setup Gradle Project
      implementation("io.papermc.paper:paper-mojangapi:${project.version}") {
          exclude("io.papermc.paper", "paper-api")
      }
@@ -22,12 +22,12 @@ index 47eea572566d7ec26459403cd02aa4442ae969d7..4530df6060639bc427b1c215726903e0
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
 -            "Implementation-Version" to "git-Plazma-$implementationVersion", // Pufferfish // Purpur // Plazma - Setup Gradle Project
-+            "Implementation-Version" to "git-Plazma-$implementationVersion", // Pufferfish // Purpur // Plazma - Setup Gradle Project // Volt - Setup Gradle Project
++            "Implementation-Version" to "git-Plazma-$implementationVersion", // Pufferfish // Purpur // Plazma - Setup Gradle Project // Thunderbolt - Setup Gradle Project
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
 diff --git a/src/main/java/com/destroystokyo/paper/Metrics.java b/src/main/java/com/destroystokyo/paper/Metrics.java
-index 8783c81af1d09e6682256dee0dd546de0be418cd..c0d45103f35a7e70e8ceb1501549085f64284816 100644
+index 8783c81af1d09e6682256dee0dd546de0be418cd..6bdc7aee6c02b2ad854883475d1c1b47acefb743 100644
 --- a/src/main/java/com/destroystokyo/paper/Metrics.java
 +++ b/src/main/java/com/destroystokyo/paper/Metrics.java
 @@ -593,7 +593,7 @@ public class Metrics {
@@ -35,7 +35,7 @@ index 8783c81af1d09e6682256dee0dd546de0be418cd..c0d45103f35a7e70e8ceb1501549085f
              // Only start Metrics, if it's enabled in the config
              if (config.getBoolean("enabled", true)) {
 -                Metrics metrics = new Metrics("Plazma", serverUUID, logFailedRequests, Bukkit.getLogger()); // Pufferfish // Purpur // Plazma - Branding
-+                Metrics metrics = new Metrics("Volt", serverUUID, logFailedRequests, Bukkit.getLogger()); // Pufferfish // Purpur // Plazma - Branding // Volt - Branding
++                Metrics metrics = new Metrics("Thunderbolt", serverUUID, logFailedRequests, Bukkit.getLogger()); // Pufferfish // Purpur // Plazma - Branding // Thunderbolt - Branding
  
                  metrics.addCustomChart(new Metrics.SimplePie("minecraft_version", () -> {
                      String minecraftVersion = Bukkit.getVersion();
@@ -44,12 +44,12 @@ index 8783c81af1d09e6682256dee0dd546de0be418cd..c0d45103f35a7e70e8ceb1501549085f
                  metrics.addCustomChart(new Metrics.SingleLineChart("players", () -> Bukkit.getOnlinePlayers().size()));
                  metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() ? "online" : (io.papermc.paper.configuration.GlobalConfiguration.get().proxies.isProxyOnlineMode() ? "bungee" : "offline"))); // Purpur
 -                metrics.addCustomChart(new Metrics.SimplePie("plazma_version", () -> (org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() != null) ? org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() : "unknown")); // Purpur // Plazma // Plazma - Branding
-+                metrics.addCustomChart(new Metrics.SimplePie("volt_version", () -> (org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() != null) ? org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() : "unknown")); // Purpur // Plazma // Plazma - Branding // Volt - Branding
++                metrics.addCustomChart(new Metrics.SimplePie("thunderbolt_version", () -> (org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() != null) ? org.bukkit.craftbukkit.Main.class.getPackage().getImplementationVersion() : "unknown")); // Purpur // Plazma // Plazma - Branding // Thunderbolt - Branding
  
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
                      Map<String, Map<String, Integer>> map = new HashMap<>();
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index a58ce2c893d8c755ab3027207d512542d2d57c36..45fe6730d56b7ba3462345205ba295712b44cc34 100644
+index a58ce2c893d8c755ab3027207d512542d2d57c36..67c415a74e80d378c92a68d26f79d87d4aa2b4c1 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 @@ -20,7 +20,7 @@ import java.util.stream.StreamSupport;
@@ -57,7 +57,7 @@ index a58ce2c893d8c755ab3027207d512542d2d57c36..45fe6730d56b7ba3462345205ba29571
      private static final java.util.regex.Pattern VER_PATTERN = java.util.regex.Pattern.compile("^([0-9\\.]*)\\-.*R"); // R is an anchor, will always give '-R' at end
      // Purpur start
 -    private static final String DOWNLOAD_PAGE = "https://github.com/PlazmaMC/Plazma/releases"; // Plazma // Plazma - Branding
-+    private static final String DOWNLOAD_PAGE = "https://github.com/PlazmaMC/Volt/releases"; // Plazma // Plazma - Branding // Volt - Rebranding
++    private static final String DOWNLOAD_PAGE = "https://github.com/PlazmaMC/Thunderbolt/releases"; // Plazma // Plazma - Branding // Thunderbolt - Rebranding
      private static int distance = -2; public int distance() { return distance; }
      // Purpur end
      private static @Nullable String mcVer;
@@ -67,8 +67,8 @@ index a58ce2c893d8c755ab3027207d512542d2d57c36..45fe6730d56b7ba3462345205ba29571
      public Component getVersionMessage(@Nonnull String serverVersion) {
 -        String[] parts = serverVersion.substring("git-Plazma-".length()).split("[-\\s]"); // Purpur // Plazma // Plazma - Branding
 -        final Component updateMessage = getUpdateStatusMessage("PlazmaMC/PlazmaBukkit", (DEVELOPMENT ? "dev/" : "ver/") + getMinecraftVersion(), parts[0]); // Purpur // Plazma // Plazma - Branding
-+        String[] parts = serverVersion.substring("git-Volt-".length()).split("[-\\s]"); // Purpur // Plazma // Plazma - Branding
-+        final Component updateMessage = getUpdateStatusMessage("PlazmaMC/Volt", (DEVELOPMENT ? "dev/" : "ver/") + getMinecraftVersion(), parts[0]); // Purpur // Plazma // Plazma - Branding // Volt - Rebranding
++        String[] parts = serverVersion.substring("git-Thunderbolt-".length()).split("[-\\s]"); // Purpur // Plazma // Plazma - Branding
++        final Component updateMessage = getUpdateStatusMessage("PlazmaMC/Thunderbolt", (DEVELOPMENT ? "dev/" : "ver/") + getMinecraftVersion(), parts[0]); // Purpur // Plazma // Plazma - Branding // Thunderbolt - Rebranding
          final Component history = getHistory();
  
          return history != null ? Component.join(net.kyori.adventure.text.JoinConfiguration.separator(Component.newline()), history, updateMessage) : updateMessage; // Purpur
@@ -77,12 +77,12 @@ index a58ce2c893d8c755ab3027207d512542d2d57c36..45fe6730d56b7ba3462345205ba29571
                  mcVer = result.substring(0, result.length() - 2); // strip 'R' anchor and trailing '-'
              } else {
 -                org.bukkit.Bukkit.getLogger().warning("Unable to match version to pattern! Report to Plazma!"); // Purpur // Plazma // Plazma - Branding
-+                org.bukkit.Bukkit.getLogger().warning("Unable to match version to pattern! Report to Volt!"); // Purpur // Plazma // Plazma - Branding // Volt - Rebranding
++                org.bukkit.Bukkit.getLogger().warning("Unable to match version to pattern! Report to Thunderbolt!"); // Purpur // Plazma // Plazma - Branding // Thunderbolt - Rebranding
                  org.bukkit.Bukkit.getLogger().warning("Pattern: " + VER_PATTERN.toString());
                  org.bukkit.Bukkit.getLogger().warning("Version: " + org.bukkit.Bukkit.getBukkitVersion());
              }
 diff --git a/src/main/java/com/destroystokyo/paper/console/PaperConsole.java b/src/main/java/com/destroystokyo/paper/console/PaperConsole.java
-index 3e32c28e1d4c157a2f00dbc6d6e9d71cb3b8f6b7..2b393bc40bd695c97a60c94fe66448f196e6c1d3 100644
+index 3e32c28e1d4c157a2f00dbc6d6e9d71cb3b8f6b7..121072c57c759d58ca26d8af0a6b14bfcd27f881 100644
 --- a/src/main/java/com/destroystokyo/paper/console/PaperConsole.java
 +++ b/src/main/java/com/destroystokyo/paper/console/PaperConsole.java
 @@ -17,7 +17,7 @@ public final class PaperConsole extends SimpleTerminalConsole {
@@ -90,12 +90,12 @@ index 3e32c28e1d4c157a2f00dbc6d6e9d71cb3b8f6b7..2b393bc40bd695c97a60c94fe66448f1
      protected LineReader buildReader(LineReaderBuilder builder) {
          builder
 -                .appName("Plazma") // Purpur // Plazma - Branding
-+                .appName("Volt") // Purpur // Plazma - Branding // Volt - Rebranding
++                .appName("Thunderbolt") // Purpur // Plazma - Branding // Thunderbolt - Rebranding
                  .variable(LineReader.HISTORY_FILE, java.nio.file.Paths.get(".console_history"))
                  .completer(new ConsoleCommandCompleter(this.server))
                  .option(LineReader.Option.COMPLETE_IN_WORD, true);
 diff --git a/src/main/java/net/minecraft/CrashReport.java b/src/main/java/net/minecraft/CrashReport.java
-index e5585c6befeef62ecf130e8dabbe6b78f9e90a65..23f51f4e99cc94ac727ee53706304ee265164260 100644
+index e5585c6befeef62ecf130e8dabbe6b78f9e90a65..153beb3ee44e95930c3c49675ef8b3d95858eed7 100644
 --- a/src/main/java/net/minecraft/CrashReport.java
 +++ b/src/main/java/net/minecraft/CrashReport.java
 @@ -37,7 +37,7 @@ public class CrashReport {
@@ -103,7 +103,7 @@ index e5585c6befeef62ecf130e8dabbe6b78f9e90a65..23f51f4e99cc94ac727ee53706304ee2
          this.title = message;
          this.exception = cause;
 -        this.systemReport.setDetail("Plazma Information", new org.bukkit.craftbukkit.CraftCrashReport()); // CraftBukkit // Plazma - Branding
-+        this.systemReport.setDetail("Volt Information", new org.bukkit.craftbukkit.CraftCrashReport()); // CraftBukkit // Plazma - Branding // Volt - Rebranding
++        this.systemReport.setDetail("Thunderbolt Information", new org.bukkit.craftbukkit.CraftCrashReport()); // CraftBukkit // Plazma - Branding // Thunderbolt - Rebranding
      }
  
      public String getTitle() {
@@ -112,12 +112,12 @@ index e5585c6befeef62ecf130e8dabbe6b78f9e90a65..23f51f4e99cc94ac727ee53706304ee2
          // Purpur start
          stringbuilder.append("// ");
 -        stringbuilder.append("// DO NOT REPORT THIS TO PAPER OR PURPUR! REPORT TO PLAZMA INSTEAD!"); // Plazma - Branding
-+        stringbuilder.append("// DO NOT REPORT THIS TO PAPER OR PURPUR! REPORT TO VOLT INSTEAD!"); // Plazma - Branding // Volt - Rebranding
++        stringbuilder.append("// DO NOT REPORT THIS TO PAPER OR PURPUR! REPORT TO THUNDERBOLT INSTEAD!"); // Plazma - Branding // Thunderbolt - Rebranding
          // Purpur end
          stringbuilder.append("// ");
          stringbuilder.append(CrashReport.getErrorComment());
 diff --git a/src/main/java/net/minecraft/server/Main.java b/src/main/java/net/minecraft/server/Main.java
-index d83bd5774f49af33119ea5224a2300d435898095..da3007e51b46e59a740921a8b59e92aecf4f615d 100644
+index d83bd5774f49af33119ea5224a2300d435898095..dfe9d225a9a95423ce3883427125e73c4088ec42 100644
 --- a/src/main/java/net/minecraft/server/Main.java
 +++ b/src/main/java/net/minecraft/server/Main.java
 @@ -106,16 +106,8 @@ public class Main {
@@ -134,12 +134,12 @@ index d83bd5774f49af33119ea5224a2300d435898095..da3007e51b46e59a740921a8b59e92ae
 -                    """);
              if (!org.plazmamc.plazma.Options.iKnowWhatIAmDoing)
 -                LOGGER.warn("Warning! Plazma may cause unexpected problems, so be sure to test it thoroughly before using it on a public server.");
-+                LOGGER.warn("Warning! Volt may cause unexpected problems, so be sure to test it thoroughly before using it on a public server."); // Volt - Rebranding
++                LOGGER.warn("Warning! Thunderbolt may cause unexpected problems, so be sure to test it thoroughly before using it on a public server."); // Thunderbolt - Rebranding
              // Plazma end
              // Paper start
              if (Boolean.getBoolean("Paper.isRunDev")) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 2ce7351231aa921604698d45220d7e3e34289b62..d6a1d9a7e4e7fbd3825820db5b7957679c849f30 100644
+index 2ce7351231aa921604698d45220d7e3e34289b62..44ebffcc6551bfc675f0328edc40cb3e67d77451 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -963,7 +963,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -147,12 +147,12 @@ index 2ce7351231aa921604698d45220d7e3e34289b62..d6a1d9a7e4e7fbd3825820db5b795767
          org.spigotmc.WatchdogThread.doStop(); // Paper
          if (!isSameThread()) {
 -            MinecraftServer.LOGGER.info("Stopping main thread (Ignore any thread death message you see! - DO NOT REPORT THREAD DEATH TO PLAZMA)"); // Purpur // Plazma - Branding
-+            MinecraftServer.LOGGER.info("Stopping main thread (Ignore any thread death message you see! - DO NOT REPORT THREAD DEATH TO VOLT)"); // Purpur // Plazma - Branding // Volt - Branding
++            MinecraftServer.LOGGER.info("Stopping main thread (Ignore any thread death message you see! - DO NOT REPORT THREAD DEATH TO THUNDERBOLT)"); // Purpur // Plazma - Branding // Thunderbolt - Branding
              while (this.getRunningThread().isAlive()) {
                  this.getRunningThread().stop();
                  try {
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
-index 41d5d15dfa2affdee68501efb2447a209c38992d..ea28555fd242c4de9da6c3c6ba36f74e53122c3f 100644
+index 41d5d15dfa2affdee68501efb2447a209c38992d..87f59980d2b0f0177650a3d58dfe9b7a66cd59cb 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
 @@ -57,7 +57,7 @@ public class DedicatedServerProperties extends Settings<DedicatedServerPropertie
@@ -160,12 +160,12 @@ index 41d5d15dfa2affdee68501efb2447a209c38992d..ea28555fd242c4de9da6c3c6ba36f74e
      public final boolean preventProxyConnections = this.get("prevent-proxy-connections", false);
      public final String serverIp = this.get("server-ip", "");
 -    public final String serverName = this.get("server-name", "A Plazma Server"); // Purpur // Plazma - Branding
-+    public final String serverName = this.get("server-name", "A Volt Server"); // Purpur // Plazma - Branding // Volt - Branding
++    public final String serverName = this.get("server-name", "A Thunderbolt Server"); // Purpur // Plazma - Branding // Thunderbolt - Branding
      public final boolean spawnAnimals = this.get("spawn-animals", true);
      public final boolean spawnNpcs = this.get("spawn-npcs", true);
      public final boolean pvp = this.get("pvp", true);
 diff --git a/src/main/java/net/minecraft/server/gui/MinecraftServerGui.java b/src/main/java/net/minecraft/server/gui/MinecraftServerGui.java
-index a2b7441d1f5998f2b05903d07b587b42cc6ff987..20fab589cf82c7613e6fc0919989ff6f13f2c888 100644
+index a2b7441d1f5998f2b05903d07b587b42cc6ff987..7fe468165041960510830216b9dbc229908db4cf 100644
 --- a/src/main/java/net/minecraft/server/gui/MinecraftServerGui.java
 +++ b/src/main/java/net/minecraft/server/gui/MinecraftServerGui.java
 @@ -56,7 +56,7 @@ public class MinecraftServerGui extends JComponent {
@@ -173,7 +173,7 @@ index a2b7441d1f5998f2b05903d07b587b42cc6ff987..20fab589cf82c7613e6fc0919989ff6f
          }
  
 -        final JFrame jframe = new JFrame("Plazma Minecraft server"); // Purpur // Plazma - Branding
-+        final JFrame jframe = new JFrame("Volt Minecraft server"); // Purpur // Plazma - Branding // Volt - Branding
++        final JFrame jframe = new JFrame("Thunderbolt Minecraft server"); // Purpur // Plazma - Branding // Thunderbolt - Branding
          final MinecraftServerGui servergui = new MinecraftServerGui(server);
  
          jframe.setDefaultCloseOperation(2);
@@ -182,7 +182,7 @@ index a2b7441d1f5998f2b05903d07b587b42cc6ff987..20fab589cf82c7613e6fc0919989ff6f
          jframe.setLocationRelativeTo((Component) null);
          jframe.setVisible(true);
 -        jframe.setName("Plazma Minecraft server"); // Paper - Improve ServerGUI // Purpur // Plazma - Branding
-+        jframe.setName("Volt Minecraft server"); // Paper - Improve ServerGUI // Purpur // Plazma - Branding // Volt - Branding
++        jframe.setName("Thunderbolt Minecraft server"); // Paper - Improve ServerGUI // Purpur // Plazma - Branding // Thunderbolt - Branding
  
          // Paper start - Improve ServerGUI
          try {
@@ -191,12 +191,12 @@ index a2b7441d1f5998f2b05903d07b587b42cc6ff987..20fab589cf82c7613e6fc0919989ff6f
              public void windowClosing(WindowEvent windowevent) {
                  if (!servergui.isClosing.getAndSet(true)) {
 -                    jframe.setTitle("Plazma Minecraft server - shutting down!"); // Purpur // Plazma - Branding
-+                    jframe.setTitle("Volt Minecraft server - shutting down!"); // Purpur // Plazma - Branding // Volt - Branding
++                    jframe.setTitle("Thunderbolt Minecraft server - shutting down!"); // Purpur // Plazma - Branding // Thunderbolt - Branding
                      server.halt(true);
                      servergui.runFinalizers();
                  }
 diff --git a/src/main/java/net/minecraft/world/level/chunk/storage/RegionFileStorage.java b/src/main/java/net/minecraft/world/level/chunk/storage/RegionFileStorage.java
-index 97628761958289612ada0374f56e7d8f6af21512..377c74acaa4c44b0f5f71782baee448c60c41126 100644
+index 97628761958289612ada0374f56e7d8f6af21512..d670ef45e9fc388d851776e2d021f951d3fd95fd 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/storage/RegionFileStorage.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/storage/RegionFileStorage.java
 @@ -153,7 +153,7 @@ public class RegionFileStorage implements AutoCloseable {
@@ -204,12 +204,12 @@ index 97628761958289612ada0374f56e7d8f6af21512..377c74acaa4c44b0f5f71782baee448c
      // Paper start
      private static void printOversizedLog(String msg, Path file, int x, int z) {
 -        org.apache.logging.log4j.LogManager.getLogger().fatal(msg + " (" + file.toString().replaceAll(".+[\\\\/]", "") + " - " + x + "," + z + ") Go clean it up to remove this message. /minecraft:tp " + (x<<4)+" 128 "+(z<<4) + " - DO NOT REPORT THIS TO PLAZMA - You may ask for help on Discord, but do not file an issue. These error messages can not be removed."); // Plazma - Branding
-+        org.apache.logging.log4j.LogManager.getLogger().fatal(msg + " (" + file.toString().replaceAll(".+[\\\\/]", "") + " - " + x + "," + z + ") Go clean it up to remove this message. /minecraft:tp " + (x<<4)+" 128 "+(z<<4) + " - DO NOT REPORT THIS TO VOLT - You may ask for help on Discord, but do not file an issue. These error messages can not be removed."); // Plazma - Branding // Volt - Branding
++        org.apache.logging.log4j.LogManager.getLogger().fatal(msg + " (" + file.toString().replaceAll(".+[\\\\/]", "") + " - " + x + "," + z + ") Go clean it up to remove this message. /minecraft:tp " + (x<<4)+" 128 "+(z<<4) + " - DO NOT REPORT THIS TO THUNDERBOLT - You may ask for help on Discord, but do not file an issue. These error messages can not be removed."); // Plazma - Branding // Thunderbolt - Branding
      }
  
      private static CompoundTag readOversizedChunk(RegionFile regionfile, ChunkPos chunkCoordinate) throws IOException {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index ac05ef3d8959a0a88f18a01d9416a5a31a6fbeaf..d917549b41461281ef83484b4472d68c5b7fc0aa 100644
+index ac05ef3d8959a0a88f18a01d9416a5a31a6fbeaf..e66d5e20ec3042442ad4fa17c673bcc7ac5ccdb7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -266,7 +266,7 @@ import javax.annotation.Nullable; // Paper
@@ -217,12 +217,12 @@ index ac05ef3d8959a0a88f18a01d9416a5a31a6fbeaf..d917549b41461281ef83484b4472d68c
  
  public final class CraftServer implements Server {
 -    private final String serverName = "Plazma"; // Paper // Pufferfish // Purpur // Plazma - Branding
-+    private final String serverName = "Volt"; // Paper // Pufferfish // Purpur // Plazma - Branding // Volt - Branding
++    private final String serverName = "Thunderbolt"; // Paper // Pufferfish // Purpur // Plazma - Branding // Thunderbolt - Branding
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 2c82f8c25006123bacec5107a6380a67e927cc1d..db10684c46769d1a72aab54d212e74e550734712 100644
+index 2c82f8c25006123bacec5107a6380a67e927cc1d..0e92f59ee3f7c3900b69667fb69ef0ce844b6f07 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -141,7 +141,7 @@ public class Main {
@@ -230,7 +230,7 @@ index 2c82f8c25006123bacec5107a6380a67e927cc1d..db10684c46769d1a72aab54d212e74e5
                  this.acceptsAll(Main.asList("noconsole"), "Disables the console");
  
 -                this.acceptsAll(Main.asList("v", "version"), "Show the Plazma Version"); // Plazma - Branding
-+                this.acceptsAll(Main.asList("v", "version"), "Show the Volt Version"); // Plazma - Branding // Volt - Branding
++                this.acceptsAll(Main.asList("v", "version"), "Show the Thunderbolt Version"); // Plazma - Branding // Thunderbolt - Branding
  
                  this.acceptsAll(Main.asList("demo"), "Demo mode");
  
@@ -239,12 +239,12 @@ index 2c82f8c25006123bacec5107a6380a67e927cc1d..db10684c46769d1a72aab54d212e74e5
                          .withRequiredArg()
                          .ofType(String.class)
 -                        .defaultsTo("Plazma Server") // Plazma - Branding
-+                        .defaultsTo("A Volt Server") // Plazma - Branding // Volt - Branding
++                        .defaultsTo("A Thunderbolt Server") // Plazma - Branding // Thunderbolt - Branding
                          .describedAs("Name");
                  // Paper end
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-index aeb862f55965d2a6dc138aa72f0aa9c9d8c8c79c..2b9d5cf10c563cfde0f076b702b68b98f036a4dc 100644
+index aeb862f55965d2a6dc138aa72f0aa9c9d8c8c79c..ccec32711b2ff8278748ec9d0b5f1f5853110891 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 @@ -953,7 +953,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
@@ -252,12 +252,12 @@ index aeb862f55965d2a6dc138aa72f0aa9c9d8c8c79c..2b9d5cf10c563cfde0f076b702b68b98
          }
  
 -        throw new UnsupportedOperationException("Unsupported monster type: " + type + ". This is a bug, report this to Plazma."); // Purpur // Plazma - Branding
-+        throw new UnsupportedOperationException("Unsupported monster type: " + type + ". This is a bug, report this to Volt."); // Purpur // Plazma - Branding // Volt - Branding
++        throw new UnsupportedOperationException("Unsupported monster type: " + type + ". This is a bug, report this to Thunderbolt."); // Purpur // Plazma - Branding // Thunderbolt - Branding
      }
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
-index 73b4818998098b08abcbee4d29915492aa09b5ef..64a1cd21bbddbb44d67d528ec8842a0813e14975 100644
+index 73b4818998098b08abcbee4d29915492aa09b5ef..46236c2b14477881156f869d48d274c6ffde22fb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 @@ -11,7 +11,7 @@ public final class Versioning {
@@ -265,7 +265,7 @@ index 73b4818998098b08abcbee4d29915492aa09b5ef..64a1cd21bbddbb44d67d528ec8842a08
      public static String version = "Unknown-Version";
      static {
 -        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/org.plazmamc.plazma/plazma-api/pom.properties");
-+        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/org.plazmamc.volt/volt-api/pom.properties"); // Volt - Branding
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/org.plazmamc.thunderbolt/thunderbolt-api/pom.properties"); // Thunderbolt - Branding
          Properties properties = new Properties();
  
          if (stream != null) {
@@ -274,12 +274,12 @@ index 73b4818998098b08abcbee4d29915492aa09b5ef..64a1cd21bbddbb44d67d528ec8842a08
                  version = properties.getProperty("version");
              } catch (IOException ex) {
 -                Logger.getLogger(Versioning.class.getName()).log(Level.SEVERE, "Could not get Plazma version!", ex);
-+                Logger.getLogger(Versioning.class.getName()).log(Level.SEVERE, "Could not get Volt version!", ex); // Volt - Branding
++                Logger.getLogger(Versioning.class.getName()).log(Level.SEVERE, "Could not get Thunderbolt version!", ex); // Thunderbolt - Branding
              }
          }
      }
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index fc48ff9270e32c3b3dbf7ffd310cab7c33d459c0..b200239428189b8fd83f2401db602401f5bc14a4 100644
+index fc48ff9270e32c3b3dbf7ffd310cab7c33d459c0..d936c1366fab7225c9188d9992ab4fcd360584ae 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 @@ -232,7 +232,7 @@ public class PurpurConfig {
@@ -287,12 +287,12 @@ index fc48ff9270e32c3b3dbf7ffd310cab7c33d459c0..b200239428189b8fd83f2401db602401
      }
  
 -    public static String serverModName = "Plazma"; // Plazma - Branding
-+    public static String serverModName = "Volt"; // Plazma - Branding // Volt - Branding
++    public static String serverModName = "Thunderbolt"; // Plazma - Branding // Thunderbolt - Branding
      private static void serverModName() {
          serverModName = getString("settings.server-mod-name", serverModName);
      }
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index 090eb94fe8088d0ae98bfbe8bbd32a3cac2015d0..3e5d569f3e39c1fad5a7d67aaab550fdd877d798 100644
+index 090eb94fe8088d0ae98bfbe8bbd32a3cac2015d0..a87613184b36f8b6b3f0b1bbc1bf79a1172cdd79 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
 @@ -155,14 +155,14 @@ public final class WatchdogThread extends io.papermc.paper.util.TickThread // Pa
@@ -300,16 +300,16 @@ index 090eb94fe8088d0ae98bfbe8bbd32a3cac2015d0..3e5d569f3e39c1fad5a7d67aaab550fd
                  // Paper end
                  log.log( Level.SEVERE, "------------------------------" );
 -                log.log( Level.SEVERE, "The server has stopped responding! This is (probably) not a Plazma bug." ); // Paper // Purpur // Plazma - Branding
-+                log.log( Level.SEVERE, "The server has stopped responding! This is (probably) not a Volt bug." ); // Paper // Purpur // Plazma - Branding // Volt - Branding
++                log.log( Level.SEVERE, "The server has stopped responding! This is (probably) not a Thunderbolt bug." ); // Paper // Purpur // Plazma - Branding // Thunderbolt - Branding
                  log.log( Level.SEVERE, "If you see a plugin in the Server thread dump below, then please report it to that author" );
                  log.log( Level.SEVERE, "\t *Especially* if it looks like HTTP or MySQL operations are occurring" );
                  log.log( Level.SEVERE, "If you see a world save or edit, then it means you did far more than your server can handle at once" );
                  log.log( Level.SEVERE, "\t If this is the case, consider increasing timeout-time in spigot.yml but note that this will replace the crash with LARGE lag spikes" );
 -                log.log( Level.SEVERE, "If you are unsure or still think this is a Plazma bug, please report this to https://github.com/PlazmaMC/Plazma/issues" ); // Purpur // Plazma - Branding
-+                log.log( Level.SEVERE, "If you are unsure or still think this is a Volt bug, please report this to https://github.com/PlazmaMC/Volt/issues" ); // Purpur // Plazma - Branding // Volt - Branding
++                log.log( Level.SEVERE, "If you are unsure or still think this is a Thunderbolt bug, please report this to https://github.com/PlazmaMC/Thunderbolt/issues" ); // Purpur // Plazma - Branding // Thunderbolt - Branding
                  log.log( Level.SEVERE, "Be sure to include ALL relevant console errors and Minecraft crash reports" );
 -                log.log( Level.SEVERE, "Plazma version: " + Bukkit.getServer().getVersion() ); // Purpur // Plazma - Branding
-+                log.log( Level.SEVERE, "Volt version: " + Bukkit.getServer().getVersion() ); // Purpur // Plazma - Branding // Volt - Branding
++                log.log( Level.SEVERE, "Thunderbolt version: " + Bukkit.getServer().getVersion() ); // Purpur // Plazma - Branding // Thunderbolt - Branding
                  //
                  if ( net.minecraft.world.level.Level.lastPhysicsProblem != null )
                  {
@@ -318,13 +318,13 @@ index 090eb94fe8088d0ae98bfbe8bbd32a3cac2015d0..3e5d569f3e39c1fad5a7d67aaab550fd
                  } else
                  {
 -                    log.log(Level.SEVERE, "--- DO NOT REPORT THIS TO PLAZMA - THIS IS NOT A BUG OR A CRASH  - " + Bukkit.getServer().getVersion() + " ---"); // Purpur // Plazma - Branding
-+                    log.log(Level.SEVERE, "--- DO NOT REPORT THIS TO VOLT - THIS IS NOT A BUG OR A CRASH  - " + Bukkit.getServer().getVersion() + " ---"); // Purpur // Plazma - Branding // Volt - Branding
++                    log.log(Level.SEVERE, "--- DO NOT REPORT THIS TO THUNDERBOLT - THIS IS NOT A BUG OR A CRASH  - " + Bukkit.getServer().getVersion() + " ---"); // Purpur // Plazma - Branding // Thunderbolt - Branding
                      log.log(Level.SEVERE, "The server has not responded for " + (currentTime - lastTick) / 1000 + " seconds! Creating thread dump");
                  }
                  // Paper end - Different message for short timeout
                  log.log( Level.SEVERE, "------------------------------" );
 -                log.log( Level.SEVERE, "Server thread dump (Look for plugins here before reporting to Plazma!):" ); // Paper // Purpur // Plazma - Branding
-+                log.log( Level.SEVERE, "Server thread dump (Look for plugins here before reporting to Volt!):" ); // Paper // Purpur // Plazma - Branding // Volt - Branding
++                log.log( Level.SEVERE, "Server thread dump (Look for plugins here before reporting to Thunderbolt!):" ); // Paper // Purpur // Plazma - Branding // Thunderbolt - Branding
                  io.papermc.paper.chunk.system.scheduling.ChunkTaskScheduler.dumpAllChunkLoadInfo(isLongTimeout); // Paper - rewrite chunk system
                  this.dumpTickingInfo(); // Paper - log detailed tick information
                  WatchdogThread.dumpThread( ManagementFactory.getThreadMXBean().getThreadInfo( MinecraftServer.getServer().serverThread.getId(), Integer.MAX_VALUE ), log );
@@ -333,7 +333,7 @@ index 090eb94fe8088d0ae98bfbe8bbd32a3cac2015d0..3e5d569f3e39c1fad5a7d67aaab550fd
                  }
                  } else {
 -                    log.log(Level.SEVERE, "--- DO NOT REPORT THIS TO PLAZMA - THIS IS NOT A BUG OR A CRASH ---"); // Purpur // Plazma - Branding
-+                    log.log(Level.SEVERE, "--- DO NOT REPORT THIS TO VOLT - THIS IS NOT A BUG OR A CRASH ---"); // Purpur // Plazma - Branding // Volt - Branding
++                    log.log(Level.SEVERE, "--- DO NOT REPORT THIS TO THUNDERBOLT - THIS IS NOT A BUG OR A CRASH ---"); // Purpur // Plazma - Branding // Thunderbolt - Branding
                  }
  
                  log.log( Level.SEVERE, "------------------------------" );

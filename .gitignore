@@ -52,7 +52,7 @@ run/
 
 build-data/
 libs/
-Volt-API
-Volt-MojangAPI
-Volt-Server
+Thunderbolt-API
+Thunderbolt-MojangAPI
+Thunderbolt-Server
 paper-api-generator

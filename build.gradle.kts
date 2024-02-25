@@ -34,7 +34,7 @@ allprojects {
         repositories {
             maven {
                 name = "githubPackage"
-                url = uri("https://maven.pkg.github.com/PlazmaMC/Volt") // Volt - Change this
+                url = uri("https://maven.pkg.github.com/PlazmaMC/Thunderbolt")
 
                 credentials {
                     username = System.getenv("GITHUB_USERNAME")
@@ -82,7 +82,7 @@ subprojects {
 }
 
 paperweight {
-    serverProject = project(":volt-server") // Volt - Change this
+    serverProject = project(":thunderbolt-server")
 
     remapRepo = "https://papermc.io/repo/repository/maven-public/"
     decompileRepo = "https://papermc.io/repo/repository/maven-public/"
@@ -95,10 +95,10 @@ paperweight {
             baseName("Plazma")
 
             apiPatchDir = layout.projectDirectory.dir("patches/api")
-            apiOutputDir = layout.projectDirectory.dir("Volt-API") // Volt - Change this
+            apiOutputDir = layout.projectDirectory.dir("Thunderbolt-API")
 
             serverPatchDir = layout.projectDirectory.dir("patches/server")
-            serverOutputDir = layout.projectDirectory.dir("Volt-Server") // Volt - Change this
+            serverOutputDir = layout.projectDirectory.dir("Thunderbolt-Server")
         }
 
         patchTasks.register("generatedApi") {
@@ -129,12 +129,12 @@ tasks {
     }
 
     generateDevelopmentBundle {
-        apiCoordinates = "org.plazmamc.plazma:volt-api"
+        apiCoordinates = "org.plazmamc.plazma:thunderbolt-api"
         mojangApiCoordinates = "io.papermc.paper:paper-mojangapi"
         libraryRepositories.set(
             listOf(
                 "https://repo.maven.apache.org/maven2/",
-                "https://maven.pkg.github.com/PlazmaMC/Plazma", // Volt - Change this
+                "https://maven.pkg.github.com/PlazmaMC/Thunderbolt",
                 "https://papermc.io/repo/repository/maven-public/"
             )
         )
