@@ -40,7 +40,7 @@ jobs:
 
       - name: Determine if update needs
         id: check
-        run: echo "needs=$(./gradlew -q checkNeedsUpdate) >> $GITHUB_OUTPUT
+        run: echo "needs=$(./gradlew -q checkNeedsUpdate)" >> $GITHUB_OUTPUT
 
       - name: Configure Git
         if: steps.check.outputs.needs == 'true'
