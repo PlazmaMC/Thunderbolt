@@ -1,13 +1,33 @@
 name: Upstream
 on:
+  workflow_dispatch:
   schedule:
     - cron: "*/20 * * * *"
+  push:
+    paths:
+      - "upstream.yml"
+
 jobs:
-  upstream:
+  prepare:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - name: Pull Branches
+        run: |
+          json=$(curl --silent https://api.github.com/repos/plazmamc/thunderbolt/branches | jq -r 'map(select(.name | test("feat/.*"))) | del(.[]|.protected) | del(.[]|.commit)')
+          echo "matrix=$json" >> $GITHUB_OUTPUT
+
+  upstream:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.name }}
 
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
@@ -31,3 +51,4 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ matrix.name }}
