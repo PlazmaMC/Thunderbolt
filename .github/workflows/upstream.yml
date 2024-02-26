@@ -17,7 +17,7 @@ jobs:
         id: matrix
         run: |
           json=$(curl --silent https://api.github.com/repos/plazmamc/thunderbolt/branches | jq -rc 'map(select(.name | test("feat/.*"))) | del(.[]|.protected) | del(.[]|.commit)')
-          echo "matrix=$json" >> $GITHUB_OUTPUT
+          echo "matrix={\"include\":$json}" >> $GITHUB_OUTPUT
 
   upstream:
     needs: prepare
