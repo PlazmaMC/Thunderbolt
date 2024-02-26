@@ -3,12 +3,10 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "*/20 * * * *"
-  push:
-    paths:
-      - "upstream.yml"
 
 jobs:
   prepare:
+    name: Prepare Actions
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.matrix.outputs.matrix }}
@@ -20,6 +18,7 @@ jobs:
           echo "matrix={\"include\":$json}" >> $GITHUB_OUTPUT
 
   upstream:
+    name: Update Upstream
     needs: prepare
     runs-on: ubuntu-latest
     strategy:
@@ -39,16 +38,24 @@ jobs:
           distribution: zulu
           java-version: 17
 
+      - name: Determine if update needs
+        id: check
+        run: echo "needs=$(./gradlew -q checkNeedsUpdate) >> $GITHUB_OUTPUT
+
       - name: Configure Git
+        if: ${{ steps.check.outputs.needs == "true" }}
         run: git config --global user.email "action@github.com" && git config --global user.name "Github Action"
 
       - name: Update upstream
+        if: ${{ steps.check.outputs.needs == "true" }}
         run: ./gradlew updateUpstream
 
       - name: Commit changes
+        if: ${{ steps.check.outputs.needs == "true" }}
         run: printf "Updated Upstream (Plazma)\n\nUpstream has released updates that appear to apply and compile correctly\n\n$(cat compare.txt)" | git commit -F -
 
       - name: Push changes
+        if: ${{ steps.check.outputs.needs == "true" }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
