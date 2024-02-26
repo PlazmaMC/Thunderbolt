@@ -139,6 +139,20 @@ tasks {
             )
         )
     }
+    
+    register("checkNeedsUpdate") {
+        var latest: String = ""
+        
+        doFirst {
+            val commit = layout.cache.resolve("commit.json")
+            download.get().download("https://api.github.com/repos/PlazmaMC/PlazmaBukkit/commits/${project.properties["plazmaRef"]}", commit)
+            latest = gson.fromJson<paper.libs.com.google.gson.JsonObject>(commit)["sha"].asString
+        }
+        
+        doLast {
+            println(latest != project.properties["plazmaCommit"])
+        }
+    }
 
     register("updateUpstream") {
         val tempDir = layout.cacheDir("updateUpstream")
@@ -147,11 +161,11 @@ tasks {
 
         doFirst {
             val commit = layout.cache.resolve("commit.json")
-            download.get().download("https://api.github.com/repos/PlazmaMC/PlazmaBukkit/commits/${property("plazmaRef")}", commit)
+            download.get().download("https://api.github.com/repos/PlazmaMC/PlazmaBukkit/commits/${project.properties["plazmaRef"]}", commit)
             val latestCommit = gson.fromJson<paper.libs.com.google.gson.JsonObject>(commit)["sha"].asString
 
             val compare = layout.cache.resolve("compare.json")
-            download.get().download("https://api.github.com/repos/PlazmaMC/PlazmaBukkit/compare/${property("plazmaCommit")}...${property("plazmaRef")}", compare)
+            download.get().download("https://api.github.com/repos/PlazmaMC/PlazmaBukkit/compare/${project.properties["plazmaCommit"]}...${project.properties["plazmaRef"]}", compare)
             gson.fromJson<paper.libs.com.google.gson.JsonObject>(compare)["commits"].asJsonArray.forEach {
                 builder.append("PlazmaMC/PlazmaBukkit@${it.asJsonObject["sha"].asString.subSequence(0, 7)}: ${it.asJsonObject["commit"].asJsonObject["message"].asString.split("\n")[0]}\n")
             }
