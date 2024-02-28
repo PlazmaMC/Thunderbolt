@@ -89,7 +89,7 @@ jobs:
 
       - name: Try to pull base branch
         id: pull
-        run: echo "uptodate=$(git pull origin base/$(./gradlew -q getMcVersion))" >> $GITHUB_OUTPUT
+        run: echo "uptodate=$(git pull origin base/$(./gradlew -q getMcVersion) --no-edit)" >> $GITHUB_OUTPUT
 
       - name: Commit changes
         if: steps.pull.outputs.uptodate != 'Already up to date.'
