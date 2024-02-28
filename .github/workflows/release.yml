@@ -1,4 +1,4 @@
-name: Release Volt
+name: Release Thunderbolt
 
 on:
   push:
