@@ -54,10 +54,10 @@ scanning on some of the parameters of SectorFile:
 3. SectorFile cache size
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index b6fe3888ad34ef0f647619a67d8f484a753fce2f..47a40b1e6120cd970c4b4a2fda5e64e051542a70 100644
+index d8c55ff99bfdb57e02db872fc3c14e998f2dbea7..ea12ae998d6a8c0e789fcec268c4494609caccfa 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -39,6 +39,7 @@ dependencies {
+@@ -37,6 +37,7 @@ dependencies {
      implementation(common.adventure.serializer.ansi)
      implementation(server.ansi)
      implementation(server.bundles.implementation)

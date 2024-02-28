@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Alpha <dev@alpha93.kr>
+Date: Wed, 28 Feb 2024 10:46:38 +0900
+Subject: [PATCH] Rebrand
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index a00cf1659f1fd9dff3ff34561d78732645b51dfb..870b4278ba15aef04e8ca42e506c8758b12930fc 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -9,7 +9,7 @@ java {
+ }
+ 
+ dependencies {
+-    implementation(project(":plazma-api")) // Plazma - Rebrand
++    implementation(project(":thunderbolt-api")) // Plazma - Rebrand // Thunderbolt - Rebrand
+     api("com.mojang:brigadier:1.0.18")
+ 
+     compileOnly("it.unimi.dsi:fastutil:8.5.6")
