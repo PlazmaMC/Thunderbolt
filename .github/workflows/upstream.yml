@@ -63,7 +63,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ matrix.base }}
 
-  base:
+  flavor:
     name: Update Flavors Upstream
     needs: prepare
     runs-on: ubuntu-latest
