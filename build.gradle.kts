@@ -160,6 +160,12 @@ tasks {
             println(latest != project.properties["plazmaCommit"])
         }
     }
+    
+    register("getMcVersion") {
+        doLast {
+            println(project.properties["mcVersion"])
+        }
+    }
 
     register("updateUpstream") {
         val tempDir = layout.cacheDir("updateUpstream")
