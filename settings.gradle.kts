@@ -44,7 +44,7 @@ if (file("libs").exists()) {
 }
 
 rootProject.name = "thunderbolt"
-for (name in listOf("Thunderbolt-API", "Thunderbolt-Server", "paper-api-generator")) {
+for (name in listOf("Thunderbolt-API", "Thunderbolt-Server", "Thunderbolt-MojangAPI", "paper-api-generator")) {
     val projName = name.lowercase(Locale.ENGLISH)
     include(projName)
     findProject(":$projName")!!.projectDir = file(name)
