@@ -1,4 +1,4 @@
-name: Upstream
+name: Try to Update Upstream
 on:
   workflow_dispatch:
   schedule:
@@ -14,11 +14,13 @@ jobs:
       - name: Pull Branches
         id: matrix
         run: |
-          json=$(curl --silent https://api.github.com/repos/plazmamc/thunderbolt/branches | jq -rc 'map(select(.name | test("feat/.*"))) | del(.[]|.protected) | del(.[]|.commit)')
-          echo "matrix={\"include\":$json}" >> $GITHUB_OUTPUT
+          respond=$(curl --silent https://api.github.com/repos/plazmamc/thunderbolt/branches | jq -rc 'del(.[]|.protected) | del(.[]|.commit)')
+          base=$(echo $respond | jq -rc 'map(select(.name | test("base/.*")) | .base = .name | del(.name))')
+          flavor=$(echo $respond | jq -rc 'map(select(.name | test("feat/.*")) | .flavor = .name | del(.name))')
+          echo "matrix={\"include\":$(echo "$base $flavor" | jq -sc add)}" >> $GITHUB_OUTPUT
 
-  upstream:
-    name: Update Upstream
+  base:
+    name: Update Base Upstream
     needs: prepare
     runs-on: ubuntu-latest
     strategy:
@@ -27,7 +29,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ matrix.name }}
+          ref: ${{ matrix.base }}
 
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
@@ -59,4 +61,43 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ matrix.name }}
+          branch: ${{ matrix.base }}
+
+  base:
+    name: Update Flavors Upstream
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.flavor }}
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 17
+
+      - name: Configure Git
+        run: git config --global user.email "action@github.com" && git config --global user.name "Github Action" && git config pull.rebase false
+
+      - name: Try to pull base branch
+        id: pull
+        run: echo "uptodate=$(git pull origin base/$(./gradlew -q getMcVersion))" >> $GITHUB_OUTPUT
+
+      - name: Commit changes
+        if: steps.pull.outputs.uptodate != 'Already up to date.'
+        run: printf "Updated Upstream (Plazma)\n\nUpstream has released updates that appear to apply and compile correctly\n\n$(cat compare.txt)" | git commit -F -
+
+      - name: Push changes
+        if: steps.pull.outputs.uptodate != 'Already up to date.'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ matrix.flavor }}
