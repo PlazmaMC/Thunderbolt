@@ -1,0 +1,31 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: AlphaKR93 <dev@alpha93.kr>
+Date: Fri, 10 May 2024 12:50:20 +0900
+Subject: [PATCH] Add basic configuration parts
+
+
+diff --git a/src/main/java/org/plazmamc/thunderbolt/configurations/GlobalConfiguration.java b/src/main/java/org/plazmamc/thunderbolt/configurations/GlobalConfiguration.java
+index fbac06d6c70fd6250f16a6bdbea21873ff5e1d2a..0b16bbf87a6c5e658e8182e423800acd16dfc7ca 100644
+--- a/src/main/java/org/plazmamc/thunderbolt/configurations/GlobalConfiguration.java
++++ b/src/main/java/org/plazmamc/thunderbolt/configurations/GlobalConfiguration.java
+@@ -25,4 +25,20 @@ public class GlobalConfiguration extends ConfigurationPart {
+     @Setting(Configuration.VERSION_FIELD)
+     int version = VERSION;
+ 
++    public NeedsReload needsReload;
++    public class NeedsReload extends ConfigurationPart {
++
++
++        @PostProcess
++        public void post() {
++            if (ThunderboltConfigurations.GLOBAL_LOADED) {
++                ThunderboltConfigurations.LOGGER.warn("Configuration settings that require a restart have been changed."
++                        + "The settings will take effect at the next restart.");
++                return;
++            }
++
++        }
++
++    }
++
+ }

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# FixupAPI
+
+PS1="$"
+
+cd *-API
+
+git add .
+git commit -m "fixup"
+git format-patch -1
+mv 0001-fixup.patch ../
+
+cd ../

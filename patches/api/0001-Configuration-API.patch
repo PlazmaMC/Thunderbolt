@@ -1,0 +1,24 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: AlphaKR93 <dev@alpha93.kr>
+Date: Sun, 12 Jun 2022 10:57:51 -0500
+Subject: [PATCH] Configuration API
+
+
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index f1b39968788f90ffc785b9dd434b2a3671553a14..90eb3884f5283fa6c52ff2267570c466b2fdd463 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -2276,6 +2276,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+         }
+         // Plazma end
+ 
++        // Thunderbolt - Configuration API
++        @NotNull
++        public org.bukkit.configuration.file.YamlConfiguration getThunderboltConfig() {
++            throw new UnsupportedOperationException("Not implemented yet.");
++        }
++        // Thunderbolt end
++
+         /**
+          * Sends the component to the player
+          *
