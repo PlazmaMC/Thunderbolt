@@ -222,10 +222,10 @@ index afdbc74a3012fa717f59ecef613567338d285b7b..23fb7d811772804c7256981bbaca4ad7
  
          return null;
 diff --git a/src/main/java/org/plazmamc/thunderbolt/configurations/GlobalConfiguration.java b/src/main/java/org/plazmamc/thunderbolt/configurations/GlobalConfiguration.java
-index 0b16bbf87a6c5e658e8182e423800acd16dfc7ca..f1cc8de931ff068a387a91d1ae8e2e6cf91036ff 100644
+index 1b1d08f00716551a26a5cee1133d2ce77fc8d1b7..ced99d9c788d0a9b9db60e58a9ef4ad910aa1d3a 100644
 --- a/src/main/java/org/plazmamc/thunderbolt/configurations/GlobalConfiguration.java
 +++ b/src/main/java/org/plazmamc/thunderbolt/configurations/GlobalConfiguration.java
-@@ -28,6 +28,7 @@ public class GlobalConfiguration extends ConfigurationPart {
+@@ -28,10 +28,12 @@ public class GlobalConfiguration extends ConfigurationPart {
      public NeedsReload needsReload;
      public class NeedsReload extends ConfigurationPart {
  
@@ -233,7 +233,12 @@ index 0b16bbf87a6c5e658e8182e423800acd16dfc7ca..f1cc8de931ff068a387a91d1ae8e2e6c
  
          @PostProcess
          public void post() {
-@@ -37,6 +38,7 @@ public class GlobalConfiguration extends ConfigurationPart {
+             boolean changed = ThunderboltConfigurations.GLOBAL_LOADED;
++            changed &= this.enableNoisium != net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator.NOISIUM;
+ 
+             if (changed) {
+                 ThunderboltConfigurations.LOGGER.warn("Configuration settings that require a restart have been changed."
+@@ -39,6 +41,7 @@ public class GlobalConfiguration extends ConfigurationPart {
                  return;
              }
  

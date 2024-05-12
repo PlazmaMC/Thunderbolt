@@ -5,10 +5,10 @@ Subject: [PATCH] Add basic configuration parts
 
 
 diff --git a/src/main/java/org/plazmamc/thunderbolt/configurations/GlobalConfiguration.java b/src/main/java/org/plazmamc/thunderbolt/configurations/GlobalConfiguration.java
-index fbac06d6c70fd6250f16a6bdbea21873ff5e1d2a..0b16bbf87a6c5e658e8182e423800acd16dfc7ca 100644
+index fbac06d6c70fd6250f16a6bdbea21873ff5e1d2a..1b1d08f00716551a26a5cee1133d2ce77fc8d1b7 100644
 --- a/src/main/java/org/plazmamc/thunderbolt/configurations/GlobalConfiguration.java
 +++ b/src/main/java/org/plazmamc/thunderbolt/configurations/GlobalConfiguration.java
-@@ -25,4 +25,20 @@ public class GlobalConfiguration extends ConfigurationPart {
+@@ -25,4 +25,22 @@ public class GlobalConfiguration extends ConfigurationPart {
      @Setting(Configuration.VERSION_FIELD)
      int version = VERSION;
  
@@ -18,7 +18,9 @@ index fbac06d6c70fd6250f16a6bdbea21873ff5e1d2a..0b16bbf87a6c5e658e8182e423800acd
 +
 +        @PostProcess
 +        public void post() {
-+            if (ThunderboltConfigurations.GLOBAL_LOADED) {
++            boolean changed = ThunderboltConfigurations.GLOBAL_LOADED;
++
++            if (changed) {
 +                ThunderboltConfigurations.LOGGER.warn("Configuration settings that require a restart have been changed."
 +                        + "The settings will take effect at the next restart.");
 +                return;
@@ -29,3 +31,16 @@ index fbac06d6c70fd6250f16a6bdbea21873ff5e1d2a..0b16bbf87a6c5e658e8182e423800acd
 +    }
 +
  }
+diff --git a/src/main/java/org/plazmamc/thunderbolt/configurations/ThunderboltConfigurations.java b/src/main/java/org/plazmamc/thunderbolt/configurations/ThunderboltConfigurations.java
+index 2b6653148b6a3586373efffa7a74caf2dd5e560c..219a2ec97a69abdcf7f018c053b1d014ee4b42e2 100644
+--- a/src/main/java/org/plazmamc/thunderbolt/configurations/ThunderboltConfigurations.java
++++ b/src/main/java/org/plazmamc/thunderbolt/configurations/ThunderboltConfigurations.java
+@@ -160,7 +160,7 @@ public class ThunderboltConfigurations extends Configurations<GlobalConfiguratio
+ 
+     @Override
+     protected WorldConfigurations getWorldConfiguration(ServerLevel level) {
+-        throw new UnsupportedOperationException("TODO");
++        return level.thunderboltConfig();
+     }
+ 
+     @Override
