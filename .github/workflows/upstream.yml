@@ -1,0 +1,118 @@
+name: Always Up To Date
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/20 * * * *"
+
+jobs:
+  prepare:
+    name: Prepare Actions
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - name: Pull Branches
+        id: matrix
+        run: |
+          respond=$(curl --silent https://api.github.com/repos/plazmamc/thunderbolt/branches | jq -rc 'del(.[]|.protected) | del(.[]|.commit)')
+          flavor=$(echo $respond | jq -rc 'map(select(.name | test("feat/.*")) | .flavor = .name | del(.name))')
+          echo "matrix={\"include\":$(echo "$base $flavor" | jq -sc add)}" >> $GITHUB_OUTPUT
+
+  upstream:
+    name: Update Base Upstream
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: base
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 21
+
+      - name: Determine if update is required
+        id: check
+        run: echo "needs=$(./gradlew -q checkNeedsUpdate)" >> $GITHUB_OUTPUT
+
+      - name: Configure Git
+        if: steps.check.outputs.needs == 'true'
+        run: git config --global user.email "action@github.com" && git config --global user.name "Github Action"
+
+      - name: Update upstream
+        if: steps.check.outputs.needs == 'true'
+        run: ./gradlew updateUpstream
+
+      - name: Apply patches
+        if: steps.check.outputs.needs == 'true'
+        run: ./gradlew applyPatches
+
+      - name: Check build
+        if: steps.check.outputs.needs == 'true'
+        run: ./gradlew build
+
+      - name: Commit changes
+        if: steps.check.outputs.needs == 'true'
+        run: git add . && printf "Updated Upstream (Plazma)\n\nUpstream has released updates that appear to apply and compile correctly\n\n$(cat compare.txt)" | git commit -F -
+
+      - name: Push changes
+        if: steps.check.outputs.needs == 'true'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  flavor:
+    name: Update Flavors Upstream
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.flavor }}
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 21
+
+      - name: Determine if update is required
+        id: check
+        run: echo "needs=$(./gradlew -q checkNeedsUpdate)" >> $GITHUB_OUTPUT
+
+      - name: Configure Git
+        if: steps.check.outputs.needs == 'true'
+        run: git config --global user.email "action@github.com" && git config --global user.name "Github Action"
+
+      - name: Update upstream
+        if: steps.check.outputs.needs == 'true'
+        run: ./gradlew updateUpstream
+
+      - name: Apply patches
+        if: steps.check.outputs.needs == 'true'
+        run: ./gradlew applyPatches
+
+      - name: Check build
+        if: steps.check.outputs.needs == 'true'
+        run: ./gradlew build
+
+      - name: Commit changes
+        if: steps.check.outputs.needs == 'true'
+        run: git add . && printf "Updated Upstream (Base)\n\nUpstream has released updates that appear to apply and compile correctly\n\n$(cat compare.txt)" | git commit -F -
+
+      - name: Push changes
+        if: steps.check.outputs.needs == 'true'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
