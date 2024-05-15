@@ -125,10 +125,6 @@ paperweight {
 val github = "https://api.github.com/repos/PlazmaMC/PlazmaBukkit"
 
 tasks {
-    withType<CheckoutRepo> {
-        ref.set(project.property("plazmaCommit").toString())
-    }
-
     applyPatches {
         dependsOn("applyVersionCatalogsPatches")
         dependsOn("applyGeneratedApiPatches")
@@ -209,8 +205,6 @@ tasks {
                     )
                 }
             }
-
-            project.setProperty("plazmaCommit", latestCommit)
         }
 
         doLast {
