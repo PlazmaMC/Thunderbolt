@@ -1,21 +1,21 @@
+import io.papermc.paperweight.patcher.tasks.CheckoutRepo
 import io.papermc.paperweight.util.*
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import paper.libs.com.google.gson.JsonObject
 
 plugins {
     java
     `kotlin-dsl`
     `maven-publish`
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
-    id("io.papermc.paperweight.patcher") version "1.6.3"
+    id("io.papermc.paperweight.patcher") version "1.7.1"
 }
 
 repositories {
     mavenCentral()
     maven("https://papermc.io/repo/repository/maven-public/") {
-        content {
-            onlyForConfigurations(configurations.paperclip.name)
-        }
+        content { onlyForConfigurations(configurations.paperclip.name) }
     }
 }
 
@@ -40,19 +40,12 @@ allprojects {
     java.toolchain.languageVersion.set(JavaLanguageVersion.of(jdkVersion))
 
     publishing {
-        repositories {
-            maven {
-                name = "githubPackage"
-                url = uri("https://maven.pkg.github.com/$projectRepo") // Volt - Change this
+        repositories.maven("https://maven.pkg.github.com/$projectRepo") {
+            name = "githubPackage"
 
-                credentials {
-                    username = System.getenv("GITHUB_USERNAME")
-                    password = System.getenv("GITHUB_TOKEN")
-                }
-            }
-
-            publications.register<MavenPublication>("gpr") {
-                from(components["java"])
+            credentials {
+                username = System.getenv("GITHUB_USERNAME")
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }
@@ -61,9 +54,12 @@ allprojects {
 subprojects {
     tasks {
         withType<JavaCompile>().configureEach {
-            options.compilerArgs.addAll(listOf("--add-modules=jdk.incubator.vector", "-Xmaxwarns", "1"))
             options.encoding = Charsets.UTF_8.name()
             options.release = jdkVersion
+            options.compilerArgs.addAll(listOf(
+                "--add-modules=jdk.incubator.vector",
+                "-Xmaxwarns", "1"
+            ))
         }
     
         withType<Javadoc> {
@@ -85,7 +81,6 @@ subprojects {
 
     repositories {
         mavenCentral()
-        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
         maven("https://papermc.io/repo/repository/maven-public/")
         maven("https://jitpack.io")
     }
@@ -104,37 +99,36 @@ paperweight {
         withStandardPatcher {
             baseName("Plazma")
 
-            apiPatchDir = layout.projectDirectory.dir("patches/api")
-            apiOutputDir = layout.projectDirectory.dir("$projectName-API")
+            apiPatchDir = projectDir.resolve("patches/api")
+            apiOutputDir = projectDir.resolve("$projectName-API")
 
-            serverPatchDir = layout.projectDirectory.dir("patches/server")
-            serverOutputDir = layout.projectDirectory.dir("$projectName-Server")
-        }
-
-        patchTasks.register("mojangApi") {
-            isBareDirectory = true
-            upstreamDirPath = "Plazma-MojangAPI"
-            patchDir = layout.projectDirectory.dir("patches/mojang-api")
-            outputDir = layout.projectDirectory.dir("$projectName-MojangAPI")
+            serverPatchDir = projectDir.resolve("patches/server")
+            serverOutputDir = projectDir.resolve("$projectName-Server")
         }
 
         patchTasks.register("generatedApi") {
             isBareDirectory = true
             upstreamDirPath = "paper-api-generator/generated"
-            patchDir = layout.projectDirectory.dir("patches/generated-api")
-            outputDir = layout.projectDirectory.dir("paper-api-generator/generated")
+            patchDir = projectDir.resolve("patches/generated-api")
+            outputDir = projectDir.resolve("paper-api-generator/generated")
         }
 
         patchTasks.register("versionCatalogs") {
             isBareDirectory = true
             upstreamDirPath = "libs"
-            patchDir = layout.projectDirectory.dir("patches/version-catalog")
-            outputDir = layout.projectDirectory.dir("libs")
+            patchDir = projectDir.resolve("patches/version-catalog")
+            outputDir = projectDir.resolve("libs")
         }
     }
 }
 
+val github = "https://api.github.com/repos/PlazmaMC/PlazmaBukkit"
+
 tasks {
+    withType<CheckoutRepo> {
+        ref.set(project.property("plazmaCommit").toString())
+    }
+
     applyPatches {
         dependsOn("applyVersionCatalogsPatches")
         dependsOn("applyGeneratedApiPatches")
@@ -147,7 +141,6 @@ tasks {
 
     generateDevelopmentBundle {
         apiCoordinates = "$group:$projectName-api"
-        mojangApiCoordinates = "$group:$projectName-mojangapi"
         libraryRepositories.set(
             listOf(
                 "https://repo.maven.apache.org/maven2/",
@@ -158,40 +151,62 @@ tasks {
     }
     
     register("checkNeedsUpdate") {
-        var latest: String = ""
+        var latest = ""
         
         doFirst {
             val commit = layout.cache.resolve("commit.json")
-            download.get().download("https://api.github.com/repos/PlazmaMC/PlazmaBukkit/commits/$upstreamRef", commit)
-            latest = gson.fromJson<paper.libs.com.google.gson.JsonObject>(commit)["sha"].asString
+            download.get().download(
+                "$github/commits/$upstreamRef",
+                commit
+            )
+
+            latest = gson.fromJson<JsonObject>(commit)["sha"].asString
         }
         
         doLast {
-            println(latest != property("plazmaCommit"))
+            println(latest != project.property("plazmaCommit"))
         }
     }
 
     register("updateUpstream") {
-        val tempDir = layout.cacheDir("updateUpstream")
+        dependsOn(clean)
+
+        val tempDir = layout.cacheDir("alwaysUpToDate")
         val file = "gradle.properties"
         val builder = StringBuilder()
 
         doFirst {
             val commit = layout.cache.resolve("commit.json")
-            download.get().download("https://api.github.com/repos/PlazmaMC/PlazmaBukkit/commits/$upstreamRef", commit)
-            val latestCommit = gson.fromJson<paper.libs.com.google.gson.JsonObject>(commit)["sha"].asString
+            download.get().download(
+                "$github/commits/$upstreamRef",
+                commit
+            )
+
+            val latestCommit = gson.fromJson<JsonObject>(commit)["sha"].asString
 
             val compare = layout.cache.resolve("compare.json")
-            download.get().download("https://api.github.com/repos/PlazmaMC/PlazmaBukkit/compare/$upstreamCommitValue...$upstreamRef", compare)
-            gson.fromJson<paper.libs.com.google.gson.JsonObject>(compare)["commits"].asJsonArray.forEach {
-                builder.append("PlazmaMC/PlazmaBukkit@${it.asJsonObject["sha"].asString.subSequence(0, 7)}: ${it.asJsonObject["commit"].asJsonObject["message"].asString.split("\n")[0]}\n")
+            download.get().download(
+                "$github/compare/$upstreamCommitValue...$upstreamRef",
+                compare
+            )
+
+            gson.fromJson<JsonObject>(compare)["commits"].asJsonArray.forEach {
+                builder.append("PlazmaMC/PlazmaBukkit")
+                builder.append("@")
+                builder.append(it.asJsonObject["sha"].asString.subSequence(0, 7))
+                builder.append(": ")
+                builder.append(it.asJsonObject["commit"].asJsonObject["message"].asString.split("\n")[0])
+                builder.append("\n")
             }
 
             copy {
                 from(file)
                 into(tempDir)
                 filter {
-                    it.replace("plazmaCommit = .*".toRegex(), "plazmaCommit = $latestCommit")
+                    it.replace(
+                        "plazmaCommit = .*".toRegex(),
+                        "plazmaCommit = $latestCommit"
+                    )
                 }
             }
 
@@ -203,22 +218,25 @@ tasks {
                 from(tempDir.file("gradle.properties"))
                 into(project.file(file).parent)
             }
+
             project.file("compare.txt").writeText(builder.toString())
         }
-
-        finalizedBy(applyPatches)
     }
     
     clean {
         doLast {
-            projectDir.resolve(".gradle/caches").deleteRecursively()
-            listOf("$projectName-API", "$projectName-MojangAPI", "$projectName-Server", "paper-api-generator", "run").forEach {
-                projectDir.resolve(it).deleteRecursively()
-            }
+            listOf(
+                ".gradle/caches",
+                "$projectName-API",
+                "$projectName-Server",
+                "paper-api-generator",
+                "run",
 
-            // remove dev environment files
-            listOf("0001-fixup.patch", "compare.txt").forEach {
-                projectDir.resolve(it).delete()
+                // remove dev environment files
+                "0001-fixup.patch",
+                "compare.txt"
+            ).forEach {
+                projectDir.resolve(it).deleteRecursively()
             }
         }
     }

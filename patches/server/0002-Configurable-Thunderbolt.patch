@@ -5,7 +5,7 @@ Subject: [PATCH] Configurable Thunderbolt
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 4635d67ed906886f533b6d5911d99a163810ea11..b179aaad657396771213c8b02e29ee6f61faedb0 100644
+index f388a07678ef253b19da814f6d90c4d787204517..72a8033f7a0f4c1564e05da31c7015ef2a6694c5 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -318,6 +318,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -62,7 +62,7 @@ index 4f1071c48fec78036d6759cdff179df3182f28f5..e9d8f6c64924cf00c89586348dedf253
          // Plazma end
          // Paper end - load paper config files from cli options
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index e2adac04fa1721cbb5430b6b46ec406c76d45c2a..8697e0ce616f8930648666b079fbba694ca729fb 100644
+index b6c9e81249bba59856d96ff71610b687fd9c4396..727a6412c47262d0cd900493f1fa93cc9dc10031 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -215,6 +215,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -83,7 +83,7 @@ index e2adac04fa1721cbb5430b6b46ec406c76d45c2a..8697e0ce616f8930648666b079fbba69
          // Purpur start
          try {
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 55e02679a3ad9bb79074810af3dd24151160845e..a064c5a6b37f7a9d75b6bc773db4d8ba8fad4cbf 100644
+index 15548aac320ae6d707cab4a61dfc99eaebb06634..873ef80c02b4c6494529a6327faf82902a0181da 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -724,6 +724,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -95,7 +95,7 @@ index 55e02679a3ad9bb79074810af3dd24151160845e..a064c5a6b37f7a9d75b6bc773db4d8ba
          );
          // Plazma end - Configurable Plazma
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 47fcbff8a0b7feedbc700b6c3cf44d3a02a60246..b7e58a6b11e648999a97add335cc13e27dcf6861 100644
+index 00d58b6f8b94457b2a7418a74027181fdeda3db9..349fb7a53ac5752b60e5167c5e9dc4596ea4442f 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -174,6 +174,12 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -111,7 +111,7 @@ index 47fcbff8a0b7feedbc700b6c3cf44d3a02a60246..b7e58a6b11e648999a97add335cc13e2
  
      public final com.destroystokyo.paper.antixray.ChunkPacketBlockController chunkPacketBlockController; // Paper - Anti-Xray
      public final org.purpurmc.purpur.PurpurWorldConfig purpurConfig; // Purpur
-@@ -279,12 +285,14 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -281,12 +287,14 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
          org.bukkit.World.Environment env,
          java.util.function.Function<org.spigotmc.SpigotWorldConfig, io.papermc.paper.configuration.WorldConfiguration> paperWorldConfigCreator,
          java.util.function.Function<org.spigotmc.SpigotWorldConfig, org.plazmamc.plazma.configurations.WorldConfigurations> plazmaWorldConfigurationCreator,
@@ -127,10 +127,10 @@ index 47fcbff8a0b7feedbc700b6c3cf44d3a02a60246..b7e58a6b11e648999a97add335cc13e2
          this.playerBreedingCooldowns = this.getNewBreedingCooldownCache(); // Purpur
          this.generator = gen;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index d53be3e57e97cf9806b04f6d6bdd6a3a9fdb299b..4f5290801f9bdd3f9c300bd445f089a63e1ad998 100644
+index 6de746c3e0f30bcf3dc24b2a4d369c86db445738..86a34b3df5ad047248848dd07dcfd5828c3ce40c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1069,6 +1069,7 @@ public final class CraftServer implements Server {
+@@ -1053,6 +1053,7 @@ public final class CraftServer implements Server {
          org.spigotmc.SpigotConfig.init((File) this.console.options.valueOf("spigot-settings")); // Spigot
          this.console.paperConfigurations.reloadConfigs(this.console);
          this.console.plazmaConfigurations.reloadConfigs(this.console); // Plazma - Configurable Plazma
@@ -138,7 +138,7 @@ index d53be3e57e97cf9806b04f6d6bdd6a3a9fdb299b..4f5290801f9bdd3f9c300bd445f089a6
          org.purpurmc.purpur.PurpurConfig.init((File) console.options.valueOf("purpur-settings")); // Purpur
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
-@@ -3134,6 +3135,13 @@ public final class CraftServer implements Server {
+@@ -3130,6 +3131,13 @@ public final class CraftServer implements Server {
          }
          // Plazma end - Configurable Plazma
  
@@ -153,10 +153,10 @@ index d53be3e57e97cf9806b04f6d6bdd6a3a9fdb299b..4f5290801f9bdd3f9c300bd445f089a6
          public void restart() {
              org.spigotmc.RestartCommand.restart();
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 40fd40da9a7fc2b12035b99960e7f38c78eb2a5e..c6f35002b8ef7bbd0e490b7bcaae4c6e5d3832aa 100644
+index 3187d9fdfe32aa38a979406e798f6a6bcc1158a0..529064c9ac5880233cfd82d3bb02fd8ee4bd8ced 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -198,6 +198,14 @@ public class Main {
+@@ -204,6 +204,14 @@ public class Main {
                      .defaultsTo(new File(org.plazmamc.plazma.configurations.PlazmaConfigurations.CONFIG_DIR))
                      .describedAs("Configuration Directory");
                  // Plazma end - Configurable Plazma
