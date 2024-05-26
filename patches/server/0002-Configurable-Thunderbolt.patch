@@ -127,10 +127,10 @@ index 00d58b6f8b94457b2a7418a74027181fdeda3db9..349fb7a53ac5752b60e5167c5e9dc459
          this.playerBreedingCooldowns = this.getNewBreedingCooldownCache(); // Purpur
          this.generator = gen;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 6de746c3e0f30bcf3dc24b2a4d369c86db445738..86a34b3df5ad047248848dd07dcfd5828c3ce40c 100644
+index a9141a1f71c2dc31c6530b00ba0a69c0d1016797..65c2a14d07b559e4ce519758ccf8cf205dbffdce 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1053,6 +1053,7 @@ public final class CraftServer implements Server {
+@@ -1065,6 +1065,7 @@ public final class CraftServer implements Server {
          org.spigotmc.SpigotConfig.init((File) this.console.options.valueOf("spigot-settings")); // Spigot
          this.console.paperConfigurations.reloadConfigs(this.console);
          this.console.plazmaConfigurations.reloadConfigs(this.console); // Plazma - Configurable Plazma
@@ -138,7 +138,7 @@ index 6de746c3e0f30bcf3dc24b2a4d369c86db445738..86a34b3df5ad047248848dd07dcfd582
          org.purpurmc.purpur.PurpurConfig.init((File) console.options.valueOf("purpur-settings")); // Purpur
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
-@@ -3130,6 +3131,13 @@ public final class CraftServer implements Server {
+@@ -3142,6 +3143,13 @@ public final class CraftServer implements Server {
          }
          // Plazma end - Configurable Plazma
  
