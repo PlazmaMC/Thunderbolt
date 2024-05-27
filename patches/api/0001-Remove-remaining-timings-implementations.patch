@@ -5,19 +5,18 @@ Subject: [PATCH] Remove remaining timings implementations
 
 
 diff --git a/src/main/java/co/aikar/timings/FullServerTickHandler.java b/src/main/java/co/aikar/timings/FullServerTickHandler.java
-deleted file mode 100644
-index 36b8fe86335df851f9c85d6bb2a91368b4d945d1..0000000000000000000000000000000000000000
+index 36b8fe86335df851f9c85d6bb2a91368b4d945d1..0f27c3959806aa7a7e8968fdb3659df54bec92aa 100644
 --- a/src/main/java/co/aikar/timings/FullServerTickHandler.java
-+++ /dev/null
-@@ -1,86 +0,0 @@
--package co.aikar.timings;
--
++++ b/src/main/java/co/aikar/timings/FullServerTickHandler.java
+@@ -1,86 +1,4 @@
+ package co.aikar.timings;
+ 
 -import static co.aikar.timings.TimingsManager.*;
 -
 -import org.bukkit.Bukkit;
 -import org.jetbrains.annotations.NotNull;
 -
--@Deprecated(forRemoval = true)
+ @Deprecated(forRemoval = true)
 -public class FullServerTickHandler extends TimingHandler {
 -    private static final TimingIdentifier IDENTITY = new TimingIdentifier("Minecraft", "Full Server Tick", null);
 -    final TimingData minuteData;
@@ -96,12 +95,12 @@ index 36b8fe86335df851f9c85d6bb2a91368b4d945d1..00000000000000000000000000000000
 -        return record.getCurTickTotal() > 50000000;
 -    }
 -}
++interface FullServerTickHandler {} // Thunderbolt - Remove remaining timings implementations
 diff --git a/src/main/java/co/aikar/timings/NullTimingHandler.java b/src/main/java/co/aikar/timings/NullTimingHandler.java
-deleted file mode 100644
-index 81671cf40feeed2844ee8d92348d48062aaf2c46..0000000000000000000000000000000000000000
+index 81671cf40feeed2844ee8d92348d48062aaf2c46..086213790ee15fe22a7d19452cdb498c49a95c4d 100644
 --- a/src/main/java/co/aikar/timings/NullTimingHandler.java
-+++ /dev/null
-@@ -1,69 +0,0 @@
++++ b/src/main/java/co/aikar/timings/NullTimingHandler.java
+@@ -1,69 +1,4 @@
 -/*
 - * This file is licensed under the MIT License (MIT).
 - *
@@ -125,12 +124,12 @@ index 81671cf40feeed2844ee8d92348d48062aaf2c46..00000000000000000000000000000000
 - * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 - * THE SOFTWARE.
 - */
--package co.aikar.timings;
--
+ package co.aikar.timings;
+ 
 -import org.jetbrains.annotations.NotNull;
 -import org.jetbrains.annotations.Nullable;
 -
--@Deprecated(forRemoval = true)
+ @Deprecated(forRemoval = true)
 -public final class NullTimingHandler implements Timing {
 -    public static final Timing NULL = new NullTimingHandler();
 -    @NotNull
@@ -171,12 +170,12 @@ index 81671cf40feeed2844ee8d92348d48062aaf2c46..00000000000000000000000000000000
 -
 -    }
 -}
++interface NullTimingHandler {} // Thunderbolt - Remove remaining timings implementations
 diff --git a/src/main/java/co/aikar/timings/TimedEventExecutor.java b/src/main/java/co/aikar/timings/TimedEventExecutor.java
-deleted file mode 100644
-index 6fbc64e0f214d0c8e5afcbe385e414a4e1fe1c72..0000000000000000000000000000000000000000
+index 6fbc64e0f214d0c8e5afcbe385e414a4e1fe1c72..4399d4ed4183ed9b91c2ea68fd0b07c4bf8a098f 100644
 --- a/src/main/java/co/aikar/timings/TimedEventExecutor.java
-+++ /dev/null
-@@ -1,90 +0,0 @@
++++ b/src/main/java/co/aikar/timings/TimedEventExecutor.java
+@@ -1,90 +1,4 @@
 -/*
 - * This file is licensed under the MIT License (MIT).
 - *
@@ -200,8 +199,8 @@ index 6fbc64e0f214d0c8e5afcbe385e414a4e1fe1c72..00000000000000000000000000000000
 - * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 - * THE SOFTWARE.
 - */
--package co.aikar.timings;
--
+ package co.aikar.timings;
+ 
 -import org.bukkit.Bukkit;
 -import org.bukkit.event.Event;
 -import org.bukkit.event.EventException;
@@ -213,7 +212,7 @@ index 6fbc64e0f214d0c8e5afcbe385e414a4e1fe1c72..00000000000000000000000000000000
 -import org.jetbrains.annotations.NotNull;
 -import org.jetbrains.annotations.Nullable;
 -
--@Deprecated(forRemoval = true)
+ @Deprecated(forRemoval = true)
 -public class TimedEventExecutor implements EventExecutor {
 -
 -    private final EventExecutor executor;
@@ -267,6 +266,7 @@ index 6fbc64e0f214d0c8e5afcbe385e414a4e1fe1c72..00000000000000000000000000000000
 -        return "TimedEventExecutor['" + this.executor.toString() + "']";
 -    }
 -}
++interface TimedEventExecutor {} // Thunderbolt - Remove remaining timings implementations
 diff --git a/src/main/java/co/aikar/timings/Timing.java b/src/main/java/co/aikar/timings/Timing.java
 index 1d866e980abc542bdfee1ce082cd9cdd7761e9f7..e6b4d724f2a4540fbd59c36a5fe9526ab214df68 100644
 --- a/src/main/java/co/aikar/timings/Timing.java
@@ -325,11 +325,10 @@ index 1d866e980abc542bdfee1ce082cd9cdd7761e9f7..e6b4d724f2a4540fbd59c36a5fe9526a
      void close();
  }
 diff --git a/src/main/java/co/aikar/timings/TimingData.java b/src/main/java/co/aikar/timings/TimingData.java
-deleted file mode 100644
-index a5d13a1e44edb861f45c83a9b4309fbf799d407d..0000000000000000000000000000000000000000
+index a5d13a1e44edb861f45c83a9b4309fbf799d407d..596fc185ecd2e7552b6e8b06b0814fc5bc5416ed 100644
 --- a/src/main/java/co/aikar/timings/TimingData.java
-+++ /dev/null
-@@ -1,122 +0,0 @@
++++ b/src/main/java/co/aikar/timings/TimingData.java
+@@ -1,122 +1,4 @@
 -/*
 - * This file is licensed under the MIT License (MIT).
 - *
@@ -353,8 +352,8 @@ index a5d13a1e44edb861f45c83a9b4309fbf799d407d..00000000000000000000000000000000
 - * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 - * THE SOFTWARE.
 - */
--package co.aikar.timings;
--
+ package co.aikar.timings;
+ 
 -import java.util.List;
 -import org.jetbrains.annotations.NotNull;
 -
@@ -452,12 +451,13 @@ index a5d13a1e44edb861f45c83a9b4309fbf799d407d..00000000000000000000000000000000
 -        this.curTickTotal = curTickTotal;
 -    }
 -}
++@Deprecated(forRemoval = true) // Thunderbolt - Remove remaining timings implementations
++interface TimingData {} // Thunderbolt - Remove remaining timings implementations
 diff --git a/src/main/java/co/aikar/timings/TimingHandler.java b/src/main/java/co/aikar/timings/TimingHandler.java
-deleted file mode 100644
-index 3b3bcfa6fa2dbcc7fef899cc7570da097437ab3a..0000000000000000000000000000000000000000
+index 3b3bcfa6fa2dbcc7fef899cc7570da097437ab3a..c8872cc0f5ffd3036ac53358e3f2c37782685a5f 100644
 --- a/src/main/java/co/aikar/timings/TimingHandler.java
-+++ /dev/null
-@@ -1,226 +0,0 @@
++++ b/src/main/java/co/aikar/timings/TimingHandler.java
+@@ -1,226 +1,4 @@
 -/*
 - * This file is licensed under the MIT License (MIT).
 - *
@@ -481,8 +481,8 @@ index 3b3bcfa6fa2dbcc7fef899cc7570da097437ab3a..00000000000000000000000000000000
 - * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 - * THE SOFTWARE.
 - */
--package co.aikar.timings;
--
+ package co.aikar.timings;
+ 
 -import co.aikar.util.LoadingIntMap;
 -import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 -
@@ -684,12 +684,13 @@ index 3b3bcfa6fa2dbcc7fef899cc7570da097437ab3a..00000000000000000000000000000000
 -        return clonedChildren;
 -    }
 -}
++@Deprecated(forRemoval = true) // Thunderbolt - Remove remaining timings implementations
++interface TimingHandler {} // Thunderbolt - Remove remaining timings implementations
 diff --git a/src/main/java/co/aikar/timings/TimingHistory.java b/src/main/java/co/aikar/timings/TimingHistory.java
-deleted file mode 100644
-index 02e88db63be2d5e31da6b65157ba7b971b1f10f3..0000000000000000000000000000000000000000
+index 02e88db63be2d5e31da6b65157ba7b971b1f10f3..7ddaad45f563796b442ac3f5a757e78d5cb4bb5b 100644
 --- a/src/main/java/co/aikar/timings/TimingHistory.java
-+++ /dev/null
-@@ -1,355 +0,0 @@
++++ b/src/main/java/co/aikar/timings/TimingHistory.java
+@@ -1,355 +1,4 @@
 -/*
 - * This file is licensed under the MIT License (MIT).
 - *
@@ -713,8 +714,8 @@ index 02e88db63be2d5e31da6b65157ba7b971b1f10f3..00000000000000000000000000000000
 - * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 - * THE SOFTWARE.
 - */
--package co.aikar.timings;
--
+ package co.aikar.timings;
+ 
 -import co.aikar.timings.TimingHistory.RegionData.RegionId;
 -import com.google.common.base.Function;
 -import com.google.common.collect.Sets;
@@ -742,7 +743,7 @@ index 02e88db63be2d5e31da6b65157ba7b971b1f10f3..00000000000000000000000000000000
 -import static co.aikar.timings.TimingsManager.MINUTE_REPORTS;
 -import static co.aikar.util.JSONUtil.*;
 -
--@Deprecated(forRemoval = true)
+ @Deprecated(forRemoval = true)
 -@SuppressWarnings({"deprecation", "SuppressionAnnotation", "Convert2Lambda", "Anonymous2MethodRef"})
 -public class TimingHistory {
 -    public static long lastMinuteTime;
@@ -1045,12 +1046,12 @@ index 02e88db63be2d5e31da6b65157ba7b971b1f10f3..00000000000000000000000000000000
 -        }
 -    }
 -}
++interface TimingHistory {} // Thunderbolt - Remove remaining timings implementations
 diff --git a/src/main/java/co/aikar/timings/TimingHistoryEntry.java b/src/main/java/co/aikar/timings/TimingHistoryEntry.java
-deleted file mode 100644
-index 86d5ac6bd0d7d0003688761aceb3f3343575319f..0000000000000000000000000000000000000000
+index 86d5ac6bd0d7d0003688761aceb3f3343575319f..96cb33a8b1282dd04fe00b69231c78d41b52d92b 100644
 --- a/src/main/java/co/aikar/timings/TimingHistoryEntry.java
-+++ /dev/null
-@@ -1,58 +0,0 @@
++++ b/src/main/java/co/aikar/timings/TimingHistoryEntry.java
+@@ -1,58 +1,4 @@
 -/*
 - * This file is licensed under the MIT License (MIT).
 - *
@@ -1074,8 +1075,8 @@ index 86d5ac6bd0d7d0003688761aceb3f3343575319f..00000000000000000000000000000000
 - * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 - * THE SOFTWARE.
 - */
--package co.aikar.timings;
--
+ package co.aikar.timings;
+ 
 -import com.google.common.base.Function;
 -
 -import java.util.List;
@@ -1109,12 +1110,13 @@ index 86d5ac6bd0d7d0003688761aceb3f3343575319f..00000000000000000000000000000000
 -        return result;
 -    }
 -}
++@Deprecated(forRemoval = true) // Thunderbolt - Remove remaining timings implementations
++interface TimingHistoryEntry {} // Thunderbolt - Remove remaining timings implementations
 diff --git a/src/main/java/co/aikar/timings/TimingIdentifier.java b/src/main/java/co/aikar/timings/TimingIdentifier.java
-deleted file mode 100644
-index df142a89b8c43acb81eb383eac0ef048a1f49a6e..0000000000000000000000000000000000000000
+index df142a89b8c43acb81eb383eac0ef048a1f49a6e..a921bd54d2e5346081e96ecf4da1553e2b23ac9c 100644
 --- a/src/main/java/co/aikar/timings/TimingIdentifier.java
-+++ /dev/null
-@@ -1,116 +0,0 @@
++++ b/src/main/java/co/aikar/timings/TimingIdentifier.java
+@@ -1,116 +1,4 @@
 -/*
 - * This file is licensed under the MIT License (MIT).
 - *
@@ -1138,8 +1140,8 @@ index df142a89b8c43acb81eb383eac0ef048a1f49a6e..00000000000000000000000000000000
 - * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 - * THE SOFTWARE.
 - */
--package co.aikar.timings;
--
+ package co.aikar.timings;
+ 
 -import co.aikar.util.LoadingMap;
 -
 -import java.util.ArrayList;
@@ -1231,6 +1233,8 @@ index df142a89b8c43acb81eb383eac0ef048a1f49a6e..00000000000000000000000000000000
 -        }
 -    }
 -}
++@Deprecated(forRemoval = true)
++interface TimingIdentifier {} // Thunderbolt - Remove remaining timings implementations
 diff --git a/src/main/java/co/aikar/timings/Timings.java b/src/main/java/co/aikar/timings/Timings.java
 index 752d54830aa8baa1450bf72da03ae55ed30293c2..d933858f24f0a48f1d1d38b4956918a76309144f 100644
 --- a/src/main/java/co/aikar/timings/Timings.java
@@ -1541,11 +1545,10 @@ index 1abfcee0f6d632f4cd8d74b4994a90c9ea9d254c..eeabeeccf97602b25337b8b8c90c824f
                  new ArrayList<String>(TIMINGS_SUBCOMMANDS.size()));
          }
 diff --git a/src/main/java/co/aikar/timings/TimingsManager.java b/src/main/java/co/aikar/timings/TimingsManager.java
-deleted file mode 100644
-index 5e1558ca3ffeeaf2645fa003965474a442d650bf..0000000000000000000000000000000000000000
+index 5e1558ca3ffeeaf2645fa003965474a442d650bf..9d6038dbaa13c5bfa3e0cea8f62544b97b7541d1 100644
 --- a/src/main/java/co/aikar/timings/TimingsManager.java
-+++ /dev/null
-@@ -1,192 +0,0 @@
++++ b/src/main/java/co/aikar/timings/TimingsManager.java
+@@ -1,192 +1,4 @@
 -/*
 - * This file is licensed under the MIT License (MIT).
 - *
@@ -1569,8 +1572,8 @@ index 5e1558ca3ffeeaf2645fa003965474a442d650bf..00000000000000000000000000000000
 - * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 - * THE SOFTWARE.
 - */
--package co.aikar.timings;
--
+ package co.aikar.timings;
+ 
 -import co.aikar.util.LoadingMap;
 -import com.google.common.collect.EvictingQueue;
 -import org.bukkit.Bukkit;
@@ -1590,7 +1593,7 @@ index 5e1558ca3ffeeaf2645fa003965474a442d650bf..00000000000000000000000000000000
 -/**
 - * @deprecated Timings will likely be replaced with Spark in the future
 - */
--@Deprecated(forRemoval = true)
+ @Deprecated(forRemoval = true)
 -public final class TimingsManager {
 -    static final Map<TimingIdentifier, TimingHandler> TIMING_MAP = LoadingMap.of(
 -        new ConcurrentHashMap<>(4096, .5F), TimingHandler::new
@@ -1738,14 +1741,14 @@ index 5e1558ca3ffeeaf2645fa003965474a442d650bf..00000000000000000000000000000000
 -        return null;
 -    }
 -}
++interface TimingsManager {} // Thunderbolt - Remove remaining timings implementations
 diff --git a/src/main/java/co/aikar/timings/TimingsReportListener.java b/src/main/java/co/aikar/timings/TimingsReportListener.java
-deleted file mode 100644
-index 3af5b8ea795311582044c712de50d29412024b77..0000000000000000000000000000000000000000
+index 3af5b8ea795311582044c712de50d29412024b77..6c3c30f98a38b5f04118060b695ae3458607a226 100644
 --- a/src/main/java/co/aikar/timings/TimingsReportListener.java
-+++ /dev/null
-@@ -1,87 +0,0 @@
--package co.aikar.timings;
--
++++ b/src/main/java/co/aikar/timings/TimingsReportListener.java
+@@ -1,87 +1,4 @@
+ package co.aikar.timings;
+ 
 -import com.google.common.base.Preconditions;
 -import com.google.common.collect.Lists;
 -import org.bukkit.Bukkit;
@@ -1758,7 +1761,7 @@ index 3af5b8ea795311582044c712de50d29412024b77..00000000000000000000000000000000
 -
 -import java.util.List;
 -
--@Deprecated(forRemoval = true)
+ @Deprecated(forRemoval = true)
 -@SuppressWarnings("WeakerAccess")
 -public class TimingsReportListener implements net.kyori.adventure.audience.ForwardingAudience, MessageCommandSender {
 -    private final List<CommandSender> senders;
@@ -1831,12 +1834,12 @@ index 3af5b8ea795311582044c712de50d29412024b77..00000000000000000000000000000000
 -        }
 -    }
 -}
++interface TimingsReportListener {} // Thunderbolt - Remove remaining timings implementations
 diff --git a/src/main/java/co/aikar/timings/UnsafeTimingHandler.java b/src/main/java/co/aikar/timings/UnsafeTimingHandler.java
-deleted file mode 100644
-index 632c4961515f5052551f841cfa840e60bba7a257..0000000000000000000000000000000000000000
+index 632c4961515f5052551f841cfa840e60bba7a257..05d322a0ac9583af427a00eb6c84b382157263af 100644
 --- a/src/main/java/co/aikar/timings/UnsafeTimingHandler.java
-+++ /dev/null
-@@ -1,53 +0,0 @@
++++ b/src/main/java/co/aikar/timings/UnsafeTimingHandler.java
+@@ -1,53 +1,4 @@
 -/*
 - * This file is licensed under the MIT License (MIT).
 - *
@@ -1860,8 +1863,8 @@ index 632c4961515f5052551f841cfa840e60bba7a257..00000000000000000000000000000000
 - * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 - * THE SOFTWARE.
 - */
--package co.aikar.timings;
--
+ package co.aikar.timings;
+ 
 -import org.bukkit.Bukkit;
 -import org.jetbrains.annotations.NotNull;
 -
@@ -1890,6 +1893,8 @@ index 632c4961515f5052551f841cfa840e60bba7a257..00000000000000000000000000000000
 -        super.stopTiming();
 -    }
 -}
++@Deprecated(forRemoval = true)
++interface class UnsafeTimingHandler {} // Thunderbolt - Remove remaining timings implementations
 diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
 index 0e9ccfee7a03d341e7c4d271f53b4ed168b404ef..d133ddba0355835412dd16d2bf1a8b4b4ed00545 100644
 --- a/src/main/java/org/bukkit/UnsafeValues.java

@@ -5,13 +5,12 @@ Subject: [PATCH] Remove remaining timings implementations
 
 
 diff --git a/src/main/java/co/aikar/timings/MinecraftTimings.java b/src/main/java/co/aikar/timings/MinecraftTimings.java
-deleted file mode 100644
-index 4b467f1af93452d13829f756d55dee18b8889d40..0000000000000000000000000000000000000000
+index 4b467f1af93452d13829f756d55dee18b8889d40..0a35e272c913df99ac12e87383bb9c7351e9fdb7 100644
 --- a/src/main/java/co/aikar/timings/MinecraftTimings.java
-+++ /dev/null
-@@ -1,181 +0,0 @@
--package co.aikar.timings;
--
++++ b/src/main/java/co/aikar/timings/MinecraftTimings.java
+@@ -1,181 +1,4 @@
+ package co.aikar.timings;
+ 
 -import com.google.common.collect.MapMaker;
 -import io.papermc.paper.configuration.GlobalConfiguration;
 -import net.minecraft.commands.functions.CommandFunction;
@@ -26,7 +25,7 @@ index 4b467f1af93452d13829f756d55dee18b8889d40..00000000000000000000000000000000
 -import java.util.Map;
 -
 -// TODO: Re-implement missing timers
--@Deprecated(forRemoval = true)
+ @Deprecated(forRemoval = true)
 -public final class MinecraftTimings {
 -
 -    public static final Timing serverOversleep = Timings.ofSafe("Server Oversleep");
@@ -191,12 +190,12 @@ index 4b467f1af93452d13829f756d55dee18b8889d40..00000000000000000000000000000000
 -        co.aikar.timings.Timings.setHistoryLength(config.historyLength * 20);
 -    }
 -}
++interface MinecraftTimings {} // Thunderbolt - Remove remaining timings implementations
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-deleted file mode 100644
-index b35a9f4c5f8960864c402ede8a51fb5ab9c4fcc0..0000000000000000000000000000000000000000
+index b35a9f4c5f8960864c402ede8a51fb5ab9c4fcc0..89c4d2cffb0bd3173070f8f241f45bdfe40fcfeb 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
-+++ /dev/null
-@@ -1,389 +0,0 @@
++++ b/src/main/java/co/aikar/timings/TimingsExport.java
+@@ -1,389 +1,4 @@
 -/*
 - * This file is licensed under the MIT License (MIT).
 - *
@@ -220,8 +219,8 @@ index b35a9f4c5f8960864c402ede8a51fb5ab9c4fcc0..00000000000000000000000000000000
 - * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 - * THE SOFTWARE.
 - */
--package co.aikar.timings;
--
+ package co.aikar.timings;
+ 
 -import com.google.common.collect.Sets;
 -import io.papermc.paper.adventure.PaperAdventure;
 -import net.kyori.adventure.text.event.ClickEvent;
@@ -265,7 +264,7 @@ index b35a9f4c5f8960864c402ede8a51fb5ab9c4fcc0..00000000000000000000000000000000
 -import static net.kyori.adventure.text.Component.text;
 -
 -@SuppressWarnings({"rawtypes", "SuppressionAnnotation"})
--@Deprecated(forRemoval = true)
+ @Deprecated(forRemoval = true)
 -public class TimingsExport extends Thread {
 -
 -    private final TimingsReportListener listeners;
@@ -586,14 +585,14 @@ index b35a9f4c5f8960864c402ede8a51fb5ab9c4fcc0..00000000000000000000000000000000
 -        }
 -    }
 -}
++interface TimingsExport {} // Thunderbolt - Remove remaining timings implementations
 diff --git a/src/main/java/co/aikar/timings/WorldTimingsHandler.java b/src/main/java/co/aikar/timings/WorldTimingsHandler.java
-deleted file mode 100644
-index 22687667ec69a954261e55e59261286ac1b8b8cd..0000000000000000000000000000000000000000
+index 22687667ec69a954261e55e59261286ac1b8b8cd..94efe27854d929e79480cee8a2075115b0c4a31c 100644
 --- a/src/main/java/co/aikar/timings/WorldTimingsHandler.java
-+++ /dev/null
-@@ -1,140 +0,0 @@
--package co.aikar.timings;
--
++++ b/src/main/java/co/aikar/timings/WorldTimingsHandler.java
+@@ -1,140 +1,4 @@
+ package co.aikar.timings;
+ 
 -import net.minecraft.server.level.ServerLevel;
 -import net.minecraft.world.level.Level;
 -import net.minecraft.world.level.storage.PrimaryLevelData;
@@ -602,7 +601,7 @@ index 22687667ec69a954261e55e59261286ac1b8b8cd..00000000000000000000000000000000
 - * Set of timers per world, to track world specific timings.
 - */
 -// TODO: Re-implement missing timers
--@Deprecated(forRemoval = true)
+ @Deprecated(forRemoval = true)
 -public class WorldTimingsHandler {
 -    public final Timing mobSpawn;
 -    public final Timing doChunkUnload;
@@ -732,6 +731,7 @@ index 22687667ec69a954261e55e59261286ac1b8b8cd..00000000000000000000000000000000
 -        return Timings.ofSafe(((PrimaryLevelData) worldserver.getLevelData()).getLevelName() + " - Scheduled " + timingsType);
 -    }
 -}
++interface WorldTimingsHandler {} // Thunderbolt - Remove remaining timings implementations
 diff --git a/src/main/java/gg/pufferfish/pufferfish/compat/ServerConfigurations.java b/src/main/java/gg/pufferfish/pufferfish/compat/ServerConfigurations.java
 index 4ad189d52b27560424ddb311d0817a334637dc95..f7e64bcd8810f7f5782d5314ec16290dc30cb518 100644
 --- a/src/main/java/gg/pufferfish/pufferfish/compat/ServerConfigurations.java
