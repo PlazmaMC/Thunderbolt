@@ -18,7 +18,7 @@ index 6995627310de4911d87a2f93a723d6b93dc0612f..c75488ea327d72a47a08693c252b0acc
          final @Nullable Component history = this.getHistory();
  
 diff --git a/src/main/java/io/papermc/paper/ServerBrandConstants.java b/src/main/java/io/papermc/paper/ServerBrandConstants.java
-index af534fb15be2be3e5b4258c522e0e6c967c2bb1c..b0db5312d4f02b9a1edb443c76c171247e8088f9 100644
+index af534fb15be2be3e5b4258c522e0e6c967c2bb1c..4917ee175085b4de47c70fcd093351d6061caff8 100644
 --- a/src/main/java/io/papermc/paper/ServerBrandConstants.java
 +++ b/src/main/java/io/papermc/paper/ServerBrandConstants.java
 @@ -4,19 +4,23 @@ import org.jetbrains.annotations.Nullable;
@@ -30,7 +30,7 @@ index af534fb15be2be3e5b4258c522e0e6c967c2bb1c..b0db5312d4f02b9a1edb443c76c17124
      // Basic brand informations
 -    public static final String BRAND_NAME = "Plazma";
 -    public static final String RESOURCE_PATH = "META-INF/maven/org.plazmamc.plazma/plazma-api/pom.properties";
-+    protected static final String BRAND_NAME = "Thunderbolt";
++    public static final String BRAND_NAME = "Thunderbolt";
 +    public static final String RESOURCE_PATH = "META-INF/maven/org.plazmamc.thunderbolt/thunderbolt-api/pom.properties";
  
      @Nullable
