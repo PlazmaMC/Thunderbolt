@@ -23,19 +23,6 @@ scanning on some of the parameters of SectorFile:
 2. The sector size
 3. SectorFile cache size
 
-diff --git a/build.gradle.kts b/build.gradle.kts
-index 4998aff0b7cb084dcda15c6a18bbe45e99b6000a..4649e14d279ab63e07658addf840e6e5da25d387 100644
---- a/build.gradle.kts
-+++ b/build.gradle.kts
-@@ -30,6 +30,8 @@ dependencies {
-     alsoShade(log4jPlugins.output)
-     implementation("io.netty:netty-codec-haproxy:4.1.97.Final") // Paper - Add support for proxy protocol
-     // Paper end
-+    implementation("com.github.luben:zstd-jni:1.5.5-11")
-+    implementation("org.lz4:lz4-java:1.8.0")
-     implementation("org.apache.logging.log4j:log4j-iostreams:2.22.1") // Paper - remove exclusion
-     implementation("org.ow2.asm:asm-commons:9.7")
-     implementation("org.spongepowered:configurate-yaml:4.2.0-SNAPSHOT") // Paper - config files
 diff --git a/src/main/java/ca/spottedleaf/io/buffer/BufferChoices.java b/src/main/java/ca/spottedleaf/io/buffer/BufferChoices.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..01c4dd5a547bdf68a58a03ee76783425abd88b23
@@ -4811,7 +4798,7 @@ index 2934f0cf0ef09c84739312b00186c2ef0019a165..41e4a1ff14a6572dffc1323cb48928fc
          }
      }
 diff --git a/src/main/java/io/papermc/paper/chunk/system/scheduling/ChunkHolderManager.java b/src/main/java/io/papermc/paper/chunk/system/scheduling/ChunkHolderManager.java
-index 6bc7c6f16a1649fc9e24e7cf90fca401e5bd4875..26aeafc36afb7b39638ac70959497694413a7d6d 100644
+index e1ffd62f4ebceecb9bc5471df3da406cffea0483..a1cf6c85bd0e1dd7b9a90f1d177f3bc6b7cb57c4 100644
 --- a/src/main/java/io/papermc/paper/chunk/system/scheduling/ChunkHolderManager.java
 +++ b/src/main/java/io/papermc/paper/chunk/system/scheduling/ChunkHolderManager.java
 @@ -185,22 +185,12 @@ public final class ChunkHolderManager {
@@ -4849,10 +4836,10 @@ index 6bc7c6f16a1649fc9e24e7cf90fca401e5bd4875..26aeafc36afb7b39638ac70959497694
                      LOGGER.error("Exception when flushing regions in world {}", this.world.getWorld().getName(), ex);
                  }
 diff --git a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-index 2874bc3001c4e7d9191e47ba512c5a68369c21f1..9c0e2da72fcd3d4e19ee87461c754620fda69281 100644
+index 86822868e47b269891a71fdc04371b1e28a2752e..0673223a19acd9a31a2822d5e2d85b238f1a1032 100644
 --- a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-@@ -189,7 +189,9 @@ public class GlobalConfiguration extends ConfigurationPart {
+@@ -200,7 +200,9 @@ public class GlobalConfiguration extends ConfigurationPart {
          public enum CompressionFormat {
              GZIP,
              ZLIB,
@@ -4863,22 +4850,8 @@ index 2874bc3001c4e7d9191e47ba512c5a68369c21f1..9c0e2da72fcd3d4e19ee87461c754620
          }
      }
  
-diff --git a/src/main/java/io/papermc/paper/world/ThreadedWorldUpgrader.java b/src/main/java/io/papermc/paper/world/ThreadedWorldUpgrader.java
-index 7f6d1ccd147e5593412567bb2934ce5662da7ef0..a1a8567a2a7560d0b28f57bbd7ec68c2d6792727 100644
---- a/src/main/java/io/papermc/paper/world/ThreadedWorldUpgrader.java
-+++ b/src/main/java/io/papermc/paper/world/ThreadedWorldUpgrader.java
-@@ -98,7 +98,8 @@ public class ThreadedWorldUpgrader {
-         );
- 
-         final WorldInfo info = new WorldInfo(() -> worldPersistentData,
--                new ChunkStorage(storageInfo, regionFolder.toPath(), this.dataFixer, false), this.removeCaches, this.dimensionType, this.generatorKey);
-+                new ChunkStorage(null, regionFolder.toPath(), this.dataFixer, false), this.removeCaches, this.dimensionType, this.generatorKey);
-+        if (true) throw new UnsupportedOperationException();
- 
-         long expectedChunks = (long)regionFiles.length * (32L * 32L);
- 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 7fb9ba3dadb1eca4a1000ea8cf4d13fed2b7db1e..39ff3b4eaf6f41ecd7051a5fd930a1b46caf483c 100644
+index 3ac70c2a2115e7ac97c739293ff540caf6ebb120..3d803b417a712ee1e4cc02ac040f58e3426a0e07 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
 @@ -250,7 +250,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
@@ -4928,10 +4901,10 @@ index 7fb9ba3dadb1eca4a1000ea8cf4d13fed2b7db1e..39ff3b4eaf6f41ecd7051a5fd930a1b4
  
      public ChunkAccess getUnloadingChunk(int chunkX, int chunkZ) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index ca56a0b596976448da6bb2a0e82b3d5cd4133e12..3ea9ba2481e1920e850169322909be1ff01f77fa 100644
+index 873ef80c02b4c6494529a6327faf82902a0181da..54d38f8c38d223da7523016f46bcf4ba64d473df 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -364,14 +364,10 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -375,14 +375,10 @@ public class ServerLevel extends Level implements WorldGenLevel {
      }
  
      // Paper start - rewrite chunk system
@@ -4948,7 +4921,7 @@ index ca56a0b596976448da6bb2a0e82b3d5cd4133e12..3ea9ba2481e1920e850169322909be1f
  
          @Override
          public void writeData(int chunkX, int chunkZ, net.minecraft.nbt.CompoundTag compound) throws IOException {
-@@ -384,12 +380,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -395,12 +391,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
          }
      };
      public final io.papermc.paper.chunk.system.io.RegionFileIOThread.ChunkDataController poiDataControllerNew
@@ -4962,7 +4935,7 @@ index ca56a0b596976448da6bb2a0e82b3d5cd4133e12..3ea9ba2481e1920e850169322909be1f
  
          @Override
          public void writeData(int chunkX, int chunkZ, net.minecraft.nbt.CompoundTag compound) throws IOException {
-@@ -402,12 +393,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -413,12 +404,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
          }
      };
      public final io.papermc.paper.chunk.system.io.RegionFileIOThread.ChunkDataController entityDataControllerNew
@@ -4976,7 +4949,7 @@ index ca56a0b596976448da6bb2a0e82b3d5cd4133e12..3ea9ba2481e1920e850169322909be1f
  
          @Override
          public void writeData(int chunkX, int chunkZ, net.minecraft.nbt.CompoundTag compound) throws IOException {
-@@ -419,25 +405,6 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -430,25 +416,6 @@ public class ServerLevel extends Level implements WorldGenLevel {
              return ServerLevel.this.readEntityChunk(chunkX, chunkZ);
          }
      };
@@ -5002,7 +4975,7 @@ index ca56a0b596976448da6bb2a0e82b3d5cd4133e12..3ea9ba2481e1920e850169322909be1f
  
      private void writeEntityChunk(int chunkX, int chunkZ, net.minecraft.nbt.CompoundTag compound) throws IOException {
          if (!io.papermc.paper.chunk.system.io.RegionFileIOThread.isRegionFileThread()) {
-@@ -446,7 +413,10 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -457,7 +424,10 @@ public class ServerLevel extends Level implements WorldGenLevel {
                  io.papermc.paper.chunk.system.io.RegionFileIOThread.RegionFileType.ENTITY_DATA);
              return;
          }
@@ -5014,7 +4987,7 @@ index ca56a0b596976448da6bb2a0e82b3d5cd4133e12..3ea9ba2481e1920e850169322909be1f
      }
  
      private net.minecraft.nbt.CompoundTag readEntityChunk(int chunkX, int chunkZ) throws IOException {
-@@ -456,7 +426,10 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -467,7 +437,10 @@ public class ServerLevel extends Level implements WorldGenLevel {
                  io.papermc.paper.chunk.system.io.RegionFileIOThread.getIOBlockingPriorityForCurrentThread()
              );
          }
@@ -5026,7 +4999,7 @@ index ca56a0b596976448da6bb2a0e82b3d5cd4133e12..3ea9ba2481e1920e850169322909be1f
      }
  
      private final io.papermc.paper.chunk.system.entity.EntityLookup entityLookup;
-@@ -734,7 +707,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -781,7 +754,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
          // CraftBukkit end
          boolean flag2 = minecraftserver.forceSynchronousWrites();
          DataFixer datafixer = minecraftserver.getFixerUpper();
@@ -5036,7 +5009,7 @@ index ca56a0b596976448da6bb2a0e82b3d5cd4133e12..3ea9ba2481e1920e850169322909be1f
          // this.entityManager = new PersistentEntitySectionManager<>(Entity.class, new ServerLevel.EntityCallbacks(), entitypersistentstorage, this.entitySliceManager); // Paper // Paper - rewrite chunk system
          StructureTemplateManager structuretemplatemanager = minecraftserver.getStructureManager();
 diff --git a/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java b/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java
-index 3e582c49069f2a820ba3baac03917493877d9875..e0635603df94baee2686c244b388bfde10ede40b 100644
+index 954d468459fe167ede0e7fca5b9f99da565d59e1..74361ca5a43529650277e08b9e3532f9f748885d 100644
 --- a/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java
 +++ b/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java
 @@ -80,6 +80,7 @@ public class WorldUpgrader {
@@ -5213,7 +5186,7 @@ index a4a919d8373f1535e336de7e648d41a07efb1cba..6d411313379e2b64e76484ef003f9dc8
      }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index f2b20ed5063a293f0b464548f590d652170cd1d8..3166c48f0da802a79d0589ec8b1e1a6e1c31e742 100644
+index 226ff7c6048b510be2e71ecc5d5ff3581092aa5e..906107efb8c23628448fe09a64e1eb08a780dfc1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -584,17 +584,6 @@ public class CraftWorld extends CraftRegionAccessor implements World {
