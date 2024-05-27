@@ -18,18 +18,17 @@ index 6995627310de4911d87a2f93a723d6b93dc0612f..c75488ea327d72a47a08693c252b0acc
          final @Nullable Component history = this.getHistory();
  
 diff --git a/src/main/java/io/papermc/paper/ServerBrandConstants.java b/src/main/java/io/papermc/paper/ServerBrandConstants.java
-index b085cb9b49f2b6b1ad72448959d57a5a7b1f1f21..c4e9f8590b2acc0cd223810ed5ade7b660d3dbb1 100644
+index af534fb15be2be3e5b4258c522e0e6c967c2bb1c..b0db5312d4f02b9a1edb443c76c171247e8088f9 100644
 --- a/src/main/java/io/papermc/paper/ServerBrandConstants.java
 +++ b/src/main/java/io/papermc/paper/ServerBrandConstants.java
-@@ -2,21 +2,24 @@ package io.papermc.paper;
+@@ -4,19 +4,23 @@ import org.jetbrains.annotations.Nullable;
  
- import org.jetbrains.annotations.Nullable;
- 
-+// Thunderbolt start - Rebranding
  public enum ServerBrandConstants {;
  
++    // Thunderbolt start - Rebranding
++
      // Basic brand informations
--    protected static final String BRAND_NAME = "Plazma";
+-    public static final String BRAND_NAME = "Plazma";
 -    public static final String RESOURCE_PATH = "META-INF/maven/org.plazmamc.plazma/plazma-api/pom.properties";
 +    protected static final String BRAND_NAME = "Thunderbolt";
 +    public static final String RESOURCE_PATH = "META-INF/maven/org.plazmamc.thunderbolt/thunderbolt-api/pom.properties";
@@ -55,16 +54,14 @@ index b085cb9b49f2b6b1ad72448959d57a5a7b1f1f21..c4e9f8590b2acc0cd223810ed5ade7b6
          """;
  
      // Support URLs
-@@ -24,10 +27,11 @@ public enum ServerBrandConstants {;
+@@ -24,7 +28,9 @@ public enum ServerBrandConstants {;
      public static final String CONFIG_REFERENCE = "https://docs.plazmamc.org/plazma/administration/reference/configurations";
      public static final String START_GUIDE = "https://docs.plazmamc.org/plazma/administration/getting-started";
      public static final String USAGE_GUIDE = "https://docs.plazmamc.org/plazma/administration/getting-started/next-step";
 -    public static final String SUPPORT_PAGE = "https://github.com/PlazmaMC/Plazma/issues";
 +    public static final String SUPPORT_PAGE = "https://github.com/PlazmaMC/Thunderbolt/issues";
++
++    // Thunderbolt end - Rebranding
  
      // DO NOT MODIFY BELOW
      public static final String BRAND_LCASE = BRAND_NAME.toLowerCase();
-     public static final String BRAND_UCASE = BRAND_NAME.toUpperCase();
- 
- }
-+// Thunderbolt end - Rebranding

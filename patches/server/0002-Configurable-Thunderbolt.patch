@@ -95,10 +95,10 @@ index 15548aac320ae6d707cab4a61dfc99eaebb06634..873ef80c02b4c6494529a6327faf8290
          );
          // Plazma end - Configurable Plazma
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 16531bcbdfe80c7e3d553aa6fce576588e2e3b0e..77ebd33eca98832e34866e7b522a263673fa25f8 100644
+index a2ffd16c9351c484f0163f19f9352cd643f9b437..cfcf196ca87c8eb15e2abf8ef876eb8db968df5f 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -174,6 +174,12 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -175,6 +175,12 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
          return this.plazmaConfig;
      }
      // Plazma end - Configurable Plazma
@@ -111,7 +111,7 @@ index 16531bcbdfe80c7e3d553aa6fce576588e2e3b0e..77ebd33eca98832e34866e7b522a2636
  
      public final com.destroystokyo.paper.antixray.ChunkPacketBlockController chunkPacketBlockController; // Paper - Anti-Xray
      public final org.purpurmc.purpur.PurpurWorldConfig purpurConfig; // Purpur
-@@ -272,12 +278,14 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -273,12 +279,14 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
          org.bukkit.World.Environment env,
          java.util.function.Function<org.spigotmc.SpigotWorldConfig, io.papermc.paper.configuration.WorldConfiguration> paperWorldConfigCreator,
          java.util.function.Function<org.spigotmc.SpigotWorldConfig, org.plazmamc.plazma.configurations.WorldConfigurations> plazmaWorldConfigurationCreator,
@@ -153,7 +153,7 @@ index 24b8c2dfb41e97adee90849d56f13583b6cafcc0..8f08c22b93367b5d330356e727d4ab24
          public void restart() {
              org.spigotmc.RestartCommand.restart();
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index f84266bca823be3fe7d26ac59b181424e1e307ef..58123df202b28de77a9e733e062ee4f201d4d305 100644
+index 24c3914ba4f144a2e43c17e98373b7a4ce1f6217..42456bb160378f78ca898d825880b77013835163 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -205,6 +205,14 @@ public class Main {
