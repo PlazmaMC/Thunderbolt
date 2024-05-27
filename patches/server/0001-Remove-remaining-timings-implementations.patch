@@ -780,7 +780,7 @@ index 4ad189d52b27560424ddb311d0817a334637dc95..f7e64bcd8810f7f5782d5314ec16290d
              }
              default:
 diff --git a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-index 8445a0b25d647b2c1f9a44f849084cdec0842e18..bf6233c3cee2554dd2970f3e5e7ad30aaef2fd96 100644
+index 86822868e47b269891a71fdc04371b1e28a2752e..723444f9ac1a61ee08d0e2425e338c529a63dc27 100644
 --- a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
 @@ -1,6 +1,6 @@
@@ -864,10 +864,10 @@ index 8c134a642ccaf3530022f2e675a858d726e1dda4..2cc6668b64c5e8ae3c39a934efae9593
                          packet.handle(listener);
                      } catch (Exception exception) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 72a8033f7a0f4c1564e05da31c7015ef2a6694c5..90d74011cd27f2ea151e9eb76675c30c822d8835 100644
+index cffcbc5db9593f69748d1c2d5a5687fa31f9ada5..e2370210d978c65c202bef43c8ed1170ab7905e0 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -193,7 +193,7 @@ import org.bukkit.craftbukkit.Main;
+@@ -190,7 +190,7 @@ import org.bukkit.craftbukkit.CraftRegistry;
  import org.bukkit.event.server.ServerLoadEvent;
  // CraftBukkit end
  
@@ -876,7 +876,7 @@ index 72a8033f7a0f4c1564e05da31c7015ef2a6694c5..90d74011cd27f2ea151e9eb76675c30c
  
  public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTask> implements ServerInfo, CommandSource, AutoCloseable {
  
-@@ -990,7 +990,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -984,7 +984,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
          MinecraftServer.LOGGER.info("Stopping server");
          Commands.COMMAND_SENDING_POOL.shutdownNow(); // Paper - Perf: Async command map building; Shutdown and don't bother finishing
@@ -886,7 +886,7 @@ index 72a8033f7a0f4c1564e05da31c7015ef2a6694c5..90d74011cd27f2ea151e9eb76675c30c
          if (upnp) {
              if (dev.omega24.upnp4j.UPnP4J.close(this.getPort(), dev.omega24.upnp4j.util.Protocol.TCP)) {
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 727a6412c47262d0cd900493f1fa93cc9dc10031..390189b2fd744115fe9723e44f722ebfe5739d9c 100644
+index 4bf46e28d099511a29eeae981d63ca4540bc9d76..c5f9841b63861f86189e2c4e998e4d8182e3cf87 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -63,7 +63,7 @@ import org.apache.logging.log4j.Level;
@@ -1039,7 +1039,7 @@ index 703006eb5df8099c4f51cdb4e41f95cacfbe43a6..a17f85cd0f52fba5d1ca64b203503101
          this.scanRate = senseInterval;
          this.timeToTick = (long)RANDOM.nextInt(senseInterval);
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 349fb7a53ac5752b60e5167c5e9dc4596ea4442f..271bd95dd351eb026009e2f593017fed6642ae66 100644
+index 77ebd33eca98832e34866e7b522a263673fa25f8..37f80a6e2e0891464c99367700be70ed4618069b 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -183,7 +183,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -1051,7 +1051,7 @@ index 349fb7a53ac5752b60e5167c5e9dc4596ea4442f..271bd95dd351eb026009e2f593017fed
      public static BlockPos lastPhysicsProblem; // Spigot
      private org.spigotmc.TickLimiter entityLimiter;
      private org.spigotmc.TickLimiter tileLimiter;
-@@ -373,7 +373,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -364,7 +364,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
              public void onBorderSetDamageSafeZOne(WorldBorder border, double safeZoneRadius) {}
          });
          // CraftBukkit end
@@ -1060,7 +1060,7 @@ index 349fb7a53ac5752b60e5167c5e9dc4596ea4442f..271bd95dd351eb026009e2f593017fed
          this.entityLimiter = new org.spigotmc.TickLimiter(this.spigotConfig.entityMaxTickTime);
          this.tileLimiter = new org.spigotmc.TickLimiter(this.spigotConfig.tileMaxTickTime);
          this.chunkPacketBlockController = this.paperConfig().anticheat.antiXray.enabled ? new com.destroystokyo.paper.antixray.ChunkPacketBlockControllerAntiXray(this, executor) : com.destroystokyo.paper.antixray.ChunkPacketBlockController.NO_OPERATION_INSTANCE; // Paper - Anti-Xray
-@@ -1396,7 +1396,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -1387,7 +1387,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
  
          //this.timings.tileEntityTick.stopTiming(); // Spigot // Purpur
          this.tickingBlockEntities = false;
@@ -1113,10 +1113,10 @@ index 8dc1436fe78759cee5247cc28e8a18999e738a1b..ace886913b43252c5216b716e1a6b42a
      private static final CraftPersistentDataTypeRegistry DATA_TYPE_REGISTRY = new CraftPersistentDataTypeRegistry();
      public CraftPersistentDataContainer persistentDataContainer;
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 529064c9ac5880233cfd82d3bb02fd8ee4bd8ced..6f8114c5642c96628a4b7d13ae539709dbb3691c 100644
+index 58123df202b28de77a9e733e062ee4f201d4d305..709f49e83a3bd71de446f60a7b4f98ad3421c773 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -375,8 +375,8 @@ public class Main {
+@@ -376,8 +376,8 @@ public class Main {
              tryPreloadClass("org.jline.terminal.impl.MouseSupport");
              tryPreloadClass("org.jline.terminal.impl.MouseSupport$1");
              tryPreloadClass("org.jline.terminal.Terminal$MouseTracking");
@@ -1128,7 +1128,7 @@ index 529064c9ac5880233cfd82d3bb02fd8ee4bd8ced..6f8114c5642c96628a4b7d13ae539709
              tryPreloadClass("io.netty.channel.AbstractChannelHandlerContext$11");
              tryPreloadClass("io.netty.channel.AbstractChannelHandlerContext$12");
 diff --git a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
-index 324495c8be1a54434e7c73158d7d20dba625b7f7..c4e15c73f1912d0cb8eb1b442c0a6a2db1856993 100644
+index e3af3ba8f34626e54cdd931601fd3ec40618a061..b08ef35521fd570a577b578f079587d11983229f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
 +++ b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
 @@ -1,6 +1,6 @@
@@ -1208,7 +1208,7 @@ index 5835dc236b3f5291a804f7fb14a12eb466d4e0ba..878d8800f35c49a04a1632381e64137f
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index ef222478b46b5edc7b4c6d636a5b452fb10221bc..070e1a97e0d18402db8376fde9d71f31ba3d4388 100644
+index 6f24422beb7d3db6dbed0efcba2935f542519827..f6f991d2018ffca3ca49c61a6cc942c6b00e150b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -215,6 +215,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
@@ -1227,7 +1227,7 @@ index ef222478b46b5edc7b4c6d636a5b452fb10221bc..070e1a97e0d18402db8376fde9d71f31
  
      public static byte toLegacyData(BlockState data) {
          return CraftLegacy.toLegacyData(data);
-@@ -504,10 +506,12 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -495,10 +497,12 @@ public final class CraftMagicNumbers implements UnsafeValues {
          return new CraftDamageSourceBuilder(damageType);
      }
      // Paper start

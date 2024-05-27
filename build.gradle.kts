@@ -20,8 +20,8 @@ repositories {
 }
 
 val jdkVersion = property("jdkVersion").toString().toInt()
-val projectName = property("projectName").toString()
-val projectRepo = property("projectRepo").toString()
+val projectName = property("brandName").toString()
+val projectRepo = property("providerRepo").toString()
 val upstreamCommitValue = property("baseCommit").toString()
 val upstreamRef = "base"
 

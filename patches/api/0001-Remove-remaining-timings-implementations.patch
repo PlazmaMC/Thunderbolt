@@ -454,7 +454,7 @@ index a5d13a1e44edb861f45c83a9b4309fbf799d407d..00000000000000000000000000000000
 -}
 diff --git a/src/main/java/co/aikar/timings/TimingHandler.java b/src/main/java/co/aikar/timings/TimingHandler.java
 deleted file mode 100644
-index 199789d56d22fcb1b77ebd56805cc28aa5a5ab0a..0000000000000000000000000000000000000000
+index 3b3bcfa6fa2dbcc7fef899cc7570da097437ab3a..0000000000000000000000000000000000000000
 --- a/src/main/java/co/aikar/timings/TimingHandler.java
 +++ /dev/null
 @@ -1,226 +0,0 @@
@@ -587,7 +587,7 @@ index 199789d56d22fcb1b77ebd56805cc28aa5a5ab0a..00000000000000000000000000000000
 -        while ((last = TIMING_STACK.removeLast()) != this) {
 -            last.timingDepth = 0;
 -            if ("Minecraft".equalsIgnoreCase(last.identifier.group)) {
--                Logger.getGlobal().log(Level.SEVERE, "TIMING_STACK_CORRUPTION - Look above this for any errors and report this to Paper unless it has a plugin in the stack trace (" + last.identifier + " did not stopTiming)");
+-                Logger.getGlobal().log(Level.SEVERE, "TIMING_STACK_CORRUPTION - Look above this for any errors and report this to " + io.papermc.paper.ServerBuildInfo.buildInfo().brandName() + " unless it has a plugin in the stack trace (" + last.identifier + " did not stopTiming)");
 -            } else {
 -                Logger.getGlobal().log(Level.SEVERE, "TIMING_STACK_CORRUPTION - Report this to the plugin " + last.identifier.group + " (Look for errors above this in the logs) (" + last.identifier + " did not stopTiming)", new Throwable());
 -            }
@@ -1891,18 +1891,19 @@ index 632c4961515f5052551f841cfa840e60bba7a257..00000000000000000000000000000000
 -    }
 -}
 diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
-index 0857a65ecbc36e0e4b8a7d0cda52be35f238f660..6178368dcf63504e3ae0e1f521ec2a16d6548ced 100644
+index 0e9ccfee7a03d341e7c4d271f53b4ed168b404ef..d133ddba0355835412dd16d2bf1a8b4b4ed00545 100644
 --- a/src/main/java/org/bukkit/UnsafeValues.java
 +++ b/src/main/java/org/bukkit/UnsafeValues.java
-@@ -40,7 +40,6 @@ public interface UnsafeValues {
+@@ -40,7 +40,7 @@ public interface UnsafeValues {
      net.kyori.adventure.text.Component resolveWithContext(net.kyori.adventure.text.Component component, org.bukkit.command.CommandSender context, org.bukkit.entity.Entity scoreboardSubject, boolean bypassPermissions) throws java.io.IOException;
      // Paper end
  
 -    void reportTimings(); // Paper
++    // void reportTimings(); // Paper // Thunderbolt - Remove remaining timings implementations
      Material toLegacy(Material material);
  
      Material fromLegacy(Material material);
-@@ -154,7 +153,7 @@ public interface UnsafeValues {
+@@ -154,7 +154,7 @@ public interface UnsafeValues {
       * Server name to report to timings v2
       * @return name
       */
