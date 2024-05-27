@@ -1236,58 +1236,59 @@ index df142a89b8c43acb81eb383eac0ef048a1f49a6e..a921bd54d2e5346081e96ecf4da1553e
 +@Deprecated(forRemoval = true)
 +interface TimingIdentifier {} // Thunderbolt - Remove remaining timings implementations
 diff --git a/src/main/java/co/aikar/timings/Timings.java b/src/main/java/co/aikar/timings/Timings.java
-index 752d54830aa8baa1450bf72da03ae55ed30293c2..d933858f24f0a48f1d1d38b4956918a76309144f 100644
+index 752d54830aa8baa1450bf72da03ae55ed30293c2..8bbd2bfb06a9ba5ad7a87f9b54e048773a79490a 100644
 --- a/src/main/java/co/aikar/timings/Timings.java
 +++ b/src/main/java/co/aikar/timings/Timings.java
-@@ -47,6 +47,7 @@ import org.jetbrains.annotations.Nullable;
- @SuppressWarnings({"UnusedDeclaration", "WeakerAccess", "SameParameterValue"})
+@@ -44,18 +44,8 @@ import org.jetbrains.annotations.Nullable;
+  * @deprecated Timings will likely be replaced with Spark in the future
+  */
+ @Deprecated(forRemoval = true)
+-@SuppressWarnings({"UnusedDeclaration", "WeakerAccess", "SameParameterValue"})
  public final class Timings {
  
-+    /* // Thunderbolt - Remove remaining timings implementations
-     final static List<CommandSender> requestingReport = Lists.newArrayList();
-     private static final int MAX_HISTORY_FRAMES = 12;
-     public static final Timing NULL_HANDLER = new NullTimingHandler();
-@@ -55,6 +56,7 @@ public final class Timings {
-     private static int historyInterval = -1;
-     private static int historyLength = -1;
-     private static boolean warnedAboutDeprecationOnEnable;
-+     */ // Thunderbolt - Remove remaining timings implementations
- 
+-    final static List<CommandSender> requestingReport = Lists.newArrayList();
+-    private static final int MAX_HISTORY_FRAMES = 12;
+-    public static final Timing NULL_HANDLER = new NullTimingHandler();
+-    static boolean timingsEnabled = false;
+-    static boolean verboseEnabled = false;
+-    private static int historyInterval = -1;
+-    private static int historyLength = -1;
+-    private static boolean warnedAboutDeprecationOnEnable;
+-
      private Timings() {}
  
-@@ -65,13 +67,15 @@ public final class Timings {
+     /**
+@@ -65,13 +55,9 @@ public final class Timings {
       * @param name   Name of Timing
       * @return Handler
       */
 -    @NotNull
 +    @Deprecated(forRemoval = true) @io.papermc.paper.annotation.DoNotUse // Thunderbolt - Remove remaining timings implementations
      public static Timing of(@NotNull Plugin plugin, @NotNull String name) {
-+        throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); /* // Thunderbolt - Remove remaining timings implementations
-         Timing pluginHandler = null;
-         if (plugin != null) {
-             pluginHandler = ofSafe(plugin.getName(), "Combined Total", TimingsManager.PLUGIN_GROUP_HANDLER);
-         }
-         return of(plugin, name, pluginHandler);
-+         */ // Thunderbolt - Remove remaining timings implementations
+-        Timing pluginHandler = null;
+-        if (plugin != null) {
+-            pluginHandler = ofSafe(plugin.getName(), "Combined Total", TimingsManager.PLUGIN_GROUP_HANDLER);
+-        }
+-        return of(plugin, name, pluginHandler);
++        throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
      }
  
      /**
-@@ -86,11 +90,13 @@ public final class Timings {
+@@ -86,11 +72,9 @@ public final class Timings {
       * @param groupHandler Parent handler to mirror .start/stop calls to
       * @return Timing Handler
       */
 -    @NotNull
 +    @Deprecated(forRemoval = true) @io.papermc.paper.annotation.DoNotUse // Thunderbolt - Remove remaining timings implementations // Thunderbolt - Remove remaining timings implementations
      public static Timing of(@NotNull Plugin plugin, @NotNull String name, @Nullable Timing groupHandler) {
-+        /* // Thunderbolt - Remove remaining timings implementations
-         Preconditions.checkNotNull(plugin, "Plugin can not be null");
-         Bukkit.getLogger().warning(String.format("Plugin '%s' is creating timing '%s' - this is deprecated behavior, please report it to the authors: %s", plugin.getName(), name, String.join(", ", plugin.getDescription().getAuthors())));
-         return TimingsManager.getHandler(plugin.getName(), name, groupHandler);
-+         */ throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
+-        Preconditions.checkNotNull(plugin, "Plugin can not be null");
+-        Bukkit.getLogger().warning(String.format("Plugin '%s' is creating timing '%s' - this is deprecated behavior, please report it to the authors: %s", plugin.getName(), name, String.join(", ", plugin.getDescription().getAuthors())));
+-        return TimingsManager.getHandler(plugin.getName(), name, groupHandler);
++        throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
      }
  
      /**
-@@ -104,9 +110,10 @@ public final class Timings {
+@@ -104,9 +88,9 @@ public final class Timings {
       * @param name   Name of Timing
       * @return Timing Handler
       */
@@ -1295,78 +1296,92 @@ index 752d54830aa8baa1450bf72da03ae55ed30293c2..d933858f24f0a48f1d1d38b4956918a7
 +    @Deprecated(forRemoval = true) @io.papermc.paper.annotation.DoNotUse // Thunderbolt - Remove remaining timings implementations
      public static Timing ofStart(@NotNull Plugin plugin, @NotNull String name) {
 -        return ofStart(plugin, name, null);
-+        // return ofStart(plugin, name, null); // Thunderbolt - Remove remaining timings implementations
 +        throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
      }
  
      /**
-@@ -121,11 +128,13 @@ public final class Timings {
+@@ -121,11 +105,9 @@ public final class Timings {
       * @param groupHandler Parent handler to mirror .start/stop calls to
       * @return Timing Handler
       */
 -    @NotNull
 +    @Deprecated(forRemoval = true) @io.papermc.paper.annotation.DoNotUse // Thunderbolt - Remove remaining timings implementations
      public static Timing ofStart(@NotNull Plugin plugin, @NotNull String name, @Nullable Timing groupHandler) {
-+        /* // Thunderbolt - Remove remaining timings implementations
-         Timing timing = of(plugin, name, groupHandler);
-         //timing.startTiming(); // Purpur
-         return timing;
-+         */ throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
+-        Timing timing = of(plugin, name, groupHandler);
+-        //timing.startTiming(); // Purpur
+-        return timing;
++         throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
      }
  
      /**
-@@ -133,8 +142,10 @@ public final class Timings {
+@@ -133,8 +115,9 @@ public final class Timings {
       *
       * @return Enabled or not
       */
 +    @Deprecated(forRemoval = true) @io.papermc.paper.annotation.DoNotUse // Thunderbolt - Remove remaining timings implementations
      public static boolean isTimingsEnabled() {
 -        return timingsEnabled;
-+        // return timingsEnabled; // Thunderbolt - Remove remaining timings implementations
 +        return false; // Thunderbolt - Remove remaining timings implementations
      }
  
      /**
-@@ -144,14 +155,18 @@ public final class Timings {
+@@ -144,42 +127,9 @@ public final class Timings {
       *
       * @param enabled Should timings be reported
       */
 +    @Deprecated(forRemoval = true) @io.papermc.paper.annotation.DoNotUse // Thunderbolt - Remove remaining timings implementations
      public static void setTimingsEnabled(boolean enabled) {
-+        /* // Thunderbolt - Remove remaining timings implementations
-         // Purpur start - we don't do that here...
-         timingsEnabled = false;
-         //warnAboutDeprecationOnEnable();
-         //reset();
-         // Purpur end
-+         */ throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
+-        // Purpur start - we don't do that here...
+-        timingsEnabled = false;
+-        //warnAboutDeprecationOnEnable();
+-        //reset();
+-        // Purpur end
+-    }
+-
+-    private static void warnAboutDeprecationOnEnable() {
+-        if (timingsEnabled && !warnedAboutDeprecationOnEnable) {
+-            Bukkit.getLogger().warning(PlainTextComponentSerializer.plainText().serialize(deprecationMessage()));
+-            warnedAboutDeprecationOnEnable = true;
+-        }
+-    }
+-
+-    public static Component deprecationMessage() {
+-        return Component.text()
+-            .color(TextColor.color(0xf3ef91))
+-            .append(Component.text("[!] The timings profiler has been enabled but has been scheduled for removal from Paper in the future."))
+-            .append(Component.newline())
+-            .append(
+-                Component.text("    We recommend installing the spark profiler as a replacement: ")
+-                    .append(
+-                        Component.text()
+-                            .content("https://spark.lucko.me/")
+-                            .clickEvent(ClickEvent.openUrl("https://spark.lucko.me/")))
+-            )
+-            .append(Component.newline())
+-            .append(
+-                Component.text("    For more information please visit: ")
+-                    .append(
+-                        Component.text()
+-                            .content("https://github.com/PaperMC/Paper/issues/8948")
+-                            .clickEvent(ClickEvent.openUrl("https://github.com/PaperMC/Paper/issues/8948")))
+-            )
+-            .build();
++        throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
      }
- 
-+    /* // Thunderbolt - Remove remaining timings implementations
-     private static void warnAboutDeprecationOnEnable() {
-         if (timingsEnabled && !warnedAboutDeprecationOnEnable) {
-             Bukkit.getLogger().warning(PlainTextComponentSerializer.plainText().serialize(deprecationMessage()));
-@@ -181,6 +196,7 @@ public final class Timings {
-             )
-             .build();
-     }
-+     */ // Thunderbolt - Remove remaining timings implementations
  
      /**
-      * <p>Sets whether or not the Timings should monitor at Verbose level.</p>
-@@ -189,8 +205,10 @@ public final class Timings {
+@@ -189,8 +139,9 @@ public final class Timings {
       *
       * @return Enabled or not
       */
 +    @Deprecated(forRemoval = true) @io.papermc.paper.annotation.DoNotUse // Thunderbolt - Remove remaining timings implementations
      public static boolean isVerboseTimingsEnabled() {
 -        return verboseEnabled;
-+        // return verboseEnabled; // Thunderbolt - Remove remaining timings implementations
 +        return false; // Thunderbolt - Remove remaining timings implementations
      }
  
      /**
-@@ -201,9 +219,11 @@ public final class Timings {
+@@ -201,9 +152,9 @@ public final class Timings {
       *
       * @param enabled Should high-frequency timings be reported
       */
@@ -1374,67 +1389,70 @@ index 752d54830aa8baa1450bf72da03ae55ed30293c2..d933858f24f0a48f1d1d38b4956918a7
      public static void setVerboseTimingsEnabled(boolean enabled) {
 -        verboseEnabled = enabled;
 -        TimingsManager.needsRecheckEnabled = true;
-+        // verboseEnabled = enabled; // Thunderbolt - Remove remaining timings implementations
-+        // TimingsManager.needsRecheckEnabled = true; // Thunderbolt - Remove remaining timings implementations
 +        throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
      }
  
      /**
-@@ -213,8 +233,10 @@ public final class Timings {
+@@ -213,8 +164,9 @@ public final class Timings {
       *
       * @return Interval in ticks
       */
 +    @Deprecated(forRemoval = true) @io.papermc.paper.annotation.DoNotUse // Thunderbolt - Remove remaining timings implementations
      public static int getHistoryInterval() {
 -        return historyInterval;
-+        // return historyInterval; // Thunderbolt - Remove remaining timings implementations
 +        throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
      }
  
      /**
-@@ -227,12 +249,15 @@ public final class Timings {
+@@ -227,12 +179,8 @@ public final class Timings {
       *
       * @param interval Interval in ticks
       */
+-    public static void setHistoryInterval(int interval) {
+-        historyInterval = Math.max(20*60, interval);
+-        // Recheck the history length with the new Interval
+-        if (historyLength != -1) {
+-            setHistoryLength(historyLength);
+-        }
 +    @Deprecated(forRemoval = true) @io.papermc.paper.annotation.DoNotUse // Thunderbolt - Remove remaining timings implementations
-     public static void setHistoryInterval(int interval) {
-+        /* // Thunderbolt - Remove remaining timings implementations
-         historyInterval = Math.max(20*60, interval);
-         // Recheck the history length with the new Interval
-         if (historyLength != -1) {
-             setHistoryLength(historyLength);
-         }
-+         */ throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
++    public static void setHistoryInterval(int interval) {throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
      }
  
      /**
-@@ -242,8 +267,10 @@ public final class Timings {
+@@ -242,8 +190,9 @@ public final class Timings {
       *
       * @return Duration in Ticks
       */
 +    @Deprecated(forRemoval = true) @io.papermc.paper.annotation.DoNotUse // Thunderbolt - Remove remaining timings implementations
      public static int getHistoryLength() {
 -        return historyLength;
-+        // return historyLength; // Thunderbolt - Remove remaining timings implementations
 +        throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
      }
  
      /**
-@@ -257,7 +284,9 @@ public final class Timings {
+@@ -257,30 +206,17 @@ public final class Timings {
       *
       * @param length Duration in ticks
       */
 +    @Deprecated(forRemoval = true) @io.papermc.paper.annotation.DoNotUse // Thunderbolt - Remove remaining timings implementations
      public static void setHistoryLength(int length) {
-+        /* // Thunderbolt - Remove remaining timings implementations
-         // Cap at 12 History Frames, 1 hour at 5 minute frames.
-         int maxLength = historyInterval * MAX_HISTORY_FRAMES;
-         // For special cases of servers with special permission to bypass the max.
-@@ -274,13 +303,16 @@ public final class Timings {
-         }
-         TimingsManager.HISTORY = EvictingQueue.create(frames);
-         TimingsManager.HISTORY.addAll(oldQueue);
-+         */ throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
+-        // Cap at 12 History Frames, 1 hour at 5 minute frames.
+-        int maxLength = historyInterval * MAX_HISTORY_FRAMES;
+-        // For special cases of servers with special permission to bypass the max.
+-        // This max helps keep data file sizes reasonable for processing on Aikar's Timing parser side.
+-        // Setting this will not help you bypass the max unless Aikar has added an exception on the API side.
+-        if (System.getProperty("timings.bypassMax") != null) {
+-            maxLength = Integer.MAX_VALUE;
+-        }
+-        historyLength = Math.max(Math.min(maxLength, length), historyInterval);
+-        Queue<TimingHistory> oldQueue = TimingsManager.HISTORY;
+-        int frames = (getHistoryLength() / getHistoryInterval());
+-        if (length > maxLength) {
+-            Bukkit.getLogger().log(Level.WARNING, "Timings Length too high. Requested " + length + ", max is " + maxLength + ". To get longer history, you must increase your interval. Set Interval to " + Math.ceil(length / MAX_HISTORY_FRAMES) + " to achieve this length.");
+-        }
+-        TimingsManager.HISTORY = EvictingQueue.create(frames);
+-        TimingsManager.HISTORY.addAll(oldQueue);
++        throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
      }
  
      /**
@@ -1443,61 +1461,72 @@ index 752d54830aa8baa1450bf72da03ae55ed30293c2..d933858f24f0a48f1d1d38b4956918a7
 +    @Deprecated(forRemoval = true) @io.papermc.paper.annotation.DoNotUse // Thunderbolt - Remove remaining timings implementations
      public static void reset() {
 -        TimingsManager.reset();
-+        // TimingsManager.reset(); // Thunderbolt - Remove remaining timings implementations
 +        throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
      }
  
      /**
-@@ -289,11 +321,14 @@ public final class Timings {
+@@ -289,11 +225,9 @@ public final class Timings {
       * If sender is null, ConsoleCommandSender will be used.
       * @param sender The sender to send to, or null to use the ConsoleCommandSender
       */
 +    @Deprecated(forRemoval = true) @io.papermc.paper.annotation.DoNotUse // Thunderbolt - Remove remaining timings implementations
      public static void generateReport(@Nullable CommandSender sender) {
-+        /* // Thunderbolt - Remove remaining timings implementations
-         if (sender == null) {
-             sender = Bukkit.getConsoleSender();
-         }
-         requestingReport.add(sender);
-+         */ throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
+-        if (sender == null) {
+-            sender = Bukkit.getConsoleSender();
+-        }
+-        requestingReport.add(sender);
++        throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
      }
  
      /**
-@@ -301,9 +336,11 @@ public final class Timings {
+@@ -301,39 +235,10 @@ public final class Timings {
       * Use with {@link org.bukkit.command.BufferedCommandSender} to get full response when done!
       * @param sender The listener to send responses too.
       */
 -    public static void generateReport(@NotNull TimingsReportListener sender) {
 -        Preconditions.checkNotNull(sender);
 -        requestingReport.add(sender);
+-    }
+-
+-    /*
+-    =================
+-    Protected API: These are for internal use only in Bukkit/CraftBukkit
+-    These do not have isPrimaryThread() checks in the startTiming/stopTiming
+-    =================
+-    */
+-    @NotNull
+-    static TimingHandler ofSafe(@NotNull String name) {
+-        return ofSafe(null, name, null);
+-    }
+-
+-    @NotNull
+-    static Timing ofSafe(@Nullable Plugin plugin, @NotNull String name) {
+-        Timing pluginHandler = null;
+-        if (plugin != null) {
+-            pluginHandler = ofSafe(plugin.getName(), "Combined Total", TimingsManager.PLUGIN_GROUP_HANDLER);
+-        }
+-        return ofSafe(plugin != null ? plugin.getName() : "Minecraft - Invalid Plugin", name, pluginHandler);
 +    @Deprecated(forRemoval = true) @io.papermc.paper.annotation.DoNotUse // Thunderbolt - Remove remaining timings implementations
 +    public static void generateReport(@NotNull Object sender) { // Thunderbolt - Remove remaining timings implementations
-+        // Preconditions.checkNotNull(sender); // Thunderbolt - Remove remaining timings implementations
-+        // requestingReport.add(sender); // Thunderbolt - Remove remaining timings implementations
 +        throw new org.plazmamc.thunderbolt.DeprecatedException("Timings is deprecated and will be removed in the future. Use Spark instead."); // Thunderbolt - Remove remaining timings implementations
      }
  
-     /*
-@@ -312,6 +349,7 @@ public final class Timings {
-     These do not have isPrimaryThread() checks in the startTiming/stopTiming
-     =================
-     */
-+    /* // Thunderbolt - Remove remaining timings implementations
-     @NotNull
-     static TimingHandler ofSafe(@NotNull String name) {
-         return ofSafe(null, name, null);
-@@ -335,5 +373,6 @@ public final class Timings {
-     static TimingHandler ofSafe(@Nullable String groupName, @NotNull String name, @Nullable Timing groupHandler) {
-         return TimingsManager.getHandler(groupName, name, groupHandler);
-     }
-+     */ // Thunderbolt - Remove remaining timings implementations
+-    @NotNull
+-    static TimingHandler ofSafe(@NotNull String name, @Nullable Timing groupHandler) {
+-        return ofSafe(null, name, groupHandler);
+-    }
+-
+-    @NotNull
+-    static TimingHandler ofSafe(@Nullable String groupName, @NotNull String name, @Nullable Timing groupHandler) {
+-        return TimingsManager.getHandler(groupName, name, groupHandler);
+-    }
  }
  
 diff --git a/src/main/java/co/aikar/timings/TimingsCommand.java b/src/main/java/co/aikar/timings/TimingsCommand.java
-index 1abfcee0f6d632f4cd8d74b4994a90c9ea9d254c..eeabeeccf97602b25337b8b8c90c824f877ae53a 100644
+index 1abfcee0f6d632f4cd8d74b4994a90c9ea9d254c..1a439fda970eec02c9da65b327da4a21f1afa795 100644
 --- a/src/main/java/co/aikar/timings/TimingsCommand.java
 +++ b/src/main/java/co/aikar/timings/TimingsCommand.java
-@@ -40,7 +40,7 @@ import static net.kyori.adventure.text.Component.text;
+@@ -40,12 +40,12 @@ import static net.kyori.adventure.text.Component.text;
  @Deprecated(forRemoval = true)
  public class TimingsCommand extends BukkitCommand {
      private static final List<String> TIMINGS_SUBCOMMANDS = ImmutableList.of("report", "reset", "on", "off", "paste", "verbon", "verboff");
@@ -1506,7 +1535,13 @@ index 1abfcee0f6d632f4cd8d74b4994a90c9ea9d254c..eeabeeccf97602b25337b8b8c90c824f
  
      public TimingsCommand(@NotNull String name) {
          super(name);
-@@ -54,13 +54,13 @@ public class TimingsCommand extends BukkitCommand {
+         this.description = "Manages Spigot Timings data to see performance of the server.";
+-        this.usageMessage = "/timings";// <reset|report|on|off|verbon|verboff>"; // Purpur
++        this.usageMessage = "/timings <reset|report|on|off|verbon|verboff>"; // Purpur // Thunderbolt
+         this.setPermission("bukkit.command.timings");
+     }
+ 
+@@ -54,61 +54,12 @@ public class TimingsCommand extends BukkitCommand {
          if (!testPermission(sender)) {
              return true;
          }
@@ -1517,33 +1552,75 @@ index 1abfcee0f6d632f4cd8d74b4994a90c9ea9d254c..eeabeeccf97602b25337b8b8c90c824f
 -            sender.sendMessage(mm.deserialize("<gold><click:open_url:'https://spark.lucko.me/docs/Command-Usage'>https://spark.lucko.me/docs/Command-Usage</click>"));
 -            return true;
 -        }
+-        if (args.length < 1) {
+-            sender.sendMessage(text("Usage: " + this.usageMessage, NamedTextColor.RED));
+-            return true;
+-        }
+-        final String arg = args[0];
+-        if ("on".equalsIgnoreCase(arg)) {
+-            Timings.setTimingsEnabled(true);
+-            sender.sendMessage(text("Enabled Timings & Reset"));
+-            return true;
+-        } else if ("off".equalsIgnoreCase(arg)) {
+-            Timings.setTimingsEnabled(false);
+-            sender.sendMessage(text("Disabled Timings"));
+-            return true;
+-        }
+-
+-        if (!Timings.isTimingsEnabled()) {
+-            sender.sendMessage(text("Please enable timings by typing /timings on"));
+-            return true;
+-        }
+-
+-        long now = System.currentTimeMillis();
+-        if ("verbon".equalsIgnoreCase(arg)) {
+-            Timings.setVerboseTimingsEnabled(true);
+-            sender.sendMessage(text("Enabled Verbose Timings"));
+-            return true;
+-        } else if ("verboff".equalsIgnoreCase(arg)) {
+-            Timings.setVerboseTimingsEnabled(false);
+-            sender.sendMessage(text("Disabled Verbose Timings"));
+-            return true;
+-        } else if ("reset".equalsIgnoreCase(arg)) {
+-            if (now - lastResetAttempt < 30000) {
+-                TimingsManager.reset();
+-                sender.sendMessage(text("Timings reset. Please wait 5-10 minutes before using /timings report.", NamedTextColor.RED));
+-            } else {
+-                lastResetAttempt = now;
+-                sender.sendMessage(text("WARNING: Timings v2 should not be reset. If you are experiencing lag, please wait 3 minutes and then issue a report. The best timings will include 10+ minutes, with data before and after your lag period. If you really want to reset, run this command again within 30 seconds.", NamedTextColor.RED));
+-            }
+-        } else  if (
+-            "paste".equalsIgnoreCase(arg) ||
+-                "report".equalsIgnoreCase(arg) ||
+-                "get".equalsIgnoreCase(arg) ||
+-                "merged".equalsIgnoreCase(arg) ||
+-                "separate".equalsIgnoreCase(arg)
+-            ) {
+-            Timings.generateReport(sender);
+-        } else {
+-            sender.sendMessage(text("Usage: " + this.usageMessage, NamedTextColor.RED));
+-        }
 +        // Thunderbolt start - Remove remaining timings implementations
 +        net.kyori.adventure.text.minimessage.MiniMessage mm = net.kyori.adventure.text.minimessage.MiniMessage.miniMessage();
 +        sender.sendMessage(mm.deserialize("<gold>Purpur has removed timings to save your performance. Please use <click:suggest_command:'/spark'><grey>/spark</grey></click> instead"));
 +        sender.sendMessage(mm.deserialize("<gold>For more information, view its documentation at"));
 +        sender.sendMessage(mm.deserialize("<gold><click:open_url:'https://spark.lucko.me/docs/Command-Usage'>https://spark.lucko.me/docs/Command-Usage</click>"));
-+        /*
 +        // Thunderbolt end - Remove remaining timings implementations
-         if (args.length < 1) {
-             sender.sendMessage(text("Usage: " + this.usageMessage, NamedTextColor.RED));
-             return true;
-@@ -109,6 +109,7 @@ public class TimingsCommand extends BukkitCommand {
-         } else {
-             sender.sendMessage(text("Usage: " + this.usageMessage, NamedTextColor.RED));
-         }
-+         */
          return true;
      }
  
-@@ -119,7 +120,7 @@ public class TimingsCommand extends BukkitCommand {
+@@ -119,9 +70,9 @@ public class TimingsCommand extends BukkitCommand {
          Preconditions.checkNotNull(args, "Arguments cannot be null");
          Preconditions.checkNotNull(alias, "Alias cannot be null");
  
 -        if (false && args.length == 1) { // Purpur
 +        if (args.length == 1) { // Purpur // Thunderbolt
              return StringUtil.copyPartialMatches(args[0], TIMINGS_SUBCOMMANDS,
-                 new ArrayList<String>(TIMINGS_SUBCOMMANDS.size()));
+-                new ArrayList<String>(TIMINGS_SUBCOMMANDS.size()));
++                new ArrayList<>(TIMINGS_SUBCOMMANDS.size())); // Thunderbolt
          }
+         return ImmutableList.of();
+     }
 diff --git a/src/main/java/co/aikar/timings/TimingsManager.java b/src/main/java/co/aikar/timings/TimingsManager.java
 index 5e1558ca3ffeeaf2645fa003965474a442d650bf..9d6038dbaa13c5bfa3e0cea8f62544b97b7541d1 100644
 --- a/src/main/java/co/aikar/timings/TimingsManager.java
@@ -1836,7 +1913,7 @@ index 3af5b8ea795311582044c712de50d29412024b77..6c3c30f98a38b5f04118060b695ae345
 -}
 +interface TimingsReportListener {} // Thunderbolt - Remove remaining timings implementations
 diff --git a/src/main/java/co/aikar/timings/UnsafeTimingHandler.java b/src/main/java/co/aikar/timings/UnsafeTimingHandler.java
-index 632c4961515f5052551f841cfa840e60bba7a257..05d322a0ac9583af427a00eb6c84b382157263af 100644
+index 632c4961515f5052551f841cfa840e60bba7a257..44df4bbde43d23027bf5d637aa933dcad7edc26a 100644
 --- a/src/main/java/co/aikar/timings/UnsafeTimingHandler.java
 +++ b/src/main/java/co/aikar/timings/UnsafeTimingHandler.java
 @@ -1,53 +1,4 @@
@@ -1894,7 +1971,7 @@ index 632c4961515f5052551f841cfa840e60bba7a257..05d322a0ac9583af427a00eb6c84b382
 -    }
 -}
 +@Deprecated(forRemoval = true)
-+interface class UnsafeTimingHandler {} // Thunderbolt - Remove remaining timings implementations
++interface UnsafeTimingHandler {} // Thunderbolt - Remove remaining timings implementations
 diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
 index 0e9ccfee7a03d341e7c4d271f53b4ed168b404ef..d133ddba0355835412dd16d2bf1a8b4b4ed00545 100644
 --- a/src/main/java/org/bukkit/UnsafeValues.java
@@ -2002,9 +2079,18 @@ index 5dc64d8c9aeae612fd31af0673f3530a9e777dfc..62242daa0bd7851479748cd62627f51c
  
      // Paper start
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index 0c6ca7588fb3d6b6497ddf032fe75e5c6c9719e5..2c340f40902c910b0a9ce6383d4d0294133cd88e 100644
+index 0c6ca7588fb3d6b6497ddf032fe75e5c6c9719e5..e413370a3e1634483f75464cae7e81e1d03f665e 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
+@@ -43,7 +43,7 @@ import org.bukkit.plugin.TimedRegisteredListener;
+ import org.bukkit.plugin.UnknownDependencyException;
+ import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
+-import org.spigotmc.CustomTimingsHandler; // Spigot
++// import org.spigotmc.CustomTimingsHandler; // Spigot // Thunderbolt - Remove remaining timings implementations
+ import org.yaml.snakeyaml.error.YAMLException;
+ 
+ /**
 @@ -294,21 +294,21 @@ public final class JavaPluginLoader implements PluginLoader {
                  }
              }

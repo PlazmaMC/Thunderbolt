@@ -864,9 +864,18 @@ index 8c134a642ccaf3530022f2e675a858d726e1dda4..2cc6668b64c5e8ae3c39a934efae9593
                          packet.handle(listener);
                      } catch (Exception exception) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index cffcbc5db9593f69748d1c2d5a5687fa31f9ada5..e2370210d978c65c202bef43c8ed1170ab7905e0 100644
+index cffcbc5db9593f69748d1c2d5a5687fa31f9ada5..75171854b6f1d056262b78d9028e68f755254e10 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -3,7 +3,7 @@ package net.minecraft.server;
+ import com.google.common.base.Preconditions;
+ import com.google.common.base.Splitter;
+ import com.google.common.collect.ImmutableList;
+-import co.aikar.timings.Timings;
++// import co.aikar.timings.Timings; // Thunderbolt - Remove remaining timings implementations
+ import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
+ import com.google.common.base.Stopwatch;
+ import com.google.common.collect.Lists;
 @@ -190,7 +190,7 @@ import org.bukkit.craftbukkit.CraftRegistry;
  import org.bukkit.event.server.ServerLoadEvent;
  // CraftBukkit end
