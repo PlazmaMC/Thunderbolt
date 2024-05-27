@@ -5,11 +5,12 @@ on:
     branches: [ "ver/*", "dev/*", "feat/**/*" ]
     paths:
       - "**.patch"
+      - "gradle.properties"
   workflow_dispatch:
 
 env:
   ORG_NAME: PlazmaMC
-  MC_VERSION: 1.20.4
+  MC_VERSION: 1.20.6
 
 jobs:
   release:
