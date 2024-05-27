@@ -1,18 +1,18 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Alpha <dev@alpha93.kr>
 Date: Sun, 25 Feb 2024 19:13:15 +0900
-Subject: [PATCH] Configurable Thunderbolt
+Subject: [PATCH] Volt Configurations
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index cf13166d1fdd663f1f99fd6d00a5296631276511..cffcbc5db9593f69748d1c2d5a5687fa31f9ada5 100644
+index cf13166d1fdd663f1f99fd6d00a5296631276511..a8b99e47440ea27be80c3db1c824f681bdf7337c 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -315,6 +315,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      // Spigot end
      public final io.papermc.paper.configuration.PaperConfigurations paperConfigurations; // Paper - add paper configuration files
      public final org.plazmamc.plazma.configurations.PlazmaConfigurations plazmaConfigurations; // Plazma - Configurable Plazma
-+    public final org.plazmamc.thunderbolt.configurations.ThunderboltConfigurations thunderboltConfigurations; // Thunderbolt - Configurable Thunderbolt
++    public final org.plazmamc.volt.configurations.VoltConfigurations voltConfigurations; // Volt - Add Example Configurations patch
      public static long currentTickLong = 0L; // Paper - track current tick as a long
      public boolean isIteratingOverLevels = false; // Paper - Throw exception on world create while being ticked
      public boolean lagging = false; // Purpur
@@ -20,57 +20,58 @@ index cf13166d1fdd663f1f99fd6d00a5296631276511..cffcbc5db9593f69748d1c2d5a5687fa
          // CraftBukkit end
          this.paperConfigurations = services.paperConfigurations(); // Paper - add paper configuration files
          this.plazmaConfigurations = services.plazmaConfigurations(); // Plazma - Configurable Plazma
-+        this.thunderboltConfigurations = services.thunderboltConfigurations(); // Thunderbolt - Rebranding
++        this.voltConfigurations = services.voltConfigurations(); // Volt - add volt configuration files
      }
  
      private void readScoreboard(DimensionDataStorage persistentStateManager) {
 diff --git a/src/main/java/net/minecraft/server/Services.java b/src/main/java/net/minecraft/server/Services.java
-index 4f1071c48fec78036d6759cdff179df3182f28f5..e9d8f6c64924cf00c89586348dedf25343bf815a 100644
+index 4f1071c48fec78036d6759cdff179df3182f28f5..5e40ebece9a5a920aafcba56efb8fff342a074c5 100644
 --- a/src/main/java/net/minecraft/server/Services.java
 +++ b/src/main/java/net/minecraft/server/Services.java
 @@ -19,6 +19,7 @@ public record Services(
      GameProfileCache profileCache,
      @org.jetbrains.annotations.Nullable io.papermc.paper.configuration.PaperConfigurations paperConfigurations,
      @org.jetbrains.annotations.Nullable org.plazmamc.plazma.configurations.PlazmaConfigurations plazmaConfigurations
-+    ,@org.jetbrains.annotations.Nullable org.plazmamc.thunderbolt.configurations.ThunderboltConfigurations thunderboltConfigurations // Thunderbolt - Configurable Thunderbolt
++    ,@org.jetbrains.annotations.Nullable org.plazmamc.volt.configurations.VoltConfigurations voltConfigurations // Volt - Add Example Configurations patch
      // Plazma end - Configurable Plazma
  ) {
      // Paper start - add paper configuration files
-@@ -31,9 +32,16 @@ public record Services(
+@@ -31,9 +32,17 @@ public record Services(
              profileCache,
              null,
              null
-+            ,null // Thunderbolt - Configurable Thunderbolt
++            ,null // Volt - Add Example Configurations patch
          );
      }
  
-+    // Thunderbolt start - Configurable Thunderbolt
-+    public org.plazmamc.thunderbolt.configurations.ThunderboltConfigurations thunderboltConfigurations() {
-+        return java.util.Objects.requireNonNull(this.thunderboltConfigurations);
++    // Volt start - Add Example Configurations patch
++    @Override
++    public org.plazmamc.volt.configurations.VoltConfigurations voltConfigurations() {
++        return java.util.Objects.requireNonNull(this.voltConfigurations);
 +    }
-+    // Thunderbolt end - Configurable Thunderbolt
++    // Volt end - Add Example Configurations patch
 +
      @Override
      public org.plazmamc.plazma.configurations.PlazmaConfigurations plazmaConfigurations() {
          return java.util.Objects.requireNonNull(this.plazmaConfigurations);
-@@ -63,6 +71,7 @@ public record Services(
+@@ -63,6 +72,7 @@ public record Services(
              gameProfileCache,
              paperConfigurations,
              new org.plazmamc.plazma.configurations.PlazmaConfigurations(optionSet)
-+            ,new org.plazmamc.thunderbolt.configurations.ThunderboltConfigurations(optionSet) // Thunderbolt - Configurable Thunderbolt
++            ,new org.plazmamc.volt.configurations.VoltConfigurations(optionSet) // Volt - Add Example Configurations patch
          );
          // Plazma end
          // Paper end - load paper config files from cli options
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index dc24e0d9d7811de89ff94c49365c537d7211aa7d..4bf46e28d099511a29eeae981d63ca4540bc9d76 100644
+index 68563b59d0e028483d0f7f17c81ec87b8963db2e..6f06eb9530d59e0d72e5ef162428c51cd5de9529 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -215,6 +215,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          this.plazmaConfigurations.initializeGlobalConfiguration(this.registryAccess()); // Plazma - Configurable Plazma
          this.plazmaConfigurations.initializeWorldDefaultsConfiguration(this.registryAccess()); // Plazma - Configurable Plazma
          net.sparklypower.sparklypaper.HalloweenManager.startSyncEpochTask(); // Plazma - Port SparklyPaper patches; Optimize Spooky Season
-+        this.thunderboltConfigurations.initializeGlobalConfiguration(this.registryAccess()); // Thunderbolt - Configurable Thunderbolt
-+        this.thunderboltConfigurations.initializeWorldDefaultsConfiguration(this.registryAccess()); // Thunderbolt - Configurable Thunderbolt
++        this.voltConfigurations.initializeGlobalConfiguration(this.registryAccess()); // Volt - Add volt configuration files
++        this.voltConfigurations.initializeWorldDefaultsConfiguration(this.registryAccess()); // Volt - Add volt configuration files
          // Paper end - initialize global and world-defaults configuration
          // Plazma - Tweak console logging; Moved down
          // Paper start - detect running as root
@@ -78,36 +79,36 @@ index dc24e0d9d7811de89ff94c49365c537d7211aa7d..4bf46e28d099511a29eeae981d63ca45
          thread.start(); // Paper - Enhance console tab completions for brigadier commands; start console thread after MinecraftServer.console & PaperConfig are initialized
          io.papermc.paper.command.PaperCommands.registerCommands(this); // Paper - setup /paper command
          org.plazmamc.plazma.commands.Commands.register(this); // Plazma - Configurable Plazma
-+        org.plazmamc.thunderbolt.commands.Commands.register(this); // Thunderbolt - Configurable Thunderbolt
++        org.plazmamc.volt.commands.Commands.register(this); // Volt - Add volt configuration files
          com.destroystokyo.paper.Metrics.PaperMetrics.startMetrics(); // Paper - start metrics
          // Purpur start
          try {
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 15548aac320ae6d707cab4a61dfc99eaebb06634..873ef80c02b4c6494529a6327faf82902a0181da 100644
+index 15548aac320ae6d707cab4a61dfc99eaebb06634..a4ab5b3a851ca4bc22371c4b6429fa26bc37fe48 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -724,6 +724,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
              env,
              spigotConfig -> minecraftserver.paperConfigurations.createWorldConfig(io.papermc.paper.configuration.PaperConfigurations.createWorldContextMap(convertable_conversionsession.levelDirectory.path(), iworlddataserver.getLevelName(), resourcekey.location(), spigotConfig, minecraftserver.registryAccess(), iworlddataserver.getGameRules())),
              spigotConfig -> minecraftserver.plazmaConfigurations.createWorldConfig(org.plazmamc.plazma.configurations.PlazmaConfigurations.createWorldContextMap(convertable_conversionsession.levelDirectory.path(), iworlddataserver.getLevelName(), resourcekey.location(), spigotConfig, minecraftserver.registryAccess(), iworlddataserver.getGameRules())),
-+            spigotConfig -> minecraftserver.thunderboltConfigurations.createWorldConfig(org.plazmamc.thunderbolt.configurations.ThunderboltConfigurations.createWorldContextMap(convertable_conversionsession.levelDirectory.path(), iworlddataserver.getLevelName(), resourcekey.location(), spigotConfig, minecraftserver.registryAccess(), iworlddataserver.getGameRules())), // Thunderbolt - Configurable Thunderbolt
++            spigotConfig -> minecraftserver.voltConfigurations.createWorldConfig(org.plazmamc.volt.configurations.VoltConfigurations.createWorldContextMap(convertable_conversionsession.levelDirectory.path(), iworlddataserver.getLevelName(), resourcekey.location(), spigotConfig, minecraftserver.registryAccess(), iworlddataserver.getGameRules())), // Volt - Add Example Configurations patch
              executor
          );
          // Plazma end - Configurable Plazma
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 16531bcbdfe80c7e3d553aa6fce576588e2e3b0e..77ebd33eca98832e34866e7b522a263673fa25f8 100644
+index 16531bcbdfe80c7e3d553aa6fce576588e2e3b0e..edb3a943a3a34e221af533cb6fca2a19a5bd2dcc 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -174,6 +174,12 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
          return this.plazmaConfig;
      }
      // Plazma end - Configurable Plazma
-+    // Thunderbolt start - Configurable Thunderbolt
-+    private final org.plazmamc.thunderbolt.configurations.WorldConfigurations thunderboltConfig;
-+    public org.plazmamc.thunderbolt.configurations.WorldConfigurations thunderboltConfig() {
-+        return this.thunderboltConfig;
++    // Volt start - Add Example Configurations patch
++    private final org.plazmamc.volt.configurations.WorldConfigurations voltConfig;
++    public org.plazmamc.volt.configurations.WorldConfigurations voltConfig() {
++        return this.voltConfig;
 +    }
-+    // Thunderbolt end - Configurable Thunderbolt
++    // Volt end - Add Example Configurations patch
  
      public final com.destroystokyo.paper.antixray.ChunkPacketBlockController chunkPacketBlockController; // Paper - Anti-Xray
      public final org.purpurmc.purpur.PurpurWorldConfig purpurConfig; // Purpur
@@ -115,26 +116,26 @@ index 16531bcbdfe80c7e3d553aa6fce576588e2e3b0e..77ebd33eca98832e34866e7b522a2636
          org.bukkit.World.Environment env,
          java.util.function.Function<org.spigotmc.SpigotWorldConfig, io.papermc.paper.configuration.WorldConfiguration> paperWorldConfigCreator,
          java.util.function.Function<org.spigotmc.SpigotWorldConfig, org.plazmamc.plazma.configurations.WorldConfigurations> plazmaWorldConfigurationCreator,
-+        java.util.function.Function<org.spigotmc.SpigotWorldConfig, org.plazmamc.thunderbolt.configurations.WorldConfigurations> thunderboltWorldConfigurationCreator, // Thunderbolt - Configurable Thunderbolt
++        java.util.function.Function<org.spigotmc.SpigotWorldConfig, org.plazmamc.volt.configurations.WorldConfigurations> voltWorldConfigurationCreator, // Volt - Add Example Configurations patch
          java.util.concurrent.Executor executor
      ) {
      // Plazma end - Configurable Plazma
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()); // Spigot
          this.paperConfig = paperWorldConfigCreator.apply(this.spigotConfig); // Paper - create paper world config
          this.plazmaConfig = plazmaWorldConfigurationCreator.apply(this.spigotConfig); // Plazma - Configurable Plazma
-+        this.thunderboltConfig = thunderboltWorldConfigurationCreator.apply(this.spigotConfig); // Thunderbolt - Configurable Thunderbolt
++        this.voltConfig = voltWorldConfigurationCreator.apply(this.spigotConfig); // Volt - Add Example Configurations patch
          this.purpurConfig = new org.purpurmc.purpur.PurpurWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), env); // Purpur
          this.playerBreedingCooldowns = this.getNewBreedingCooldownCache(); // Purpur
          this.generator = gen;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 24b8c2dfb41e97adee90849d56f13583b6cafcc0..8f08c22b93367b5d330356e727d4ab2406863e70 100644
+index 24b8c2dfb41e97adee90849d56f13583b6cafcc0..a430daedae66716ebff850a7f4c927c799f29640 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1060,6 +1060,7 @@ public final class CraftServer implements Server {
          org.spigotmc.SpigotConfig.init((File) this.console.options.valueOf("spigot-settings")); // Spigot
          this.console.paperConfigurations.reloadConfigs(this.console);
          this.console.plazmaConfigurations.reloadConfigs(this.console); // Plazma - Configurable Plazma
-+        this.console.thunderboltConfigurations.reloadConfigs(this.console); // Thunderbolt - Configurable Thunderbolt
++        this.console.voltConfigurations.reloadConfigs(this.console); // Volt - Add Volt Configurations
          org.purpurmc.purpur.PurpurConfig.init((File) console.options.valueOf("purpur-settings")); // Purpur
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
@@ -142,18 +143,18 @@ index 24b8c2dfb41e97adee90849d56f13583b6cafcc0..8f08c22b93367b5d330356e727d4ab24
          }
          // Plazma end - Configurable Plazma
  
-+        // Thunderbolt start - Configurable Thunderbolt
++        // Volt start - Add Example Configurations patch
 +        @Override @org.jetbrains.annotations.NotNull
-+        public YamlConfiguration getThunderboltConfig() {
-+            return CraftServer.this.console.thunderboltConfigurations.createLegacyObject(CraftServer.this.console);
++        public YamlConfiguration getVoltConfig() {
++            return CraftServer.this.console.voltConfigurations.createLegacyObject(CraftServer.this.console);
 +        }
-+        // Thunderbolt end - Configurable Thunderbolt
++        // Volt end - Add Example Configurations patch
 +
          @Override
          public void restart() {
              org.spigotmc.RestartCommand.restart();
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index f84266bca823be3fe7d26ac59b181424e1e307ef..58123df202b28de77a9e733e062ee4f201d4d305 100644
+index f84266bca823be3fe7d26ac59b181424e1e307ef..57d7c2a310c000c39e0c44ec54d19cc123db312f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -205,6 +205,14 @@ public class Main {
@@ -161,28 +162,29 @@ index f84266bca823be3fe7d26ac59b181424e1e307ef..58123df202b28de77a9e733e062ee4f2
                      .describedAs("Configuration Directory");
                  // Plazma end - Configurable Plazma
 +
-+                // Thunderbolt start - Configurable Thunderbolt
-+                acceptsAll(asList("thunderbolt-dir", "thunderbolt-settings-directory"), "Directory for Thunderbolt settings")
++                // Volt start - Add Example Configurations patch
++                acceptsAll(asList("volt-dir", "volt-settings-directory"), "Directory for Volt settings")
 +                        .withRequiredArg()
 +                        .ofType(File.class)
-+                        .defaultsTo(new File(org.plazmamc.thunderbolt.configurations.ThunderboltConfigurations.CONFIG_DIR))
++                        .defaultsTo(new File(org.plazmamc.volt.configurations.VoltConfigurations.CONFIG_DIR))
 +                        .describedAs("Configuration Directory");
-+                // Thunderbolt end - Configurable Thunderbolt
++                // Volt end - Add Example Configurations patch
              }
          };
  
-diff --git a/src/main/java/org/plazmamc/thunderbolt/commands/Commands.java b/src/main/java/org/plazmamc/thunderbolt/commands/Commands.java
+diff --git a/src/main/java/org/plazmamc/volt/commands/Commands.java b/src/main/java/org/plazmamc/volt/commands/Commands.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..a943c5ffd470f7919855a434900504cce477160b
+index 0000000000000000000000000000000000000000..3ca79a5091494d06fd2985a8ab27f097383d44de
 --- /dev/null
-+++ b/src/main/java/org/plazmamc/thunderbolt/commands/Commands.java
-@@ -0,0 +1,22 @@
-+package org.plazmamc.thunderbolt.commands;
++++ b/src/main/java/org/plazmamc/volt/commands/Commands.java
+@@ -0,0 +1,23 @@
++package org.plazmamc.volt.commands;
 +
 +import net.minecraft.server.MinecraftServer;
 +import org.bukkit.command.Command;
 +import org.checkerframework.framework.qual.DefaultQualifier;
 +import org.jetbrains.annotations.NotNull;
++import org.plazmamc.volt.commands.volt.VoltCommand;
 +
 +import java.util.HashMap;
 +import java.util.Map;
@@ -191,21 +193,21 @@ index 0000000000000000000000000000000000000000..a943c5ffd470f7919855a434900504cc
 +public class Commands {
 +
 +    private static final Map<String, Command> COMMANDS = new HashMap<>() {{
-+        put("thunderbolt", new org.plazmamc.thunderbolt.commands.thunderbolt.ThunderboltCommand("thunderbolt"));
++        put("volt", new VoltCommand("volt"));
 +    }};
 +
 +    public static void register(final MinecraftServer server) {
-+        COMMANDS.forEach((name, command) -> server.server.getCommandMap().register(name, "Thunderbolt", command));
++        COMMANDS.forEach((name, command) -> server.server.getCommandMap().register(name, "Volt", command));
 +    }
 +
 +}
-diff --git a/src/main/java/org/plazmamc/thunderbolt/commands/ThunderboltSubCommand.java b/src/main/java/org/plazmamc/thunderbolt/commands/ThunderboltSubCommand.java
+diff --git a/src/main/java/org/plazmamc/volt/commands/VoltSubCommand.java b/src/main/java/org/plazmamc/volt/commands/VoltSubCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..bf5fa777a4d1187e7f86708d892a24f2a4f738ef
+index 0000000000000000000000000000000000000000..28832f22527ffd770506fbdc27b32eea70ee3817
 --- /dev/null
-+++ b/src/main/java/org/plazmamc/thunderbolt/commands/ThunderboltSubCommand.java
++++ b/src/main/java/org/plazmamc/volt/commands/VoltSubCommand.java
 @@ -0,0 +1,19 @@
-+package org.plazmamc.thunderbolt.commands;
++package org.plazmamc.volt.commands;
 +
 +import org.bukkit.command.CommandSender;
 +import org.checkerframework.framework.qual.DefaultQualifier;
@@ -215,7 +217,7 @@ index 0000000000000000000000000000000000000000..bf5fa777a4d1187e7f86708d892a24f2
 +import java.util.List;
 +
 +@DefaultQualifier(NotNull.class)
-+public interface ThunderboltSubCommand {
++public interface VoltSubCommand {
 +
 +    boolean execute(final CommandSender sender, final String subCommand, final String[] args);
 +
@@ -224,13 +226,13 @@ index 0000000000000000000000000000000000000000..bf5fa777a4d1187e7f86708d892a24f2
 +    }
 +
 +}
-diff --git a/src/main/java/org/plazmamc/thunderbolt/commands/thunderbolt/ThunderboltCommand.java b/src/main/java/org/plazmamc/thunderbolt/commands/thunderbolt/ThunderboltCommand.java
+diff --git a/src/main/java/org/plazmamc/volt/commands/volt/VoltCommand.java b/src/main/java/org/plazmamc/volt/commands/volt/VoltCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..d366faa50f12ecd0cd9167c6a746ef715ddcb303
+index 0000000000000000000000000000000000000000..92de73a92e936a54451585d3e82dee008deb271a
 --- /dev/null
-+++ b/src/main/java/org/plazmamc/thunderbolt/commands/thunderbolt/ThunderboltCommand.java
-@@ -0,0 +1,118 @@
-+package org.plazmamc.thunderbolt.commands.thunderbolt;
++++ b/src/main/java/org/plazmamc/volt/commands/volt/VoltCommand.java
+@@ -0,0 +1,119 @@
++package org.plazmamc.volt.commands.volt;
 +
 +import io.papermc.paper.command.CommandUtil;
 +import net.kyori.adventure.text.format.NamedTextColor;
@@ -244,8 +246,9 @@ index 0000000000000000000000000000000000000000..d366faa50f12ecd0cd9167c6a746ef71
 +import org.checkerframework.framework.qual.DefaultQualifier;
 +import org.jetbrains.annotations.NotNull;
 +import org.jetbrains.annotations.Nullable;
-+import org.plazmamc.thunderbolt.commands.thunderbolt.subcommand.ReloadCommand;
-+import org.plazmamc.thunderbolt.commands.thunderbolt.subcommand.VersionCommand;
++import org.plazmamc.volt.commands.VoltSubCommand;
++import org.plazmamc.volt.commands.volt.subcommand.ReloadCommand;
++import org.plazmamc.volt.commands.volt.subcommand.VersionCommand;
 +
 +import java.util.*;
 +import java.util.stream.Collectors;
@@ -253,12 +256,12 @@ index 0000000000000000000000000000000000000000..d366faa50f12ecd0cd9167c6a746ef71
 +import static net.kyori.adventure.text.Component.text;
 +
 +@DefaultQualifier(NotNull.class)
-+public class ThunderboltCommand extends Command {
++public class VoltCommand extends Command {
 +
-+    private static final String PERMISSION = "bukkit.command.thunderbolt";
++    private static final String PERMISSION = "bukkit.command.volt";
 +
-+    private static final Map<String, org.plazmamc.thunderbolt.commands.ThunderboltSubCommand> SUB_COMMANDS = Util.make(() -> {
-+        final Map<Set<String>, org.plazmamc.thunderbolt.commands.ThunderboltSubCommand> commands = new HashMap<>() {{
++    private static final Map<String, VoltSubCommand> SUB_COMMANDS = Util.make(() -> {
++        final Map<Set<String>, VoltSubCommand> commands = new HashMap<>() {{
 +            put(Set.of("reload"), new ReloadCommand());
 +            put(Set.of("version"), new VersionCommand());
 +        }};
@@ -279,7 +282,7 @@ index 0000000000000000000000000000000000000000..d366faa50f12ecd0cd9167c6a746ef71
 +                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 +    });
 +
-+    public ThunderboltCommand(final String name) {
++    public VoltCommand(final String name) {
 +        super(name);
 +
 +        final List<String> permissions = new ArrayList<>() {{
@@ -287,8 +290,8 @@ index 0000000000000000000000000000000000000000..d366faa50f12ecd0cd9167c6a746ef71
 +            addAll(SUB_COMMANDS.keySet().stream().map(key -> PERMISSION + "." + key).toList());
 +        }};
 +
-+        this.description = "Thunderbolt related commands";
-+        this.usageMessage = String.format("/thunderbolt [%s]", String.join("|", SUB_COMMANDS.keySet()));
++        this.description = "Volt related commands";
++        this.usageMessage = String.format("/volt [%s]", String.join("|", SUB_COMMANDS.keySet()));
 +        this.setPermission(String.join(";", permissions));
 +
 +        permissions.forEach(perm -> Bukkit.getServer().getPluginManager().addPermission(new Permission(perm, PermissionDefault.OP)));
@@ -303,7 +306,7 @@ index 0000000000000000000000000000000000000000..d366faa50f12ecd0cd9167c6a746ef71
 +            return false;
 +        }
 +
-+        final @Nullable Pair<String, org.plazmamc.thunderbolt.commands.ThunderboltSubCommand> subCommand = resolveSubCommand(args[0]);
++        final @Nullable Pair<String, VoltSubCommand> subCommand = resolveSubCommand(args[0]);
 +
 +        if (subCommand == null) {
 +            sender.sendMessage(text("Usage: " + this.usageMessage, NamedTextColor.RED));
@@ -319,7 +322,7 @@ index 0000000000000000000000000000000000000000..d366faa50f12ecd0cd9167c6a746ef71
 +    public List<String> tabComplete(final CommandSender sender, final String aliases, final String[] args) throws IllegalArgumentException {
 +        if (args.length <= 1) return CommandUtil.getListMatchingLast(sender, args, SUB_COMMANDS.keySet());
 +
-+        final @Nullable Pair<String, org.plazmamc.thunderbolt.commands.ThunderboltSubCommand> subCommand = resolveSubCommand(args[0]);
++        final @Nullable Pair<String, VoltSubCommand> subCommand = resolveSubCommand(args[0]);
 +
 +        if (subCommand != null) return subCommand.second().tabComplete(sender, subCommand.first(), Arrays.copyOfRange(args, 1, args.length));
 +        return Collections.emptyList();
@@ -331,9 +334,9 @@ index 0000000000000000000000000000000000000000..d366faa50f12ecd0cd9167c6a746ef71
 +        return false;
 +    }
 +
-+    private static @Nullable Pair<String, org.plazmamc.thunderbolt.commands.ThunderboltSubCommand> resolveSubCommand(String label) {
++    private static @Nullable Pair<String, VoltSubCommand> resolveSubCommand(String label) {
 +        label = label.toLowerCase();
-+        @Nullable org.plazmamc.thunderbolt.commands.ThunderboltSubCommand subCommand = SUB_COMMANDS.get(label);
++        @Nullable VoltSubCommand subCommand = SUB_COMMANDS.get(label);
 +
 +        if (subCommand == null) {
 +            final @Nullable String command = ALIASES.get(label);
@@ -348,13 +351,13 @@ index 0000000000000000000000000000000000000000..d366faa50f12ecd0cd9167c6a746ef71
 +    }
 +
 +}
-diff --git a/src/main/java/org/plazmamc/thunderbolt/commands/thunderbolt/subcommand/ReloadCommand.java b/src/main/java/org/plazmamc/thunderbolt/commands/thunderbolt/subcommand/ReloadCommand.java
+diff --git a/src/main/java/org/plazmamc/volt/commands/volt/subcommand/ReloadCommand.java b/src/main/java/org/plazmamc/volt/commands/volt/subcommand/ReloadCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..9afee425a7cf37bc0a61097b3f9833ffe0c881c9
+index 0000000000000000000000000000000000000000..849d337d2d48a945ee382eaeb51e29768a2b82dd
 --- /dev/null
-+++ b/src/main/java/org/plazmamc/thunderbolt/commands/thunderbolt/subcommand/ReloadCommand.java
++++ b/src/main/java/org/plazmamc/volt/commands/volt/subcommand/ReloadCommand.java
 @@ -0,0 +1,34 @@
-+package org.plazmamc.thunderbolt.commands.thunderbolt.subcommand;
++package org.plazmamc.volt.commands.volt.subcommand;
 +
 +import net.kyori.adventure.text.format.NamedTextColor;
 +import net.minecraft.server.MinecraftServer;
@@ -363,12 +366,12 @@ index 0000000000000000000000000000000000000000..9afee425a7cf37bc0a61097b3f9833ff
 +import org.bukkit.craftbukkit.CraftServer;
 +import org.checkerframework.framework.qual.DefaultQualifier;
 +import org.jetbrains.annotations.NotNull;
-+import org.plazmamc.thunderbolt.commands.ThunderboltSubCommand;
++import org.plazmamc.volt.commands.VoltSubCommand;
 +
 +import static net.kyori.adventure.text.Component.text;
 +
 +@DefaultQualifier(NotNull.class)
-+public class ReloadCommand implements ThunderboltSubCommand {
++public class ReloadCommand implements VoltSubCommand {
 +
 +    @Override
 +    public boolean execute(final CommandSender sender, final String subCommand, final String[] args) {
@@ -381,20 +384,20 @@ index 0000000000000000000000000000000000000000..9afee425a7cf37bc0a61097b3f9833ff
 +        Command.broadcastCommandMessage(sender, text("If you encounter any issues please use the /stop command to restart your server.", NamedTextColor.RED));
 +
 +        MinecraftServer server = ((CraftServer) sender.getServer()).getServer();
-+        server.thunderboltConfigurations.reloadConfigs(server);
++        server.voltConfigurations.reloadConfigs(server);
 +        server.server.reloadCount++;
 +
-+        Command.broadcastCommandMessage(sender, text("Successfully reloaded Thunderbolt configuration files.", NamedTextColor.GREEN));
++        Command.broadcastCommandMessage(sender, text("Successfully reloaded Plazma configuration files.", NamedTextColor.GREEN));
 +    }
 +
 +}
-diff --git a/src/main/java/org/plazmamc/thunderbolt/commands/thunderbolt/subcommand/VersionCommand.java b/src/main/java/org/plazmamc/thunderbolt/commands/thunderbolt/subcommand/VersionCommand.java
+diff --git a/src/main/java/org/plazmamc/volt/commands/volt/subcommand/VersionCommand.java b/src/main/java/org/plazmamc/volt/commands/volt/subcommand/VersionCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..b859430a39546cded05032110163d67671cd346e
+index 0000000000000000000000000000000000000000..633127d196bdbfd0d98c78046fb2c7b1cca2aefa
 --- /dev/null
-+++ b/src/main/java/org/plazmamc/thunderbolt/commands/thunderbolt/subcommand/VersionCommand.java
++++ b/src/main/java/org/plazmamc/volt/commands/volt/subcommand/VersionCommand.java
 @@ -0,0 +1,21 @@
-+package org.plazmamc.thunderbolt.commands.thunderbolt.subcommand;
++package org.plazmamc.volt.commands.volt.subcommand;
 +
 +import net.minecraft.server.MinecraftServer;
 +import org.bukkit.command.Command;
@@ -402,34 +405,32 @@ index 0000000000000000000000000000000000000000..b859430a39546cded05032110163d676
 +import org.checkerframework.framework.qual.DefaultQualifier;
 +import org.jetbrains.annotations.NotNull;
 +import org.jetbrains.annotations.Nullable;
-+import org.plazmamc.thunderbolt.commands.ThunderboltSubCommand;
++import org.plazmamc.volt.commands.VoltSubCommand;
 +
 +@DefaultQualifier(NotNull.class)
-+public class VersionCommand implements ThunderboltSubCommand {
++public class VersionCommand implements VoltSubCommand {
 +
 +    @Override
 +    public boolean execute(final CommandSender sender, final String subCommand, final String[] args) {
 +        final @Nullable Command ver = MinecraftServer.getServer().server.getCommandMap().getCommand("version");
-+        if (ver != null) return ver.execute(sender, "thunderbolt", new String[0]);
++        if (ver != null) return ver.execute(sender, "plazma", new String[0]);
 +        return false;
 +    }
 +
 +}
-diff --git a/src/main/java/org/plazmamc/thunderbolt/configurations/GlobalConfiguration.java b/src/main/java/org/plazmamc/thunderbolt/configurations/GlobalConfiguration.java
+diff --git a/src/main/java/org/plazmamc/volt/configurations/GlobalConfiguration.java b/src/main/java/org/plazmamc/volt/configurations/GlobalConfiguration.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..fbac06d6c70fd6250f16a6bdbea21873ff5e1d2a
+index 0000000000000000000000000000000000000000..6f3cf61b85b92c8b9783323a98140e8d2fbc3307
 --- /dev/null
-+++ b/src/main/java/org/plazmamc/thunderbolt/configurations/GlobalConfiguration.java
-@@ -0,0 +1,28 @@
-+package org.plazmamc.thunderbolt.configurations;
++++ b/src/main/java/org/plazmamc/volt/configurations/GlobalConfiguration.java
+@@ -0,0 +1,26 @@
++package org.plazmamc.volt.configurations;
 +
 +import io.papermc.paper.configuration.Configuration;
 +import io.papermc.paper.configuration.ConfigurationPart;
 +import org.jetbrains.annotations.NotNull;
 +import org.spongepowered.configurate.objectmapping.meta.Setting;
 +import org.spongepowered.configurate.objectmapping.meta.PostProcess;
-+
-+import static org.plazmamc.plazma.configurations.PlazmaConfigurations.optimize;
 +
 +@SuppressWarnings({"CanBeFinal", "FieldCanBeLocal", "FieldMayBeFinal", "InnerClassMayBeStatic"})
 +public class GlobalConfiguration extends ConfigurationPart {
@@ -449,13 +450,13 @@ index 0000000000000000000000000000000000000000..fbac06d6c70fd6250f16a6bdbea21873
 +    int version = VERSION;
 +
 +}
-diff --git a/src/main/java/org/plazmamc/thunderbolt/configurations/RemovedConfigurations.java b/src/main/java/org/plazmamc/thunderbolt/configurations/RemovedConfigurations.java
+diff --git a/src/main/java/org/plazmamc/volt/configurations/RemovedConfigurations.java b/src/main/java/org/plazmamc/volt/configurations/RemovedConfigurations.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..1d4afff273484b08d340e7b8d80e031325a76945
+index 0000000000000000000000000000000000000000..4dd948fe3c71675e6bbe95f412d265af484028df
 --- /dev/null
-+++ b/src/main/java/org/plazmamc/thunderbolt/configurations/RemovedConfigurations.java
++++ b/src/main/java/org/plazmamc/volt/configurations/RemovedConfigurations.java
 @@ -0,0 +1,13 @@
-+package org.plazmamc.thunderbolt.configurations;
++package org.plazmamc.volt.configurations;
 +
 +import org.spongepowered.configurate.NodePath;
 +
@@ -468,13 +469,13 @@ index 0000000000000000000000000000000000000000..1d4afff273484b08d340e7b8d80e0313
 +    };
 +
 +}
-diff --git a/src/main/java/org/plazmamc/thunderbolt/configurations/ThunderboltConfigurations.java b/src/main/java/org/plazmamc/thunderbolt/configurations/ThunderboltConfigurations.java
+diff --git a/src/main/java/org/plazmamc/volt/configurations/VoltConfigurations.java b/src/main/java/org/plazmamc/volt/configurations/VoltConfigurations.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..417c8dbbd5e54e90685f956660b9e9213ff3f1fd
+index 0000000000000000000000000000000000000000..3ee9f9ba02e410907a9df6abddc64cad68a4383e
 --- /dev/null
-+++ b/src/main/java/org/plazmamc/thunderbolt/configurations/ThunderboltConfigurations.java
-@@ -0,0 +1,209 @@
-+package org.plazmamc.thunderbolt.configurations;
++++ b/src/main/java/org/plazmamc/volt/configurations/VoltConfigurations.java
+@@ -0,0 +1,208 @@
++package org.plazmamc.volt.configurations;
 +
 +import com.mojang.logging.LogUtils;
 +import io.papermc.paper.configuration.ConfigurationPart;
@@ -495,19 +496,19 @@ index 0000000000000000000000000000000000000000..417c8dbbd5e54e90685f956660b9e921
 +import org.spongepowered.configurate.NodePath;
 +
 +import java.io.File;
++import java.nio.file.Path;
 +import java.util.function.Function;
 +
 +import static io.leangen.geantyref.GenericTypeReflector.erase;
 +
 +@DefaultQualifier(NotNull.class)
-+public class ThunderboltConfigurations extends Configurations<GlobalConfiguration, WorldConfigurations> {
++public class VoltConfigurations extends Configurations<GlobalConfiguration, WorldConfigurations> {
 +
 +    public static final String CONFIG_DIR = "config";
-+    static final Logger LOGGER = LogUtils.getClassLogger();
-+    static final String GLOBAL_CONFIG_FILE_NAME = "thunderbolt_global.yaml";
-+    static final String WORLD_DEFAULT_CONFIG_FILE_NAME = "thunderbolt_world_defaults.yaml";
-+    static final String WORLD_CONFIG_FILE_NAME = "thunderbolt.yaml";
-+    static boolean GLOBAL_LOADED = false;
++    static final Logger LOGGER = LogUtils.getLogger();
++    static final String GLOBAL_CONFIG_FILE_NAME = "volt_global.yaml";
++    static final String WORLD_DEFAULT_CONFIG_FILE_NAME = "volt_worlds.yaml";
++    static final String WORLD_CONFIG_FILE_NAME = "volt_configurations.yaml";
 +
 +    private static final String HEADER_START = """
 +            ### ENGLISH ###
@@ -538,14 +539,14 @@ index 0000000000000000000000000000000000000000..417c8dbbd5e54e90685f956660b9e921
 +            These are values that apply to the **entire server** regardless of
 +            the world. However, you must take advantage of the system properties
 +            in order for the server to be able to modify the values before
-+            loading the configuration. See org.plazmamc.thunderbolt.Options class for
++            loading the configuration. See org.plazmamc.volt.Options class for
 +            development of system properties.
 +            """, """
 +            아래에는 GlobalConfiguration.java에 설정된 여러 템플릿 값들이 있습니다.
 +            구성이 적용되는 여러 방법은 해당 클래스를 참고하세요.
 +            이 값들은 월드에 관계 없이 **서버 전체**에 적용되는 값들입니다. 다만, 서버가 구성을
 +            로드하기 전의 값을 수정할 수 있게 만드려면, 시스템 속성을 이용해야 합니다.
-+            시스템 속성에 대한 개발은 org.plazmamc.thunderbolt.Options 클래스를 참고하세요.
++            시스템 속성에 대한 개발은 org.plazmamc.volt.Options 클래스를 참고하세요.
 +            """
 +    );
 +
@@ -580,8 +581,8 @@ index 0000000000000000000000000000000000000000..417c8dbbd5e54e90685f956660b9e921
 +            map.require(WORLD_NAME), map.require(WORLD_KEY), WORLD_CONFIG_FILE_NAME
 +    );
 +
-+    public ThunderboltConfigurations(final OptionSet optionSet) {
-+        super(((File) optionSet.valueOf("thunderbolt-settings-directory")).toPath());
++    public VoltConfigurations(final OptionSet optionSet) {
++        super(((File) optionSet.valueOf("volt-settings-directory")).toPath());
 +    }
 +
 +    @Override
@@ -636,7 +637,7 @@ index 0000000000000000000000000000000000000000..417c8dbbd5e54e90685f956660b9e921
 +
 +    @Override
 +    protected WorldConfigurations getWorldConfiguration(ServerLevel level) {
-+        throw new UnsupportedOperationException("TODO");
++        return level.voltConfig();
 +    }
 +
 +    @Override
@@ -652,14 +653,13 @@ index 0000000000000000000000000000000000000000..417c8dbbd5e54e90685f956660b9e921
 +    @Override
 +    protected YamlConfigurationLoader.Builder createGlobalLoaderBuilder() {
 +        return super.createGlobalLoaderBuilder()
-+                .defaultOptions(ThunderboltConfigurations::defaultGlobalOptions);
++                .defaultOptions(VoltConfigurations::defaultGlobalOptions);
 +    }
 +
 +    @Override
 +    public GlobalConfiguration initializeGlobalConfiguration(final RegistryAccess registryAccess) throws ConfigurateException {
 +        GlobalConfiguration configuration = super.initializeGlobalConfiguration(registryAccess);
 +        GlobalConfiguration.set(configuration);
-+        GLOBAL_LOADED = true;
 +        return configuration;
 +    }
 +
@@ -683,13 +683,13 @@ index 0000000000000000000000000000000000000000..417c8dbbd5e54e90685f956660b9e921
 +    }
 +
 +}
-diff --git a/src/main/java/org/plazmamc/thunderbolt/configurations/WorldConfigurations.java b/src/main/java/org/plazmamc/thunderbolt/configurations/WorldConfigurations.java
+diff --git a/src/main/java/org/plazmamc/volt/configurations/WorldConfigurations.java b/src/main/java/org/plazmamc/volt/configurations/WorldConfigurations.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..4a8bff4b6e42c3fa49758520e743dc65fe79e2cc
+index 0000000000000000000000000000000000000000..ecbc1118b7c7fe6463f612a7a9f0f699af959122
 --- /dev/null
-+++ b/src/main/java/org/plazmamc/thunderbolt/configurations/WorldConfigurations.java
++++ b/src/main/java/org/plazmamc/volt/configurations/WorldConfigurations.java
 @@ -0,0 +1,23 @@
-+package org.plazmamc.thunderbolt.configurations;
++package org.plazmamc.volt.configurations;
 +
 +import io.papermc.paper.configuration.Configuration;
 +import io.papermc.paper.configuration.ConfigurationPart;
@@ -713,24 +713,24 @@ index 0000000000000000000000000000000000000000..4a8bff4b6e42c3fa49758520e743dc65
 +
 +}
 diff --git a/src/test/java/org/bukkit/support/AbstractTestingBase.java b/src/test/java/org/bukkit/support/AbstractTestingBase.java
-index 74af3501397bfd89d637ad5ce72bb8f2c2bbdc8a..93767e76b6ea52da8587f282dfe18774e9dad22f 100644
+index 74af3501397bfd89d637ad5ce72bb8f2c2bbdc8a..1393fb567b7804c620faf699789f87866c27482a 100644
 --- a/src/test/java/org/bukkit/support/AbstractTestingBase.java
 +++ b/src/test/java/org/bukkit/support/AbstractTestingBase.java
 @@ -65,6 +65,7 @@ public abstract class AbstractTestingBase {
          DummyServer.setup();
          io.papermc.paper.configuration.GlobalConfigTestingBase.setupGlobalConfigForTest(); // Paper
          org.plazmamc.plazma.configurations.GlobalConfigurationTestingBase.setupGlobalConfigForTest(); // Plazma - Configurable Plazma
-+        org.plazmamc.thunderbolt.configurations.GlobalConfigurationTestingBase.setupGlobalConfigurationForTesting(); // Thunderbolt - Configurable Thunderbolt
++        org.plazmamc.volt.configurations.GlobalConfigurationTestingBase.setupGlobalConfigurationForTesting(); // Volt - Add Example Configurations patch
  
          CraftRegistry.setMinecraftRegistry(REGISTRY_CUSTOM);
  
-diff --git a/src/test/java/org/plazmamc/thunderbolt/configurations/GlobalConfigurationTestingBase.java b/src/test/java/org/plazmamc/thunderbolt/configurations/GlobalConfigurationTestingBase.java
+diff --git a/src/test/java/org/plazmamc/volt/configurations/GlobalConfigurationTestingBase.java b/src/test/java/org/plazmamc/volt/configurations/GlobalConfigurationTestingBase.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..682089f155c75b0c106c3516f053fde7787b400c
+index 0000000000000000000000000000000000000000..71d8bf545a3e83955eb9d4aef493a4b81c92fc17
 --- /dev/null
-+++ b/src/test/java/org/plazmamc/thunderbolt/configurations/GlobalConfigurationTestingBase.java
++++ b/src/test/java/org/plazmamc/volt/configurations/GlobalConfigurationTestingBase.java
 @@ -0,0 +1,17 @@
-+package org.plazmamc.thunderbolt.configurations;
++package org.plazmamc.volt.configurations;
 +
 +import org.spongepowered.configurate.ConfigurationNode;
 +
@@ -738,7 +738,7 @@ index 0000000000000000000000000000000000000000..682089f155c75b0c106c3516f053fde7
 +
 +    public static void setupGlobalConfigurationForTesting() {
 +        if (GlobalConfiguration.get() != null) return;
-+        ConfigurationNode node = ThunderboltConfigurations.createForTesting();
++        ConfigurationNode node = VoltConfigurations.createForTesting();
 +        try {
 +            GlobalConfiguration.set(node.require(GlobalConfiguration.class));
 +        } catch (Exception e) {

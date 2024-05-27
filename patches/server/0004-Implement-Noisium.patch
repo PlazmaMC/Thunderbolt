@@ -68,7 +68,7 @@ index 81368bf186365878db2e1ed305bb7bf36c26f61f..c1d31b9f37472364d08b07958787410a
              for (int i = 0; i < storage.getSize(); i++) {
                  T object = palette.valueFor(storage.get(i));
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java b/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
-index e3990d5f5a49aca501289e92f7462a5f2709db9b..03cf6ea4091d40cb65d5ecba139e2c0275074cc1 100644
+index 6650f74b01285c1dba8243ca11dbde06419a90e7..a1e38e3bd4b4c3ef2806a5eafc1fc9f17d523898 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
 @@ -52,6 +52,7 @@ import org.apache.commons.lang3.mutable.MutableObject;
@@ -79,7 +79,7 @@ index e3990d5f5a49aca501289e92f7462a5f2709db9b..03cf6ea4091d40cb65d5ecba139e2c02
      public static final MapCodec<NoiseBasedChunkGenerator> CODEC = RecordCodecBuilder.mapCodec((instance) -> {
          return instance.group(BiomeSource.CODEC.fieldOf("biome_source").forGetter((chunkgeneratorabstract) -> {
              return chunkgeneratorabstract.biomeSource;
-@@ -274,38 +275,45 @@ public final class NoiseBasedChunkGenerator extends ChunkGenerator {
+@@ -265,38 +266,45 @@ public final class NoiseBasedChunkGenerator extends ChunkGenerator {
  
      @Override
      public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, RandomState noiseConfig, StructureManager structureAccessor, ChunkAccess chunk) {
@@ -153,7 +153,7 @@ index e3990d5f5a49aca501289e92f7462a5f2709db9b..03cf6ea4091d40cb65d5ecba139e2c02
      }
  
      private ChunkAccess doFill(Blender blender, StructureManager structureAccessor, RandomState noiseConfig, ChunkAccess chunk, int minimumCellY, int cellHeight) {
-@@ -371,6 +379,20 @@ public final class NoiseBasedChunkGenerator extends ChunkGenerator {
+@@ -362,6 +370,20 @@ public final class NoiseBasedChunkGenerator extends ChunkGenerator {
  
                                  iblockdata = this.debugPreliminarySurfaceLevel(noisechunk, j4, j3, i5, iblockdata);
                                  if (iblockdata != NoiseBasedChunkGenerator.AIR && !SharedConstants.debugVoidTerrain(chunk.getPos())) {

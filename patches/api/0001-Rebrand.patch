@@ -1,0 +1,37 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: AlphaKR93 <dev@alpha93.kr>
+Date: Mon, 27 May 2024 12:39:34 +0900
+Subject: [PATCH] Rebrand
+
+
+diff --git a/src/main/java/io/papermc/paper/ServerBuildInfo.java b/src/main/java/io/papermc/paper/ServerBuildInfo.java
+index 098125a57409b480f045c3a8c3b58db74a6605f3..eb4f5e0724fd1782ed91fff302c244e399383a9e 100644
+--- a/src/main/java/io/papermc/paper/ServerBuildInfo.java
++++ b/src/main/java/io/papermc/paper/ServerBuildInfo.java
+@@ -32,11 +32,17 @@ public interface ServerBuildInfo {
+     Key BRAND_PLAZMA_ID = Key.key("plazmamc", "plazma");
+ 
+     // For those who fork Plazma - please add the new branding key here
++    // Thunderbolt start - Rebranding
++    /**
++     * The brand id for Thunderbolt.
++     */
++    Key BRAND_THUNDERBOLT_ID = Key.key("plazmamc", "thunderbolt");
++    // Thunderbolt end - Rebranding
+ 
+     /**
+      * The brand id of the server.
+      */
+-    Key BRAND_ID = BRAND_PLAZMA_ID;
++    Key BRAND_ID = BRAND_THUNDERBOLT_ID; // Thunderbolt - Rebranding
+ 
+     /**
+      * Supported brands of the server.
+@@ -45,6 +51,7 @@ public interface ServerBuildInfo {
+         BRAND_PAPER_ID,
+         BRAND_PURPUR_ID,
+         BRAND_PLAZMA_ID
++        ,BRAND_THUNDERBOLT_ID // Thunderbolt - Rebranding
+     );
+     // Plazma end - Rebranding
+ 

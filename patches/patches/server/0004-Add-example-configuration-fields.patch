@@ -1,0 +1,89 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Alpha <dev@alpha93.kr>
+Date: Sun, 25 Feb 2024 18:41:14 +0900
+Subject: [PATCH] Add example configuration fields
+
+
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+index 9de2a76a6af711b4992d3c7cc9200e5183e012fe..6a73be4235e64106371056ea8ba2279c18c781bc 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -91,6 +91,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+     private RemoteSampleLogger tickTimeLogger;
+     @Nullable
+     private DebugSampleSubscriptionTracker debugSampleSubscriptionTracker;
++    public static String helloWorldMessage = "Hello, world!"; // Volt - Example configuration
+ 
+     // CraftBukkit start - Signature changed
+     public DedicatedServer(joptsimple.OptionSet options, WorldLoader.DataLoadContext worldLoader, Thread thread, LevelStorageSource.LevelStorageAccess convertable_conversionsession, PackRepository resourcepackrepository, WorldStem worldstem, DedicatedServerSettings dedicatedserversettings, DataFixer datafixer, Services services, ChunkProgressListenerFactory worldloadlistenerfactory) {
+@@ -414,6 +415,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+             if (gg.pufferfish.pufferfish.PufferfishConfig.enableAsyncMobSpawning) mobSpawnExecutor.start(); // Pufferfish
+             org.purpurmc.purpur.task.BossBarTask.startAll(); // Purpur
+             if (org.purpurmc.purpur.PurpurConfig.beeCountPayload) org.purpurmc.purpur.task.BeehiveTask.instance().register(); // Purpur
++            if (org.plazmamc.volt.configurations.GlobalConfiguration.get().example.helloWorld) logger.info(helloWorldMessage); // Volt - Example Configuration - Use the get() function to import fields in GlobalConfiguration.
+             return true;
+         }
+     }
+diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
+index fdfe8f5bc5ad0e5f5ded41d87756a5866d041df1..569b0b8cae88aa0353f0bf9f87c2a8c89ab589e0 100644
+--- a/src/main/java/net/minecraft/server/players/PlayerList.java
++++ b/src/main/java/net/minecraft/server/players/PlayerList.java
+@@ -426,6 +426,7 @@ public abstract class PlayerList {
+             );
+         }
+         // Paper end - Send empty chunk
++        player.sendMessage(net.kyori.adventure.text.Component.text(player.level().voltConfig().playerWelcome.welcomeMessage)); // Volt - Example Config - The WorldConfigurations fetches fields through the getter of the level instance.
+     }
+     private void mountSavedVehicle(ServerPlayer player, ServerLevel worldserver1, Optional<CompoundTag> optional) {
+         // Paper end - Fire PlayerJoinEvent when Player is actually ready
+diff --git a/src/main/java/org/plazmamc/volt/configurations/GlobalConfiguration.java b/src/main/java/org/plazmamc/volt/configurations/GlobalConfiguration.java
+index 6f3cf61b85b92c8b9783323a98140e8d2fbc3307..c1172de50863e2fb7f1185d2a49aeccdac59bec2 100644
+--- a/src/main/java/org/plazmamc/volt/configurations/GlobalConfiguration.java
++++ b/src/main/java/org/plazmamc/volt/configurations/GlobalConfiguration.java
+@@ -23,4 +23,29 @@ public class GlobalConfiguration extends ConfigurationPart {
+     @Setting(Configuration.VERSION_FIELD)
+     int version = VERSION;
+ 
++    /*
++    @Settings(String) annotation is used to set the name of a field in a configuration file.
++    Not required; use the name of the variable if annotation is not used.
++     */
++    @Setting("example-config")
++    public ExampleConfiguration example; // You must create a class instance to obtain fields through the configuration getter.
++    public class ExampleConfiguration extends ConfigurationPart {
++
++        public boolean helloWorld = true; // The configuration fields are automatically created when you create variables without any settings.
++
++        // This allows you to create a node tree. (In this case example.welcome)
++        public HelloWorld welcome;
++        public class HelloWorld extends ConfigurationPart {
++
++            public String message = "Hello, world!";
++
++            @PostProcess // @PostProcess annotation allows you to set variables in a class immediately without using getter.
++            void postProcess() {
++                net.minecraft.server.dedicated.DedicatedServer.helloWorldMessage = this.message;
++            }
++
++        }
++
++    }
++
+ }
+diff --git a/src/main/java/org/plazmamc/volt/configurations/WorldConfigurations.java b/src/main/java/org/plazmamc/volt/configurations/WorldConfigurations.java
+index ecbc1118b7c7fe6463f612a7a9f0f699af959122..16e26702d185b32f8e85971d7e30bafc0fde0f9b 100644
+--- a/src/main/java/org/plazmamc/volt/configurations/WorldConfigurations.java
++++ b/src/main/java/org/plazmamc/volt/configurations/WorldConfigurations.java
+@@ -20,4 +20,12 @@ public class WorldConfigurations extends ConfigurationPart {
+     @Setting(Configuration.VERSION_FIELD)
+     int version = VERSION;
+ 
++    // For basic information about configuration development, see GlobalConfiguration.java.
++    public PlayerWelcome playerWelcome;
++    public class PlayerWelcome extends ConfigurationPart {
++
++        public String welcomeMessage = "Welcome to the server!";
++
++    }
++
+ }

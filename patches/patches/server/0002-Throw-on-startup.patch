@@ -1,0 +1,29 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: AlphaKR93 <dev@alpha93.kr>
+Date: Thu, 9 May 2024 12:53:31 +0900
+Subject: [PATCH] Throw on startup
+
+
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+index b6c9e81249bba59856d96ff71610b687fd9c4396..d1b3ede396d89c0056194ff41e6bf2d9603e5d79 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -286,6 +286,18 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+         }
+         // Paper end - Unix domain socket support
+ 
++        // Volt start - Throw exception when the server is running on template
++        LOGGER.error("*********************** CAUTION ***********************");
++        LOGGER.error("This version is an unmodified Volt template.");
++        LOGGER.error("The template cannot be started unless you modify it.");
++        LOGGER.error("If you want to use a typical server implementation, use Plazma.");
++        LOGGER.error("*******************************************************");
++        if (!Boolean.getBoolean("Volt.iKnowWhatIAmDoing")) {
++            throw new IllegalStateException("Cannot start the server on the template.");
++            return false;
++        }
++        // Volt end - Throw exception when the server is running on template
++
+         this.initializeKeyPair();
+         DedicatedServer.LOGGER.info("Starting Minecraft server on {}:{}", this.getLocalIp().isEmpty() ? "*" : this.getLocalIp(), this.getPort());
+ 
