@@ -2,7 +2,7 @@ name: Always Up To Date
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "*/20 * * * *"
 
 jobs:
   prepare:
@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.matrix.outputs.matrix }}
+      require: ${{ steps.matrix.outputs.check }}
     steps:
       - name: Pull Branches
         id: matrix
@@ -18,10 +19,6 @@ jobs:
           flavor=$(echo $respond | jq -rc 'map(select(.name | test("feat/.*")) | .flavor = .name | del(.name))')
           echo "matrix={\"include\":$(echo "$base $flavor" | jq -sc add)}" >> $GITHUB_OUTPUT
 
-  upstream:
-    name: Update Base Upstream
-    runs-on: ubuntu-latest
-    steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -39,6 +36,26 @@ jobs:
       - name: Determine if update is required
         id: check
         run: echo "needs=$(./gradlew -q checkNeedsUpdate)" >> $GITHUB_OUTPUT
+
+  upstream:
+    name: Update Base Upstream
+    needs: prepare
+    runs-on: ubuntu-latest
+    if: ${{ needs.prepare.outputs.require }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: base
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 21
 
       - name: Configure Git
         if: steps.check.outputs.needs == 'true'
@@ -69,6 +86,7 @@ jobs:
   flavor:
     name: Update Flavors Upstream
     needs: prepare
+    if: ${{ needs.prepare.outputs.require }} != false
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
