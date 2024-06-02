@@ -49,7 +49,7 @@ jobs:
         uses: softprops/action-gh-release@v0.1.15
         with:
           name: "Release for ${{ github.ref_name }}"
-          tag_name: ${{ github.ref_name }}
+          tag_name: release/${{ github.ref_name }}
           target_commitish: ${{ github.ref_name }}
           generate_release_notes: true
           fail_on_unmatched_files: true
