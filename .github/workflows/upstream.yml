@@ -64,7 +64,7 @@ jobs:
         if: steps.check.outputs.needs == 'true'
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GH_PAT }}
 
   flavor:
     name: Update Flavors Upstream
@@ -115,5 +115,5 @@ jobs:
         if: steps.check.outputs.needs == 'true'
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GH_PAT }}
           branch: ${{ matrix.flavor }}
