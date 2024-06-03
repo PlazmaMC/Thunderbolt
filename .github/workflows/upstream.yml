@@ -41,7 +41,7 @@ jobs:
     name: Update Base Upstream
     needs: prepare
     runs-on: ubuntu-latest
-    if: ${{ needs.prepare.outputs.require }} == false
+    if: ${{ needs.prepare.outputs.require }} == true
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -80,7 +80,7 @@ jobs:
   flavor:
     name: Update Flavors Upstream
     needs: prepare
-    if: ${{ needs.prepare.outputs.require }} == true
+    if: ${{ needs.prepare.outputs.require }} == false
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
