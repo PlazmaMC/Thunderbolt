@@ -58,8 +58,14 @@
 
 ## 🎨 Flavors
 
-- Vanilla (Base Flavor)
+- [Vanilla (Base Flavor)](https://github.com/PlazmaMC/Thunderbolt/releases/tag/release/base)
   - Implemented [Noisium](https://modrinth.com/mod/noisium)
+- [feat/remove-timings](https://github.com/PlazmaMC/Thunderbolt/releases/tag/release/feat/remove-timings)
+  - All features from base
+  - Remove all timings related implementations except API access (Exception occurs when accessing API)
+- [feat/sector-file](https://github.com/PlazmaMC/Thunderbolt/releases/tag/release/feat/sector-file)
+  - All features from base
+  - Implements Paper's new [Sector File](https://github.com/PaperMC/Paper/pull/10231)
 
 ## ⚖️ License
 
